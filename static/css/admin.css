@@ -51,7 +51,7 @@
     margin: 0;
     padding: 0;
     outline: 0;
-    appearance: none;
+    /* appearance: none; */
     border: 0;
     box-sizing: border-box;
 }
@@ -799,6 +799,39 @@ main .admins a{
     color: var(--color-info-light);
 }
 
+/* =================== STYLES FOR THE PROFILE PAGE ======================== */
+
+.profile-details{
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-details .details-section{
+    width: 70%;
+    background: var(--color-white);
+}
+
+.profile-details .details-section tr td{
+    border: none;
+}
+
+.profile-details .photo-section{
+    width: 28%;
+}
+
+.edit-btn{
+    background: var(--primary-color);
+    color: var(--color-white);
+    padding: 10px;
+}
+
+.edit-btn:hover{
+    background: var(--color-dark);
+    color: var(--primary-color);
+    padding: 10px;
+}
+
+/* =================== END OF PROFILE PAGE STYLES ========================= */
 
 /* ============== MEDIA QUERIES: FOR SMALL LAPTOPS AND TABLETS================ */
 

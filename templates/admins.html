@@ -85,212 +85,103 @@
                 <!-- This section keeps reverting to the extreme left on deployment -->
                 <div class="profile">
                     <div class="info">
-                        <small class="text-muted">Admin</small>
+                        <small class="text-muted">{{user.username}}</small>
                     </div>
                     <div class="profile-photo">
-                        <img src="img/Me2.jpg" alt="mgm">
+                        <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                        {% if user.userprofile.profile_pic %}
+                            <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        {% else %}
+                            <!-- A default image to be shown if the user did not upload a profile pic -->
+                            <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        {% endif %}
                     </div>
                 </div>
             </div>
             <!-- End of Top right section -->
         </div>
-        <div class="panel">
-            <main>
-                <h1 class="panel-label">All Admins</h1>
-                <!-- <div class="date">
-                        <input type="date">
-                    </div> -->
 
-                <div class="panel-body">
-
-                    <div class="top-table">
-                        <!-- <h2>All admins</h2> -->
-                        <div class="table-actions">
-                            <button class="primary action-btn action">Send a message</button>
-                            <button class="primary action-btn action">Select columns</button>
-                            <button class="primary action-btn actio">Manage</button>
-                            <button class="primary action-btn create">Create admin</button>
-                        </div>
+    </div>
+    <div class="panel">
+        <main>
+            <h1 class="panel-label">All Admins</h1>
+            <!-- <div class="date">
+                    <input type="date">
+                </div> -->
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="msg msg-box text-danger">
+                        {{ message }}
+                        <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="fa fa-times"></i>
+                        </a>
                     </div>
-                    <div class="admin-panel">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>User ID</th>
-                                    <th>Privilege</th>
-                                    <th>Phone Number</th>
-                                    <th>First Seen</th>
-                                    <th>Last Seen</th>
-                                    <th>Page Visits</th>
-                                    <th>IP Address</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                                    <td class="primary">Basit Ridwan</td>
-                                    <td class="success">basitridwan@gmail.com</td>
-                                    <td>862331</td>
-                                    <td class="warning">Super admin</td>
-                                    <td>07079039931</td>
-                                    <td class="success">March 2021</td>
-                                    <td class="danger">November 2022</td>
-                                    <td>1028</td>
-                                    <td class="danger">81.161.93.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <a href="#">Show all</a>
+                    {% endfor %}
+                    {% endif %}
+            <div class="panel-body">
+
+                <div class="top-table">
+                    <!-- <h2>All admins</h2> -->
+                    <div class="table-actions">
+                        <button class="primary action-btn action">Send a message</button>
+                        <button class="primary action-btn action">Select columns</button>
+                        <button class="primary action-btn actio">Manage</button>
+                        <a href="{% url 'create_admin' %}" class="primary action-btn create">Create admin</a>
                     </div>
                 </div>
-                <!---------------- END OF RECENT ORDERS SECTION ---------------->
-            </main>
+                <div class="admin-panel">
+                    
+                    <table>
+                        
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>User ID</th>
+                                <th>Privilege</th>
+                                <th>Phone Number</th>
+                                <th>First Seen</th>
+                                <th>Last Seen</th>
+                                <th>Page Visits</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for superuser in superusers  %}
+                            <tr>
+                                <!-- <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="1" class="action-select"></td> -->
+                                <td><input type="checkbox" name="name1" value="1"></td>
+                                <td class="primary">{{superuser.username}}</td>
+                                <td class="success">{{superuser.email}}</td>
+                                <td>862331</td>
+                                <td class="warning">{{superuser.is_superuser}}</td>
+                                <td>07079039931</td>
+                                <td class="success">{{superuser.date_joined}}</td>
+                                <td class="danger">{{superuser.last_login}}</td>
+                                <td>1028</td>
+                                <td class="danger">81.161.93.00</td>
+                            </tr>
+                            
+                            {% endfor  %}
+                        </tbody>
+                        
+                    </table>
+                    
+                    <a href="#">Show all</a>
+                </div>
+            </div>
+            <!---------------- END OF RECENT ORDERS SECTION ---------------->
+        </main>
 
-            <!------------------- END OF MAIN SECTION ------------------->
+        <!------------------- END OF MAIN SECTION ------------------->
 
 
-            <!---------------------- RIGHT SECTION ---------------------->
+        <!---------------------- RIGHT SECTION ---------------------->
 
 
 
-        </div>
     </div>
-
     <!-- </div> -->
 </div>
 {% endblock %}

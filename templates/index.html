@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+
 {% load static %}
 
 <div class="wrapper">
@@ -32,9 +34,9 @@
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'profile' %}">
                     <i class="fa fa-line-chart"></i>
-                    <h3>Analytics</h3>
+                    <h3>Profile</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-users"></i>
@@ -57,11 +59,11 @@
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'create_admin' %}">
                     <i class="fa fa-plus"></i>
                     <h3>Add Client</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'logout' %}">
                     <i class="fa fa-sign-out"></i>
                     <h3>Logout</h3>
                 </a>
@@ -84,10 +86,16 @@
                 <!-- This section keeps reverting to the extreme left on deployment -->
                 <div class="profile">
                     <div class="info">
-                        <small class="text-muted">Admin</small>
+                        <small class="text-muted">{{user.userprofile.phone}} {{user.last_login}}</small>
                     </div>
                     <div class="profile-photo">
-                        <img src="{% static 'img/Me2.jpg' %}" alt="mgm">
+                        <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                        {% if user.userprofile.profile_pic %}
+                            <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        {% else %}
+                            <!-- A default image to be shown if the user did not upload a profile pic -->
+                            <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -340,4 +348,10 @@
         </div>
     </div>
 </div>
+{% elif user.is_authenticated and user.is_superuser and user.is_not_staff %}
+    <!-- user.is_authenticated and user.is_superuser is also d same as d above condition -->
+    <div>show lesser admin privilege content</div>
+{% else %}
+{% include 'clients/index.html' %}
+{% endif %}
 {% endblock %}

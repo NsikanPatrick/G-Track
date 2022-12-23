@@ -1,0 +1,93 @@
+{% extends '../base.html' %}
+
+{% block title %} G-TrackApp {% endblock %}
+
+{% block content %}
+<!-- <main>
+    <section id="registration-section">
+      <div class="reg-panel container">
+        
+        
+        <div class="signup form-area">
+          <div class="msg">
+            <p><b> G-TRACK LOGIN</b></p>
+          </div>
+          <div class="contact-form">
+              <form action="#" class="my-form p-5 bg-white" id="form" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="text" id="uname" class="form-control" name="username" placeholder="Username">
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+
+                <div class="form-group">
+                  <input type="password" id="password" class="form-control" name="password" placeholder="Password">
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+                
+                <div class="form-group">
+                  <button type="submit" class="btn">
+                    Login
+                  </button>
+                </div>
+
+              </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main> -->
+<body>
+  <main>
+    <!--    Registration section-->
+    <section id="registration-section">
+      <div class="reg-panel container">
+        <div class="signup reg-text">
+          <h1>Debt recovery has<br>never been this easy</h1>
+          <p>We float a first-rate array of effective and efficient professionals,<br>
+            versed in navigating the waters of debt recovery <br>
+            and producing credible results for you.
+          </p>
+        </div>
+        
+        <div class="signup form-area">
+          <div class="msg">
+            <p><b> G-TRACK LOGIN</b></p>
+          </div>
+          <div class="contact-form">
+              <form action="#" class="my-form p-5 bg-white" id="form" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="text" id="uname" class="form-control" name="username" placeholder="Username">
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+
+                <div class="form-group">
+                  <input type="password" id="password" class="form-control" name="password" placeholder="Password">
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-exclamation-circle"></i>
+                    <small>Error message</small>
+                </div>
+                
+                <div class="form-group">
+                  <button type="submit" class="btn">
+                    Login
+                  </button>
+                  <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
+                </div>
+
+              </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--    End of registration section-->
+  </main>
+  </body>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends '../base.html' %}
+
+{% block title %} G-TrackApp {% endblock %}
+
+{% block content %}
+
+<nav>
+    <div class="row">
+        <div class="col-md-2 title"><h1 class="text-center">Skill-up</h1></div>
+
+    </div>
+</nav>
+
+<div class=' mx-auto w-50 p-3'>
+    <div class='text-center text-default'><h2>Sign up</h2></div>
+    {% if message %}
+    <div class='text-center text-danger'>
+        {{message}}
+    </div>
+    {% endif %}
+    <form class='m-5' action="{% url 'create_admin' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">First name:</label>
+            <input type="text" class="form-control" name="first_name">
+        </div>
+        <div class="form-group">
+            <label for="username">Last name:</label>
+            <input type="text" class="form-control" name="last_name">
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" name="username">
+        </div>
+        <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="email" class="form-control" name="email">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Retype Password:</label>
+            <input type="password" class="form-control" name="password2">
+        </div>
+        <button class="contact_button" type="submit">Sign up</button>
+        <h5 class="to_signup">Already had an account?, login <a href="{% url 'login' %}">Here</a></h5>
+    </form>
+</div>
+{% endblock %}
+user = User.objects.create_user(username, email, password)
+        user.first_name = firstname
+        user.last_name = lastname
+        user.save()

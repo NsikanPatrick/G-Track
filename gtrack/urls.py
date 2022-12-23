@@ -16,9 +16,18 @@ Including another URLconf
 from xml.etree.ElementInclude import include
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 # NB: Use it this way for the clients => path('', include('gtrack_clients.urls'))
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('gtrack_app.urls'))
+    path('', include('gtrack_app.urls')),
+    path('users', include('django.contrib.auth.urls')),
+    path('users/', include('users.urls')),
 ]
+
+# This section allows you to serve media files dynamically on the client from the
+# backend. This is only applicable to development, it's done differently on production
+if settings.DEBUG:
+    urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %} G-TrackApp {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="wrapper">
+    <!-- <div class="wrapper-inner"> -->
+    <div class="vertical-wrapper" id="sidebar">
+        <div class="backdrop"></div>
+        <div class="vertical-bar">
+
+            <div class="close-btn">
+                <i class="fa fa-times"></i>
+            </div>
+            <div class="logo">
+                G - <span>Track</span>
+            </div>
+
+            <div class="sidebar">
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-desktop"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-user"></i>
+                    <h3>Admins</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-money"></i>
+                    <h3>Payments</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-line-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <h3>Clients</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-cc-mastercard"></i>
+                    <h3>Debtors</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3>Reports</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-envelope-o"></i>
+                    <h3>Notifications</h3>
+                    <!-- <span class="message-count">20</span> -->
+                </a>
+                <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-plus"></i>
+                    <h3>Add Client</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-sign-out"></i>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="top-bar">
+            <div class="hamburger">
+                <i class="fa fa-bars"></i>
+            </div>
+
+            <div class="top-right">
+
+                <div class="theme-toggler">
+                    <i class="fa fa-sun-o active"></i>
+                    <i class="fa fa-moon-o"></i>
+                </div>
+                <!-- This section keeps reverting to the extreme left on deployment -->
+                <div class="profile">
+                    <div class="info">
+                        <small class="text-muted">{{user.username}}</small>
+                    </div>
+                    <div class="profile-photo">
+                        <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                        {% if user.userprofile.profile_pic %}
+                        <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        {% else %}
+                        <!-- A default image to be shown if the user did not upload a profile pic -->
+                        <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- End of Top right section -->
+        </div>
+
+    </div>
+    <div class="panel">
+        <main>
+            <h1 class="panel-label">Your Profile</h1>
+            
+            <div class="panel-body">
+                <div class="profile-details">
+                    <div class="details-section">
+                        <table class="table table-borderless">
+                            <thead>
+                                
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Username</th>
+                                    <td>{{ user.username }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Email</th>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Phone</th>
+                                    <td>{{ user.userprofile.phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Address</th>
+                                    <td>{{ user.userprofile.address }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="edit-btn" href="{% url 'profile_update' %}">Edit profile</a>
+                    </div>
+                    <div class="photo-section">
+                        {% if user.userprofile.profile_pic %}
+                            <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                            {% else %}
+                            <!-- A default image to be shown if the user did not upload a profile pic -->
+                            <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                            {% endif %}
+                    </div>
+                    
+                </div>
+                
+            </div>
+    
+    <!---------------- END OF RECENT ORDERS SECTION ---------------->
+    </main>
+
+    <!------------------- END OF MAIN SECTION ------------------->
+
+
+    <!---------------------- RIGHT SECTION ---------------------->
+
+
+
+</div>
+<!-- </div> -->
+</div>
+{% endblock %}

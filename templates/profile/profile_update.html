@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block title %} G-TrackApp {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="wrapper">
+    <!-- <div class="wrapper-inner"> -->
+    <div class="vertical-wrapper" id="sidebar">
+        <div class="backdrop"></div>
+        <div class="vertical-bar">
+
+            <div class="close-btn">
+                <i class="fa fa-times"></i>
+            </div>
+            <div class="logo">
+                G - <span>Track</span>
+            </div>
+
+            <div class="sidebar">
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-desktop"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-user"></i>
+                    <h3>Admins</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-money"></i>
+                    <h3>Payments</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-line-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <h3>Clients</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-cc-mastercard"></i>
+                    <h3>Debtors</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3>Reports</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-envelope-o"></i>
+                    <h3>Notifications</h3>
+                    <!-- <span class="message-count">20</span> -->
+                </a>
+                <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-plus"></i>
+                    <h3>Add Client</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-sign-out"></i>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="top-bar">
+            <div class="hamburger">
+                <i class="fa fa-bars"></i>
+            </div>
+
+            <div class="top-right">
+
+                <div class="theme-toggler">
+                    <i class="fa fa-sun-o active"></i>
+                    <i class="fa fa-moon-o"></i>
+                </div>
+                <!-- This section keeps reverting to the extreme left on deployment -->
+                <div class="profile">
+                    <div class="info">
+                        <small class="text-muted">{{user.username}}</small>
+                    </div>
+                    <div class="profile-photo">
+                        <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                        {% if user.userprofile.profile_pic %}
+                        <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        {% else %}
+                        <!-- A default image to be shown if the user did not upload a profile pic -->
+                        <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- End of Top right section -->
+        </div>
+
+    </div>
+    <div class="panel">
+        <main>
+            <!-- <h1 class="panel-label">Your Profile</h1> -->
+            
+            <div class="panel-body">
+                <div class="profile-details">
+                    <div class="signup form-area create_admin">
+                        <div class="msg caption">
+                            <p><b> EDIT PROFILE INFORMATION</b></p>
+                        </div>
+        
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="msg msg-box text-danger">
+                            {{ message }}
+                            <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        <div class="contact-form">
+                            <form action="" class="my-form p-5 bg-white" id="form" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" id="uname" class="form-control" name="username" value="{{ user.username }}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="text" id="email" class="form-control" name="email" value="{{ user.email }}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="text" id="lname" class="form-control" name="phone" value="{{ user.userprofile.phone }}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="text" id="lname" class="form-control" name="address" value="{{ user.userprofile.address }}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="file" id="image" class="form-control" name="profile_pic"
+                                    accept="image/*" value="{{user.userprofile.profile_pic.url}}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <button type="submit" class="btn">
+                                        Save
+                                    </button>
+                                    <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
+                                </div>
+        
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+    
+    <!---------------- END OF RECENT ORDERS SECTION ---------------->
+    </main>
+
+    <!------------------- END OF MAIN SECTION ------------------->
+
+
+    <!---------------------- RIGHT SECTION ---------------------->
+
+
+
+</div>
+<!-- </div> -->
+</div>
+{% endblock %}
