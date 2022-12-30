@@ -137,6 +137,30 @@ b{
     color: var(--color-warning);
 }
 
+/* =============== Site buttons ================= */
+.primary-btn{
+    background: var(--primary-color);
+    color: var(--color-white);
+    padding: 10px;  
+}
+
+.primary-btn:hover{
+    cursor: pointer;
+    padding: 11px;
+}
+
+.danger-btn{
+    background: var(--color-danger);
+    color: var(--color-white);
+    padding: 10px;  
+}
+
+.danger-btn:hover{
+    cursor: pointer;
+    padding: 11px;
+}
+/* =============== Site buttons ================= */
+
 .wrapper{
     width: 100%;
     background: #fff;
@@ -596,7 +620,7 @@ main .panel-body .admin-panel table:hover{
     box-shadow: none;
 }
 
-main .panel-body .admin-panel a{
+main .panel-body .admin-panel a#show-all{
     text-align: center;
     display: block;
     margin: 1rem auto;
