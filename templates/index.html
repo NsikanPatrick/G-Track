@@ -38,11 +38,11 @@
                     <i class="fa fa-line-chart"></i>
                     <h3>Profile</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'all_clients' %}">
                     <i class="fa fa-users"></i>
                     <h3>Clients</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'debtors' %}">
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
@@ -348,9 +348,9 @@
         </div>
     </div>
 </div>
-{% elif user.is_authenticated and user.is_superuser and user.is_not_staff %}
+{% elif user.is_authenticated and not user.is_superuser and user.is_staff %}
     <!-- user.is_authenticated and user.is_superuser is also d same as d above condition -->
-    <div>show lesser admin privilege content</div>
+    {% include 'editor_admins/index.html' %}
 {% else %}
 {% include 'clients/index.html' %}
 {% endif %}

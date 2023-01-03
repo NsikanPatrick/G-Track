@@ -111,7 +111,7 @@
 
             <div class="signup form-area create_admin">
                 <div class="msg caption">
-                    <p><b> CREATE ADMIN'S ACCOUNT</b></p>
+                    <p><b> CAPTURE DEBTOR DETAILS</b></p>
                 </div>
 
                 {% if messages %}
@@ -128,55 +128,64 @@
                     <form action="" class="my-form p-5 bg-white" id="form" method="POST">
                         {% csrf_token %}
                         <div class="form-group">
-                            <input type="text" id="uname" class="form-control" name="username" placeholder="Username">
+                            <input type="text" id="uname" class="form-control" name="firstname" placeholder="Firstname">
                             <i class="fa fa-check-circle"></i>
                             <i class="fa fa-exclamation-circle"></i>
                             <small>Error message</small>
                         </div>
 
                         <div class="form-group">
-                            <input type="text" id="email" class="form-control" name="email" placeholder="Email address">
+                            <input type="text" id="email" class="form-control" name="surname" placeholder="Surname">
                             <i class="fa fa-check-circle"></i>
                             <i class="fa fa-exclamation-circle"></i>
                             <small>Error message</small>
                         </div>
 
                         <div class="form-group">
-                            <input type="text" id="lname" class="form-control" name="firstname" placeholder="First name">
+                            <input type="text" id="lname" class="form-control" name="address" placeholder="Address">
                             <i class="fa fa-check-circle"></i>
                             <i class="fa fa-exclamation-circle"></i>
                             <small>Error message</small>
                         </div>
 
                         <div class="form-group">
-                            <input type="text" id="lname" class="form-control" name="lastname" placeholder="Last name">
+                            <input type="phone" id="lname" class="form-control" name="phone" placeholder="Phone number">
                             <i class="fa fa-check-circle"></i>
                             <i class="fa fa-exclamation-circle"></i>
                             <small>Error message</small>
                         </div>
 
                         <div class="form-group">
-                            <input type="password" id="password" class="form-control" name="password"
-                                placeholder="Password">
+                            <input type="email" id="password" class="form-control" name="email"
+                                placeholder="Email">
                             <i class="fa fa-check-circle"></i>
                             <i class="fa fa-exclamation-circle"></i>
                             <small>Error message</small>
                         </div>
 
                         <div class="form-group">
-                            <input type="password" id="password" class="form-control" name="confirm_password"
-                                placeholder="Confirm Password">
+                            <input type="text" id="password" class="form-control" name="amount_owed"
+                                placeholder="Amount owed">
                             <i class="fa fa-check-circle"></i>
                             <i class="fa fa-exclamation-circle"></i>
                             <small>Error message</small>
                         </div>
 
                         <div class="form-group">
-                            <label for="role">Role:</label>
-                            <select name="role" id="role">
-                                <option value="superadmin">Super admin</option>
-                                <option value="editor">Editor</option>
-                              </select>
+                            <input type="date" id="password" class="form-control" name="due_date"
+                                placeholder="Due date">
+                            <i class="fa fa-check-circle"></i>
+                            <i class="fa fa-exclamation-circle"></i>
+                            <small>Error message</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Afilliated client:</label>
+                            <select name="client">
+                                {% for client in clients %}
+                                <option value="{{ client.id }}">{{ client.username }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
 
                         <div class="form-group">

@@ -383,3 +383,66 @@ def delete_view(request):
     # Redirect to the success page
     return redirect('success_url')
 
+
+# FETCH DATA FROM THE DATABASE AND DISPLAY THEM AS VALUES OF A SELECT FORM FIELD
+# This is to be implemented on the debtors module - when creating a debtor, to ensure 
+# each debtor is linked to a client
+def country_view(request):
+    countries = Country.objects.all()
+    return render(request, 'countries.html', {'countries': countries})
+
+
+<form method="post">
+    {% csrf_token %}
+    <select name="country">
+        {% for country in countries %}
+        <option value="{{ country.id }}">{{ country.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>
+
+
+
+def create_debtor(request):
+    if request.method == "POST":
+        firstname = request.POST["firstname"]
+        surname = request.POST["surname"]
+        address = request.POST["address"]
+        phone = request.POST["phone"]
+        email = request.POST["email"]
+        amount_owed = request.POST["amount_owed"]
+        due_date = request.POST["due_date"]
+        client_id = request.POST["client"]
+
+        if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or client_id == "":
+            messages.success(request, "Please complete all input fields")
+            return render(request, "debtors/create_debtor.html")
+
+        if phone != "" or email != "":
+            if len(phone) < 11:
+                messages.success(request, "The inputed phone number is less than 11 characters")
+                return render(request, "debtors/create_debtor.html")
+
+            # The email inputs needs to be validated as well
+            if Debtor.objects.filter(email=email).exists():
+                messages.success(request, "Email already exists")
+                return render(request, "debtors/create_debtor.html")   
+
+        debtor = Debtor()
+        debtor.firstname = firstname
+        debtor.surname = surname
+        debtor.address = address
+        debtor.phone = phone
+        debtor.email = email
+        debtor.amount_owed = amount_owed
+        debtor.due_date = due_date
+        # debtor.client_id = client_id
+        debtor.save()
+        messages.success(request, "Details was successfully captured")
+        return redirect('debtors')
+
+    all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
+    # all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+

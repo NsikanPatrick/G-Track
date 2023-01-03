@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 # The user model will be extended to accomodate profile photo
 # {{user.userprofile.username}
@@ -19,3 +20,17 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+# Extending the Users table to accomodate Debtors
+
+class Debtor(models.Model):
+    # client = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    client_id = models.IntegerField(blank=True, null=True)
+    firstname = models.CharField(max_length=65, null=True, blank=True)
+    surname = models.CharField(max_length=65, null=True, blank=True)
+    address = models.CharField(max_length=65, null=True, blank=True)
+    phone = models.CharField(max_length=65, null=True, blank=True)
+    email = models.CharField(max_length=65, null=True, blank=True)
+    amount_owed = models.CharField(max_length=65, null=True, blank=True)
+    due_date = models.DateField(null=True, blank=True)
+
