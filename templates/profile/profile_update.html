@@ -24,29 +24,29 @@
                     <i class="fa fa-desktop"></i>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="{% url 'admins' %}" class="active">
+                <a href="{% url 'profile' user_id=user.id %}">
                     <i class="fa fa-user"></i>
+                    <h3>Profile</h3>
+                </a>
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-users"></i>
                     <h3>Admins</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
-                <a href="#">
-                    <i class="fa fa-line-chart"></i>
-                    <h3>Analytics</h3>
-                </a>
-                <a href="#">
+                <a href="{% url 'all_clients' %}">
                     <i class="fa fa-users"></i>
                     <h3>Clients</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'debtors' %}">
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
-                    <h3>Reports</h3>
+                    <h3>Analytics</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-envelope-o"></i>
@@ -57,11 +57,11 @@
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'create_admin' %}">
                     <i class="fa fa-plus"></i>
                     <h3>Add Client</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'logout' %}">
                     <i class="fa fa-sign-out"></i>
                     <h3>Logout</h3>
                 </a>

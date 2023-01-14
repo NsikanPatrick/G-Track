@@ -403,46 +403,76 @@ def country_view(request):
 </form>
 
 
+# SENDING AN SMS NOTIFICATION  TO A SINGLE USER
+from twilio.rest import Client
 
-def create_debtor(request):
-    if request.method == "POST":
-        firstname = request.POST["firstname"]
-        surname = request.POST["surname"]
-        address = request.POST["address"]
-        phone = request.POST["phone"]
-        email = request.POST["email"]
-        amount_owed = request.POST["amount_owed"]
-        due_date = request.POST["due_date"]
-        client_id = request.POST["client"]
+def send_sms(request):
+    # Your Twilio account SID and auth token
+    account_sid = 'your_account_sid'
+    auth_token = 'your_auth_token'
 
-        if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or client_id == "":
-            messages.success(request, "Please complete all input fields")
-            return render(request, "debtors/create_debtor.html")
+    # Create a Twilio client
+    client = Client(account_sid, auth_token)
 
-        if phone != "" or email != "":
-            if len(phone) < 11:
-                messages.success(request, "The inputed phone number is less than 11 characters")
-                return render(request, "debtors/create_debtor.html")
+    # Send an SMS message
+    message = client.messages \
+                    .create(
+                         body='Hello from Django!',
+                         from_='your_twilio_number',
+                         to='recipient_number'
+                     )
 
-            # The email inputs needs to be validated as well
-            if Debtor.objects.filter(email=email).exists():
-                messages.success(request, "Email already exists")
-                return render(request, "debtors/create_debtor.html")   
+    return HttpResponse('SMS sent!')
 
-        debtor = Debtor()
-        debtor.firstname = firstname
-        debtor.surname = surname
-        debtor.address = address
-        debtor.phone = phone
-        debtor.email = email
-        debtor.amount_owed = amount_owed
-        debtor.due_date = due_date
-        # debtor.client_id = client_id
-        debtor.save()
-        messages.success(request, "Details was successfully captured")
-        return redirect('debtors')
+# SENDING AN SMS NOTIFICATION TO MULTIPLE USERS
+# ACCOUNT SID: ACff725ea0e61eb2570afe3f717dadf3a9
+# AUTH TOKEN: 7b1cc58d56b3e14dc292cc2ccb3a3b01
+from twilio.rest import Client
 
-    all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
-    # all_clients = User.objects.filter(is_superuser=False, is_staff=False)
-    return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+def send_bulk_sms(request):
+    # Your Twilio account SID and auth token
+    account_sid = 'your_account_sid'
+    auth_token = 'your_auth_token'
+
+    # Create a Twilio client
+    client = Client(account_sid, auth_token)
+
+    # A list of phone numbers to send the SMS to
+    recipient_numbers = ['+1234567890', '+0987654321', '+1231231234']
+
+    # Loop through the list of numbers and send an SMS to each one
+    for number in recipient_numbers:
+        message = client.messages \
+                        .create(
+                             body='Hello from Django!',
+                             from_='your_twilio_number',
+                             to=number
+                         )
+
+    return HttpResponse('Bulk SMS sent!')
+
+# A better way to do it
+<form method="post" action="{% url 'send_sms' %}">
+    {% csrf_token %}
+    {% for user in users %}
+        <input type="checkbox" name="selected_users" value="{{ user.id }}"> {{ user.username }}<br>
+    {% endfor %}
+    <input type="submit" value="Send SMS">
+</form>
+
+from django.shortcuts import render, redirect
+from .models import User
+
+def send_sms(request):
+    if request.method == 'POST':
+        selected_user_ids = request.POST.getlist('selected_users')
+        users = User.objects.filter(id__in=selected_user_ids)
+        phone_numbers = [user.phone_number for user in users]
+        # Send an SMS to each phone number using a third-party SMS service such as Twilio or Nexmo
+        return redirect('success')
+    else:
+        users = User.objects.all()
+        return render(request, 'users.html', {'users': users})
+
+
 

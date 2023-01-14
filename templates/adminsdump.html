@@ -25,29 +25,29 @@
                     <i class="fa fa-desktop"></i>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="{% url 'profile' user_id=user.id %}">
-                    <i class="fa fa-user"></i>
-                    <h3>Profile</h3>
-                </a>
                 <a href="{% url 'admins' %}" class="active">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-user"></i>
                     <h3>Admins</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
-                <a href="{% url 'all_clients' %}">
+                <a href="#">
+                    <i class="fa fa-line-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="#">
                     <i class="fa fa-users"></i>
                     <h3>Clients</h3>
                 </a>
-                <a href="{% url 'debtors' %}">
+                <a href="#">
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
-                    <h3>Analytics</h3>
+                    <h3>Reports</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-envelope-o"></i>
@@ -58,11 +58,11 @@
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
-                <a href="{% url 'create_admin' %}">
+                <a href="#">
                     <i class="fa fa-plus"></i>
                     <h3>Add Client</h3>
                 </a>
-                <a href="{% url 'logout' %}">
+                <a href="#">
                     <i class="fa fa-sign-out"></i>
                     <h3>Logout</h3>
                 </a>
@@ -108,10 +108,10 @@
             <!-- <h1 class="panel-label">Your Profile</h1> -->
             
             <div class="panel-body">
-                <div class="profile-details form-panel">
+                <div class="profile-details">
                     <div class="signup form-area create_admin">
                         <div class="msg caption">
-                            <p><b> CREATE CLIENT'S ACCOUNT</b></p>
+                            <p><b> EDIT PROFILE INFORMATION</b></p>
                         </div>
         
                         {% if messages %}
@@ -125,47 +125,38 @@
                         {% endfor %}
                         {% endif %}
                         <div class="contact-form">
-                            <form action="" class="my-form p-5 bg-white" id="form" method="POST">
+                            <form action="{% url 'debtor_edited' user_id=details.id %}" class="my-form p-5 bg-white" id="form" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="text" id="uname" class="form-control" name="username" placeholder="Username">
+                                    <input type="text" id="firstname" class="form-control" name="firstname" value="{{ details.firstname }}">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
         
                                 <div class="form-group">
-                                    <input type="text" id="email" class="form-control" name="email" placeholder="Email address">
+                                    <input type="text" id="surname" class="form-control" name="surname" value="{{ details.surname }}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="email" id="email" class="form-control" name="email" value="{{details.email}}">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
         
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="firstname" placeholder="First name">
+                                    <input type="text" id="address" class="form-control" name="address" value="{{details.address}}">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
         
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="lastname" placeholder="Last name">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-        
-                                <div class="form-group">
-                                    <input type="password" id="password" class="form-control" name="password"
-                                        placeholder="Password">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-        
-                                <div class="form-group">
-                                    <input type="password" id="password" class="form-control" name="confirm_password"
-                                        placeholder="Confirm Password">
+                                    <input type="phone" id="phone" class="form-control" name="phone" value="{{details.phone}}">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
@@ -173,7 +164,7 @@
         
                                 <div class="form-group">
                                     <button type="submit" class="btn">
-                                        Create Account
+                                        Save
                                     </button>
                                     <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
                                 </div>

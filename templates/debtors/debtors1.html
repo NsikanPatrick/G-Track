@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %} G-TrackApp {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="wrapper">
+    <!-- <div class="wrapper-inner"> -->
+    <div class="vertical-wrapper" id="sidebar">
+        <div class="backdrop"></div>
+        <div class="vertical-bar">
+
+            <div class="close-btn">
+                <i class="fa fa-times"></i>
+            </div>
+            <div class="logo">
+                G - <span>Track</span>
+            </div>
+
+            <div class="sidebar">
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-desktop"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-user"></i>
+                    <h3>Admins</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-money"></i>
+                    <h3>Payments</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-line-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <h3>Clients</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-cc-mastercard"></i>
+                    <h3>Debtors</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3>Reports</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-envelope-o"></i>
+                    <h3>Notifications</h3>
+                    <!-- <span class="message-count">20</span> -->
+                </a>
+                <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-plus"></i>
+                    <h3>Add Client</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-sign-out"></i>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="top-bar">
+            <div class="hamburger">
+                <i class="fa fa-bars"></i>
+            </div>
+
+            <div class="top-right">
+
+                <div class="theme-toggler">
+                    <i class="fa fa-sun-o active"></i>
+                    <i class="fa fa-moon-o"></i>
+                </div>
+                <!-- This section keeps reverting to the extreme left on deployment -->
+                <div class="profile">
+                    <div class="info">
+                        <small class="text-muted">{{user.username}}</small>
+                    </div>
+                    <div class="profile-photo">
+                        <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                        {% if user.userprofile.profile_pic %}
+                        <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        {% else %}
+                        <!-- A default image to be shown if the user did not upload a profile pic -->
+                        <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- End of Top right section -->
+        </div>
+
+    </div>
+    <div class="panel">
+        <main>
+            <h1 class="panel-label">All Admins</h1>
+            <!-- <div class="date">
+                    <input type="date">
+                </div> -->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="msg msg-box text-danger">
+                {{ message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="panel-body">
+                <form method="post" action="{% url 'batch_delete_debtors' %}">
+                    {% csrf_token %}
+                <div class="top-table">
+                    <!-- <h2>All admins</h2> -->
+                    
+                    <div class="table-actions">
+                        <button class="primary action-btn action">Send a message</button>
+                        <button class="primary action-btn action" type="submit" onclick="return confirm('Are you sure you want to delete the selected record(s)?')">Delete Selected</button>
+                        <button class="primary action-btn actio">Manage</button>
+                        <a href="{% url 'create_debtor' %}" class="primary action-btn create">Create Debtor</a>
+                    </div>
+                </div>
+                <div class="admin-panel">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Firstname</th>
+                                <th>Surname</th>
+                                <th>Address</th>
+                                <th>Phone Number</th>
+                                <th>Email</th>
+                                <th>Amount Owed</th>
+                                <th>Due Date</th>
+                                <th>Related client</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for debtor in debtors %}
+                            <tr>
+                                <td><input type="checkbox" value="{{debtor.id}}" name="select_delete"></td>
+                                <td>{{ debtor.firstname }}</td>
+                                <td>{{ debtor.surname }}</td>
+                                <td>{{ debtor.address }}</td>
+                                <td>{{ debtor.phone }}</td>
+                                <td>{{ debtor.email }}</td>
+                                <td>{{ debtor.amount_owed }}</td>
+                                <td>{{ debtor.due_date }}</td>
+                                <!-- loop through the admin_profiles list and only display the profile for the current admin -->
+                                {% for client in clients %}
+                                {% if client.id == debtor.client_id %}
+                                <!-- display the information for each admin and their corresponding profile -->
+                                
+                                <td>{{ client.username }}</td>
+                                <td><a class="primary-btn" href="{% url 'edit_debtor' user_id=debtor.id %}">Edit</a></td>
+                                <td><a class="danger-btn" href="#" onclick="return confirm('Are you sure you want to delete this record?')">Notify</a></td>
+                                {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                    <a id="show-all" href="#">Show all</a>
+                </div>
+                </form>
+            </div>
+            <!---------------- END OF RECENT ORDERS SECTION ---------------->
+        </main>
+
+        <!------------------- END OF MAIN SECTION ------------------->
+
+
+        <!---------------------- RIGHT SECTION ---------------------->
+
+
+
+    </div>
+    <!-- </div> -->
+</div>
+{% endblock %}

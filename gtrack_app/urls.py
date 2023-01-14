@@ -1,4 +1,7 @@
 from django.urls import path
+
+from django.contrib.auth import views as auth_views
+
 from . import views
 
 
@@ -22,5 +25,11 @@ urlpatterns = [
     path("debtors/create_debtor", views.create_debtor, name="create_debtor"),
     path("debtors/edit_debtor/<int:user_id>", views.edit_debtor, name="edit_debtor"),
     path("debtors/debtor_edited/<int:user_id>", views.debtor_edited, name="debtor_edited"),
-    path("debtors/batch_delete_debtors", views.batch_delete_debtors, name="batch_delete_debtors"),
+    path("debtors/debtors_bulk_actions", views.debtors_bulk_actions, name="debtors_bulk_actions"),
+
+    # RESETING PASSWORD VIA MAIL
+    path("reset_password/", auth_views.PasswordResetView.as_view(), name="reset_password"),
+    path("reset_password_sent/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path("reset_password_complete/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
 ]

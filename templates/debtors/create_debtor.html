@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block title %} G-TrackApp {% endblock %}
@@ -24,29 +25,29 @@
                     <i class="fa fa-desktop"></i>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="{% url 'admins' %}" class="active">
+                <a href="{% url 'profile' user_id=user.id %}">
                     <i class="fa fa-user"></i>
+                    <h3>Profile</h3>
+                </a>
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-users"></i>
                     <h3>Admins</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
-                <a href="#">
-                    <i class="fa fa-line-chart"></i>
-                    <h3>Analytics</h3>
-                </a>
-                <a href="#">
+                <a href="{% url 'all_clients' %}">
                     <i class="fa fa-users"></i>
                     <h3>Clients</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'debtors' %}">
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
-                    <h3>Reports</h3>
+                    <h3>Analytics</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-envelope-o"></i>
@@ -57,11 +58,11 @@
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'create_admin' %}">
                     <i class="fa fa-plus"></i>
                     <h3>Add Client</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'logout' %}">
                     <i class="fa fa-sign-out"></i>
                     <h3>Logout</h3>
                 </a>
@@ -104,111 +105,114 @@
     </div>
     <div class="panel">
         <main>
-            <!-- <h1 class="panel-label">Create Admin Account</h1> -->
-            <!-- <div class="date">
-                    <input type="date">
-                </div> -->
-
-            <div class="signup form-area create_admin">
-                <div class="msg caption">
-                    <p><b> CAPTURE DEBTOR DETAILS</b></p>
+            <!-- <h1 class="panel-label">Your Profile</h1> -->
+            
+            <div class="panel-body">
+                <div class="profile-details form-panel">
+                    <div class="signup form-area create_admin">
+                        <div class="msg caption">
+                            <p><b> CAPTURE DEBTOR DETAILS</b></p>
+                        </div>
+        
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="msg msg-box text-danger">
+                            {{ message }}
+                            <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        <div class="contact-form">
+                            <form action="" class="my-form p-5 bg-white" id="form" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" id="uname" class="form-control" name="firstname" placeholder="Firstname">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="text" id="email" class="form-control" name="surname" placeholder="Surname">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="text" id="lname" class="form-control" name="address" placeholder="Address">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="phone" id="lname" class="form-control" name="phone" placeholder="Phone number">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="email" id="password" class="form-control" name="email"
+                                        placeholder="Email">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="text" id="password" class="form-control" name="amount_owed"
+                                        placeholder="Amount owed">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="date" id="password" class="form-control" name="due_date"
+                                        placeholder="Due date">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="role">Afilliated client:</label>
+                                    <select name="client">
+                                        {% for client in clients %}
+                                        <option value="{{ client.id }}">{{ client.username }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+        
+                                <div class="form-group">
+                                    <button type="submit" class="btn">
+                                        Create Account
+                                    </button>
+                                    <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
+                                </div>
+        
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                {% if messages %}
-                {% for message in messages %}
-                <div class="msg msg-box text-danger">
-                    {{ message }}
-                    <a href="#" class="close" data-dismiss="alert" aria-label="Close">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-                {% endfor %}
-                {% endif %}
-                <div class="contact-form">
-                    <form action="" class="my-form p-5 bg-white" id="form" method="POST">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <input type="text" id="uname" class="form-control" name="firstname" placeholder="Firstname">
-                            <i class="fa fa-check-circle"></i>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <small>Error message</small>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" id="email" class="form-control" name="surname" placeholder="Surname">
-                            <i class="fa fa-check-circle"></i>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <small>Error message</small>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" id="lname" class="form-control" name="address" placeholder="Address">
-                            <i class="fa fa-check-circle"></i>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <small>Error message</small>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="phone" id="lname" class="form-control" name="phone" placeholder="Phone number">
-                            <i class="fa fa-check-circle"></i>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <small>Error message</small>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="email" id="password" class="form-control" name="email"
-                                placeholder="Email">
-                            <i class="fa fa-check-circle"></i>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <small>Error message</small>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" id="password" class="form-control" name="amount_owed"
-                                placeholder="Amount owed">
-                            <i class="fa fa-check-circle"></i>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <small>Error message</small>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="date" id="password" class="form-control" name="due_date"
-                                placeholder="Due date">
-                            <i class="fa fa-check-circle"></i>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <small>Error message</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="role">Afilliated client:</label>
-                            <select name="client">
-                                {% for client in clients %}
-                                <option value="{{ client.id }}">{{ client.username }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn">
-                                Create Account
-                            </button>
-                            <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
-                        </div>
-
-                    </form>
-                </div>
+                
             </div>
-            <!---------------- END OF RECENT ORDERS SECTION ---------------->
-        </main>
+    
+    <!---------------- END OF RECENT ORDERS SECTION ---------------->
+    </main>
 
-        <!------------------- END OF MAIN SECTION ------------------->
-
-
-        <!---------------------- RIGHT SECTION ---------------------->
+    <!------------------- END OF MAIN SECTION ------------------->
 
 
+    <!---------------------- RIGHT SECTION ---------------------->
 
-    </div>
-    <!-- </div> -->
+
+
+</div>
+<!-- </div> -->
 </div>
 {% endblock %}

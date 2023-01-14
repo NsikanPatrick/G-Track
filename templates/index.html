@@ -26,17 +26,17 @@
                     <i class="fa fa-desktop"></i>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="{% url 'admins' %}" class="active">
+                <a href="{% url 'profile' user_id=user.id %}">
                     <i class="fa fa-user"></i>
+                    <h3>Profile</h3>
+                </a>
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-users"></i>
                     <h3>Admins</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
-                </a>
-                <a href="{% url 'profile' user_id=user.id %}">
-                    <i class="fa fa-line-chart"></i>
-                    <h3>Profile</h3>
                 </a>
                 <a href="{% url 'all_clients' %}">
                     <i class="fa fa-users"></i>
@@ -48,7 +48,7 @@
                 </a>
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
-                    <h3>Reports</h3>
+                    <h3>Analytics</h3>
                 </a>
                 <a href="#">
                     <i class="fa fa-envelope-o"></i>
@@ -86,7 +86,7 @@
                 <!-- This section keeps reverting to the extreme left on deployment -->
                 <div class="profile">
                     <div class="info">
-                        <small class="text-muted">{{user.userprofile.phone}} {{user.last_login}}</small>
+                        <small class="text-muted"> {{user.username}}</small>
                     </div>
                     <div class="profile-photo">
                         <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->

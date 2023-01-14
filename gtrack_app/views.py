@@ -392,16 +392,34 @@ def debtor_edited(request, user_id):
     return render(request, "debtors/debtor_edit.html", {})
 
 
-def batch_delete_debtors(request):
-    # Get the list of selected records
-    selected_records = request.POST.getlist('select_delete')
+def debtors_bulk_actions(request):
+    if request.method == 'POST':
+        action = request.POST["action"]
 
-    # Convert the list of strings to a list of integers
-    selected_records = [int(i) for i in selected_records]
+        if action == "send_sms":
+            selected_user_ids = request.POST.getlist('selected_users')
 
-    # Filter the records using the `id__in` lookup and delete them
-    Debtor.objects.filter(id__in=selected_records).delete()
+            debtors = Debtor.objects.filter(id__in=selected_user_ids)
 
-    # Redirect to the success page
-    messages.success(request, "The selected record(s) were successfully deleted from the database")
-    return redirect('debtors')
+            phone_numbers = [debtor.phone for debtor in debtors]
+            
+            return render(request, "debtors/compose_sms.html", {'phone_numbers': phone_numbers})
+
+        elif action == "delete":
+            # Get the list of selected records
+            selected_records = request.POST.getlist('selected_users')
+
+            # Convert the list of strings to a list of integers
+            selected_records = [int(i) for i in selected_records]
+
+            # Filter the records using the `id__in` lookup and delete them
+            Debtor.objects.filter(id__in=selected_records).delete()
+
+            # Redirect to the success page
+            messages.success(request, "The selected record(s) were successfully deleted from the database")
+            return redirect('debtors')
+
+    all_debtors = Debtor.objects.all
+    all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    return render(request, 'debtors/debtors.html', {'debtors': all_debtors, 'clients': all_clients})
+   
