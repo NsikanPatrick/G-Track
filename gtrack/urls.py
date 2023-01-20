@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # NB: Use it this way for the clients => path('', include('gtrack_clients.urls'))
 urlpatterns = [
@@ -28,6 +29,9 @@ urlpatterns = [
 ]
 
 # This section allows you to serve media files dynamically on the client from the
-# backend. This is only applicable to development, it's done differently on production
-if settings.DEBUG:
-    urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# backend. This is only applicable on development, it's done differently on production
+# if settings.DEBUG:
+#     urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# This now is for the deployment
+urlpatterns += staticfiles_urlpatterns()
