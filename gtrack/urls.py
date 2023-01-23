@@ -30,8 +30,8 @@ urlpatterns = [
 
 # This section allows you to serve media files dynamically on the client from the
 # backend. This is only applicable on development, it's done differently on production
-# if settings.DEBUG:
-#     urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # This now is for the deployment
 urlpatterns += staticfiles_urlpatterns()
