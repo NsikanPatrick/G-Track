@@ -18,7 +18,7 @@
             <div class="logo">
                 G - <span>Track</span>
             </div>
-
+            {% if user.is_staff %}
             <div class="sidebar">
                 <a href="{% url 'index' %}">
                     <i class="fa fa-desktop"></i>
@@ -66,7 +66,43 @@
                     <h3>Logout</h3>
                 </a>
             </div>
-
+            {% else %}
+            <div class="sidebar">
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-desktop"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="{% url 'profile' user_id=user.id %}">
+                    <i class="fa fa-user"></i>
+                    <h3>Profile</h3>
+                </a>
+                <a href="{% url 'my_payments' user_id=user.id %}">
+                    <i class="fa fa-money"></i>
+                    <h3>Payments</h3>
+                </a>
+                <a href="{% url 'my_debtors' user_id=user.id %}">
+                    <i class="fa fa-cc-mastercard"></i>
+                    <h3>Debtors</h3>
+                </a>
+                <a href="{% url 'my_analytics' user_id=user.id %}">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-envelope-o"></i>
+                    <h3>Notifications</h3>
+                    <!-- <span class="message-count">20</span> -->
+                </a>
+                <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="{% url 'logout' %}">
+                    <i class="fa fa-sign-out"></i>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
 

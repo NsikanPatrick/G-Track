@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block title %} G-TrackApp {% endblock %}
@@ -18,8 +19,7 @@
             <div class="logo">
                 G - <span>Track</span>
             </div>
-            
-            {% if user.is_staff %}
+
             <div class="sidebar">
                 <a href="{% url 'index' %}">
                     <i class="fa fa-desktop"></i>
@@ -67,43 +67,6 @@
                     <h3>Logout</h3>
                 </a>
             </div>
-            {% else %}
-            <div class="sidebar">
-                <a href="{% url 'index' %}">
-                    <i class="fa fa-desktop"></i>
-                    <h3>Dashboard</h3>
-                </a>
-                <a href="{% url 'profile' user_id=user.id %}">
-                    <i class="fa fa-user"></i>
-                    <h3>Profile</h3>
-                </a>
-                <a href="{% url 'my_payments' user_id=user.id %}">
-                    <i class="fa fa-money"></i>
-                    <h3>Payments</h3>
-                </a>
-                <a href="{% url 'my_debtors' user_id=user.id %}">
-                    <i class="fa fa-cc-mastercard"></i>
-                    <h3>Debtors</h3>
-                </a>
-                <a href="{% url 'my_analytics' user_id=user.id %}">
-                    <i class="fa fa-pie-chart"></i>
-                    <h3>Analytics</h3>
-                </a>
-                <a href="#">
-                    <i class="fa fa-envelope-o"></i>
-                    <h3>Notifications</h3>
-                    <!-- <span class="message-count">20</span> -->
-                </a>
-                <a href="#">
-                    <i class="fa fa-cog"></i>
-                    <h3>Settings</h3>
-                </a>
-                <a href="{% url 'logout' %}">
-                    <i class="fa fa-sign-out"></i>
-                    <h3>Logout</h3>
-                </a>
-            </div>
-            {% endif %}
 
         </div>
     </div>
@@ -145,10 +108,10 @@
             <!-- <h1 class="panel-label">Your Profile</h1> -->
             
             <div class="panel-body">
-                <div class="profile-details">
+                <div class="profile-details form-panel">
                     <div class="signup form-area create_admin">
                         <div class="msg caption">
-                            <p><b> EDIT PROFILE INFORMATION</b></p>
+                            <p><b> CAPTURE PAYMENT DETAILS</b></p>
                         </div>
         
                         {% if messages %}
@@ -162,47 +125,34 @@
                         {% endfor %}
                         {% endif %}
                         <div class="contact-form">
-                            <form action="{% url 'profile_update' user_id=user.id %}" class="my-form p-5 bg-white" id="form" method="POST" enctype="multipart/form-data">
+                            <form action="" class="my-form p-5 bg-white" id="form" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="text" id="uname" class="form-control" name="username" value="{{ user.username }}">
+                                    <input type="text" id="amount_payed" class="form-control" name="amount_payed" placeholder="Amount Payed (Please don't type in the currency sign)">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
         
                                 <div class="form-group">
-                                    <input type="text" id="email" class="form-control" name="email" value="{{ user.email }}">
+                                    <input type="text" id="medium_of_payment" class="form-control" name="medium_of_payment" placeholder="Medium of Payment">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
         
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="phone" value="{{ user.userprofile.phone }}">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-        
-                                <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="address" value="{{ user.userprofile.address }}">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-        
-                                <div class="form-group">
-                                    <input type="file" id="image" class="form-control" name="user_img"
-                                    accept="image/*" >
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
+                                    <label for="role">Payed By:</label>
+                                    <select name="debtor">
+                                        {% for debtor in debtors %}
+                                        <option value="{{ debtor.id }}">{{ debtor.firstname }} {{ debtor.surname }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
         
                                 <div class="form-group">
                                     <button type="submit" class="btn">
-                                        Save
+                                        Create
                                     </button>
                                     <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
                                 </div>

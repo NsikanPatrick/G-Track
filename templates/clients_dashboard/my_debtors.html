@@ -27,23 +27,15 @@
                     <i class="fa fa-user"></i>
                     <h3>Profile</h3>
                 </a>
-                <a href="{% url 'admins' %}" class="active">
-                    <i class="fa fa-users"></i>
-                    <h3>Admins</h3>
-                </a>
-                <a href="{% url 'payments' %}">
+                <a href="{% url 'my_payments' user_id=user.id %}">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
-                <a href="{% url 'all_clients' %}">
-                    <i class="fa fa-users"></i>
-                    <h3>Clients</h3>
-                </a>
-                <a href="{% url 'debtors' %}">
+                <a href="{% url 'my_debtors' user_id=user.id %}">
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'my_analytics' user_id=user.id %}">
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
@@ -55,10 +47,6 @@
                 <a href="#">
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
-                </a>
-                <a href="{% url 'create_admin' %}">
-                    <i class="fa fa-plus"></i>
-                    <h3>Add Client</h3>
                 </a>
                 <a href="{% url 'logout' %}">
                     <i class="fa fa-sign-out"></i>
@@ -99,73 +87,43 @@
             <!-- End of Top right section -->
         </div>
 
-        <div class="panel">
+        <div class="panel cover">
             <main>
-                <h1 class="panel-label">All Admins</h1>
-                <!-- <div class="date">
-                        <input type="date">
-                    </div> -->
-                {% if messages %}
-                {% for message in messages %}
-                <div class="msg msg-box text-danger">
-                    {{ message }}
-                    <a href="#" class="close" data-dismiss="alert" aria-label="Close">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-                {% endfor %}
-                {% endif %}
+                <h1 class="panel-label">My Debtors</h1>
+                
                 <div class="panel-body">
-                    <form method="post" action="{% url 'batch_delete_admins' %}">
+                    <form method="post" action="{% url 'debtors_bulk_actions' %}">
                         {% csrf_token %}
-                    <div class="top-table">
-                        <!-- <h2>All admins</h2> -->
-                        <div class="table-actions">
-                            <button class="primary action-btn action">Send a message</button>
-                            <button class="primary action-btn action" type="submit" onclick="return confirm('Are you sure you want to delete the selected record(s)?')">Delete Selected</button>
-                            <button class="primary action-btn actio">Manage</button>
-                            <a href="{% url 'create_admin' %}" class="primary action-btn create">Create admin</a>
-                        </div>
-                    </div>
+                    
                     <div class="admin-panel">
     
                         <table>
     
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Privilege</th>
-                                    <th>Phone Number</th>
+                                    <th>Firstname</th>
+                                    <th>Surname</th>
                                     <th>Address</th>
-                                    <th>First Seen</th>
-                                    <th>Last Seen</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>Amount Owed</th>
+                                    <th>Date Captured</th>
+                                    <th>Due Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for admin in admins %}
+                                {% for debtor in debtors %}
                                 <tr>
+                                    <td>{{ debtor.firstname }}</td>
+                                    <td>{{ debtor.surname }}</td>
+                                    <td>{{ debtor.address }}</td>
+                                    <td>{{ debtor.phone }}</td>
+                                    <td>{{ debtor.email }}</td>
+                                    <td>{{ debtor.amount_owed }}</td>
+                                    <td>{{ debtor.date_captured }}</td>
+                                    <td>{{ debtor.due_date }}</td>
                                     <!-- loop through the admin_profiles list and only display the profile for the current admin -->
-                                    {% for admin_profile in admin_profiles %}
-                                    {% if admin_profile.user_id == admin.id %}
-                                    <!-- display the information for each admin and their corresponding profile -->
-                                    <td><input type="checkbox" value="{{admin.id}}" name="select_delete"></td>
-                                    <td>{{ admin.username }}</td>
-                                    <td>{{ admin.email }}</td>
-                                    {% if admin.is_superuser and admin.is_staff %}
-                                    <td>Super Admin</td>
-                                    {% else %}
-                                    <td>Editor</td>
-                                    {% endif %}
-                                    <td>{{ admin_profile.phone }}</td>
-                                    <td>{{ admin_profile.address }}</td>
-                                    <td>{{ admin.date_joined }}</td>
-                                    <td>{{ admin.last_login }}</td>
-                                    <td><a class="primary-btn" href="{% url 'edit_admin' user_id=admin.id %}">Edit</a></td>
-                                    <td><a class="danger-btn" href="{% url 'delete_admin' user_id=admin.id %}" onclick="return confirm('Are you sure you want to delete this record?')">Delete</a></td>
-                                    {% endif %}
-                                    {% endfor %}
+                                    
                                 </tr>
                                 {% endfor %}
     
@@ -184,6 +142,8 @@
     
     
             <!---------------------- RIGHT SECTION ---------------------->
+    
+    
     
         </div>
     </div>

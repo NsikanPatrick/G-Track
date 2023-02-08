@@ -62,3 +62,275 @@
     {% endfor %}
 </tr>
 {% endfor %}
+
+def create_payment(request):
+    if request.method == "POST":
+        amount_payed = request.POST["amount_payed"]
+        medium_of_payment = request.POST["medium_of_payment"]
+        debtor_id = request.POST["debtor"]
+
+        debtor = Debtor.objects.get(id=debtor_id)
+        amount_owed = debtor.amount_owed
+
+        payment = Payment()
+        payment.amount_payed = amount_payed
+        payment.medium_of_payment = medium_of_payment
+        payment.balance_left = int(amount_owed) - int(amount_payed)
+        payment.debtor_id = debtor_id
+        payment.save()
+        messages.success(request, "Payment details were successfully captured")
+        return redirect('payments')
+
+    all_debtors = Debtor.objects.all
+    # all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+
+
+
+
+
+    payment = Payment()
+    debtor = Debtor.objects.get(id=debtor_id)
+    amount_owed = debtor.amount_owed
+
+    balance_left = payment.balance_left
+    payment.amount_payed = amount_payed
+    payment.medium_of_payment = medium_of_payment
+    if balance_left:
+        payment.balance_left = int(balance_left) - int(amount_payed)
+    payment.balance_left = int(amount_owed) - int(amount_payed)
+    payment.debtor_id = debtor_id
+    payment.save()
+
+
+
+
+    @login_required
+def create_payment(request):
+    if request.method == "POST":
+        amount_payed = request.POST["amount_payed"]
+        medium_of_payment = request.POST["medium_of_payment"]
+        debtor_id = request.POST["debtor"]
+
+        # payment = Payment()
+        # The queries below will not create a new payment, but consider the current payment
+        # But this payments module should only consider fresh payments, updating a payment
+        # should be on the edit_payment module
+        # This implies that the person who payed already should not be allowed to make another
+        # fresh payment
+        payment = Payment.objects.get(debtor_id=debtor_id)
+        all_debtors = Debtor.objects.all
+        if payment:
+            # If this particular user ahs made payment already, then look at his balance from
+            # the payments table and make necessary deductions then update the same payment
+            balance_left = payment.balance_left
+            payment.amount_payed = amount_payed
+            payment.medium_of_payment = medium_of_payment
+            payment.balance_left = int(balance_left) - int(amount_payed)
+            payment.debtor_id = debtor_id
+            payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+        # This is the else part: Meaning, if the debtor has not made payment before, look at
+        # the original figure he owed from the debtors table and make deductions from there
+        # You will make use of this query debtor = Debtor.objects.get(id=debtor_id)
+        else:
+            messages.success(request, "This user has not made payment before")
+            return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+    all_debtors = Debtor.objects.all
+    # all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+
+    <!-- Graph box -->
+    <h1>Here</h1>
+    <div class="graphbox">
+        
+        <div class="box">
+                test
+        </div>
+        <div class="box">
+                test
+        </div>
+    </div>
+
+
+    {% extends 'base.html' %}
+
+    {% block title %} G-TrackApp {% endblock %}
+    
+    {% block content %}
+    
+    {% load static %}
+    
+    <div class="wrapper">
+        <!-- <div class="wrapper-inner"> -->
+        <div class="vertical-wrapper" id="sidebar">
+            <div class="backdrop"></div>
+            <div class="vertical-bar">
+    
+                <div class="close-btn">
+                    <i class="fa fa-times"></i>
+                </div>
+                <div class="logo">
+                    G - <span>Track</span>
+                </div>
+    
+                <div class="sidebar">
+                    <a href="{% url 'index' %}">
+                        <i class="fa fa-desktop"></i>
+                        <h3>Dashboard</h3>
+                    </a>
+                    <a href="{% url 'profile' user_id=user.id %}">
+                        <i class="fa fa-user"></i>
+                        <h3>Profile</h3>
+                    </a>
+                    <a href="{% url 'admins' %}" class="active">
+                        <i class="fa fa-users"></i>
+                        <h3>Admins</h3>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-money"></i>
+                        <h3>Payments</h3>
+                    </a>
+                    <a href="{% url 'all_clients' %}">
+                        <i class="fa fa-users"></i>
+                        <h3>Clients</h3>
+                    </a>
+                    <a href="{% url 'debtors' %}">
+                        <i class="fa fa-cc-mastercard"></i>
+                        <h3>Debtors</h3>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-pie-chart"></i>
+                        <h3>Analytics</h3>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-envelope-o"></i>
+                        <h3>Notifications</h3>
+                        <!-- <span class="message-count">20</span> -->
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-cog"></i>
+                        <h3>Settings</h3>
+                    </a>
+                    <a href="{% url 'create_admin' %}">
+                        <i class="fa fa-plus"></i>
+                        <h3>Add Client</h3>
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <i class="fa fa-sign-out"></i>
+                        <h3>Logout</h3>
+                    </a>
+                </div>
+    
+            </div>
+        </div>
+    
+        <div class="main-container">
+            <div class="top-bar">
+                <div class="hamburger">
+                    <i class="fa fa-bars"></i>
+                </div>
+    
+                <div class="top-right">
+    
+                    <div class="theme-toggler">
+                        <i class="fa fa-sun-o active"></i>
+                        <i class="fa fa-moon-o"></i>
+                    </div>
+                    <!-- This section keeps reverting to the extreme left on deployment -->
+                    <div class="profile">
+                        <div class="info">
+                            <small class="text-muted">{{user.username}}</small>
+                        </div>
+                        <div class="profile-photo">
+                            <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                            {% if user.userprofile.profile_pic %}
+                            <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                            {% else %}
+                            <!-- A default image to be shown if the user did not upload a profile pic -->
+                            <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Top right section -->
+            </div>
+    
+        </div>
+        <div class="panel profile-panel">
+            <main>
+                <h1 class="panel-label">Your Profile</h1>
+    
+                <div class="panel-body">
+                    <div class="profile-details">
+                        <div class="details-section">
+                            <table class="table table-borderless">
+                                <thead>
+    
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Status:</th>
+                                        {% if user.is_superuser and user.is_staff %}
+                                        <td>Super Admin</td>
+                                        {% elif not user.is_superuser and user.is_staff %}
+                                        <td>Editor</td>
+                                        {% else %}
+                                        <td>Client</td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Username:</th>
+                                        <td>{{ user.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Email:</th>
+                                        <td>{{ user.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Phone:</th>
+                                        <td> {{ user.userprofile.phone }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Address:</th>
+                                        <td>{{ user.userprofile.address }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Date Joined:</th>
+                                        <td>{{ user.date_joined }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a class="edit-btn" href="{% url 'profile_update' user_id=user.id %}">Edit profile</a>
+                        </div>
+                        <div class="photo-section">
+                            {% if user.userprofile.profile_pic %}
+                            <img src="{{user.userprofile.profile_pic.url}}" width="250" height="250" />
+                            {% else %}
+                            <!-- A default image to be shown if the user did not upload a profile pic -->
+                            <img src="{% static 'img/anonymous.jpg' %}" width="250" height="250" />
+                            {% endif %}
+                        </div>
+    
+                    </div>
+    
+                </div>
+    
+                <!---------------- END OF RECENT ORDERS SECTION ---------------->
+            </main>
+    
+            <!------------------- END OF MAIN SECTION ------------------->
+    
+    
+            <!---------------------- RIGHT SECTION ---------------------->
+    
+    
+    
+        </div>
+        <!-- </div> -->
+    </div>
+    {% endblock %}

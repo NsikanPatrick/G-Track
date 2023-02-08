@@ -32,15 +32,16 @@ class Debtor(models.Model):
     phone = models.CharField(max_length=65, null=True, blank=True)
     email = models.CharField(max_length=65, null=True, blank=True)
     amount_owed = models.CharField(max_length=65, null=True, blank=True)
+    date_captured = models.DateTimeField(auto_now=True)
     due_date = models.DateField(null=True, blank=True)
 
 
-class Payments(models.Model):
+class Payment(models.Model):
     debtor_id = models.IntegerField(blank=True, null=True)
     client_id = models.IntegerField(blank=True, null=True)
     medium_of_payment = models.CharField(max_length=65, null=True, blank=True)
     amount_payed = models.CharField(max_length=65, null=True, blank=True)
-    amount_owed = models.CharField(max_length=65, null=True, blank=True)
+    status = models.CharField(max_length=65, null=True, blank=True)
     balance_left = models.CharField(max_length=65, null=True, blank=True)
-    due_date = models.DateField(null=True, blank=True)
+    date_payed = models.DateTimeField(auto_now=True)
 

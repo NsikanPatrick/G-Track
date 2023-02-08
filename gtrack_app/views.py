@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib import messages
-from .models import UserProfile, Debtor
+from .models import UserProfile, Debtor, Payment
 from django.core.files.storage import FileSystemStorage
 
 # @login_required(login_url='login')
@@ -243,7 +243,7 @@ def create_client(request):
 def edit_client(request, user_id):
     details = User.objects.get(id=user_id)
     details_profile = UserProfile.objects.get(user=user_id)
-    return render(request, "clients/client_edit.html", {'details_profile': details_profile, 'details': details})
+    return render(request, "admins/client_edit.html", {'details_profile': details_profile, 'details': details})
 
 
 @login_required
@@ -376,12 +376,14 @@ def debtor_edited(request, user_id):
         email = request.POST["email"]
         address = request.POST["address"]
         phone = request.POST["phone"]
+        amount_owed = request.POST["amount_owed"]
         
         details.firstname =  firstname
         details.surname =  surname
         details.email = email
         details.address =  address
         details.phone =  phone
+        details.amount_owed =  amount_owed
         details.save()
         # details.refresh_from_db()
         
@@ -423,3 +425,142 @@ def debtors_bulk_actions(request):
     all_clients = User.objects.filter(is_superuser=False, is_staff=False)
     return render(request, 'debtors/debtors.html', {'debtors': all_debtors, 'clients': all_clients})
    
+
+@login_required
+def payments(request):
+    all_payments = Payment.objects.all
+    all_debtors = Debtor.objects.all
+    return render(request, 'payments/payments.html', {'payments': all_payments, 'debtors': all_debtors})
+
+@login_required
+def create_payment(request):
+    if request.method == "POST":
+        amount_payed = request.POST["amount_payed"]
+        medium_of_payment = request.POST["medium_of_payment"]
+        debtor_id = request.POST["debtor"]
+
+        # payment = Payment()
+        # The queries below will not create a new payment, but consider the current payment
+        # But this payments module should only consider fresh payments, updating a payment
+        # should be on the edit_payment module
+        # This implies that the person who payed already should not be allowed to make another
+        # fresh payment
+        all_debtors = Debtor.objects.all
+        
+        try:
+            payment = Payment.objects.get(debtor_id=debtor_id)
+        
+            debtor = Debtor.objects.get(id=debtor_id)
+            # related_client_id = debtor.client_id
+
+            # If this particular user ahs made payment already, then look at his balance from
+            # the payments table and make necessary deductions then update the same payment
+            balance_left = payment.balance_left
+            if balance_left <= "0":
+                messages.success(request, "This person has already completed his payment")
+                return redirect('payments')
+                # What if the person made an overpaid last payment
+            payment.amount_payed = amount_payed
+            payment.medium_of_payment = medium_of_payment
+            payment.balance_left = int(balance_left) - int(amount_payed)
+            payment.debtor_id = debtor_id
+            # payment.client_id = related_client_id
+            payment.status = "In Progress"
+            payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+        # This is the else part: Meaning, if the debtor has not made payment before, look at
+        # the original figure he owed from the debtors table and make deductions from there
+        # and make a new payment for him
+        # You will make use of this query debtor = Debtor.objects.get(id=debtor_id)
+        except:
+            debtor = Debtor.objects.get(id=debtor_id)
+            amount_owed = debtor.amount_owed
+            related_client_id = debtor.client_id
+
+            payment = Payment()
+            payment.amount_payed = amount_payed
+            payment.medium_of_payment = medium_of_payment
+            payment.balance_left = int(amount_owed) - int(amount_payed)
+            payment.debtor_id = debtor_id
+            payment.client_id = related_client_id
+            payment.status = "In Progress"
+            payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+
+    all_debtors = Debtor.objects.all
+    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+@login_required
+def approve_payment(request, user_id):
+    payment = Payment.objects.get(id=user_id)
+    payment.status = "Completed"
+    payment.save()
+    messages.success(request, "Payment was successfully approved")
+    return redirect('payments')
+
+
+def payments_bulk_actions(request):
+    if request.method == 'POST':
+        action = request.POST["action"]
+
+        if action == "manage":
+            selected_user_ids = request.POST.getlist('selected_users')
+
+            debtors = Debtor.objects.filter(id__in=selected_user_ids)
+
+            phone_numbers = [debtor.phone for debtor in debtors]
+            
+            return render(request, "debtors/compose_sm.html", {'phone_numbers': phone_numbers})
+
+        elif action == "delete":
+            # Get the list of selected records
+            selected_records = request.POST.getlist('selected_users')
+
+            # Convert the list of strings to a list of integers
+            selected_records = [int(i) for i in selected_records]
+
+            # Filter the records using the `id__in` lookup and delete them
+            Payment.objects.filter(id__in=selected_records).delete()
+
+            # Redirect to the success page
+            messages.success(request, "The selected record(s) were successfully deleted from the database")
+            return redirect('payments')
+
+    all_debtors = Debtor.objects.all
+    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+
+@login_required
+def analytics(request):
+    payments = Payment.objects.all()
+    all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    context = {
+        'payments': payments,
+        'all_clients': all_clients
+    }
+    return render(request, 'analytics.html', context)
+
+
+# View functions for the client dashboard
+@login_required
+def my_debtors(request, user_id):
+    my_debtors = Debtor.objects.filter(client_id=user_id)
+    return render(request, 'clients_dashboard/my_debtors.html', {'debtors': my_debtors})
+
+
+@login_required
+def my_payments(request, user_id):
+    my_payments = Payment.objects.filter(client_id=user_id)
+    my_debtors = Debtor.objects.filter(client_id=user_id)
+    return render(request, 'clients_dashboard/my_payments.html', {'payments': my_payments, 'debtors': my_debtors})
+
+
+@login_required
+def my_analytics(request, user_id):
+    my_payments = Payment.objects.filter(client_id=user_id)
+    context = {
+        'payments': my_payments,
+    }
+    return render(request, 'clients_dashboard/my_analytics.html', context)

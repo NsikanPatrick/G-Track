@@ -26,6 +26,16 @@ urlpatterns = [
     path("debtors/edit_debtor/<int:user_id>", views.edit_debtor, name="edit_debtor"),
     path("debtors/debtor_edited/<int:user_id>", views.debtor_edited, name="debtor_edited"),
     path("debtors/debtors_bulk_actions", views.debtors_bulk_actions, name="debtors_bulk_actions"),
+    path('payments', views.payments, name='payments'),
+    path("payments/create_payment", views.create_payment, name="create_payment"),
+    path("payments/approve_payment/<int:user_id>", views.approve_payment, name="approve_payment"),
+    path('analytics', views.analytics, name='analytics'),
+
+    # CLIENT DASHBOARD URLS
+    path("my_debtors/<int:user_id>", views.my_debtors, name="my_debtors"),
+    path("my_payments/<int:user_id>", views.my_payments, name="my_payments"),
+    path("my_payments/payments_bulk_actions", views.payments_bulk_actions, name="payments_bulk_actions"),
+    path("my_analytics/<int:user_id>", views.my_analytics, name="my_analytics"),
 
     # RESETING PASSWORD VIA MAIL
     path("reset_password/", auth_views.PasswordResetView.as_view(), name="reset_password"),

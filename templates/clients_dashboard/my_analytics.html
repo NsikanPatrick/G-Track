@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %} G-TrackApp {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="wrapper">
+    <div class="vertical-wrapper" id="sidebar">
+        <div class="backdrop"></div>
+        <div class="vertical-bar">
+
+            <div class="close-btn">
+                <i class="fa fa-times"></i>
+            </div>
+            <div class="logo">
+                G - <span>Track</span>
+            </div>
+
+            <div class="sidebar">
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-desktop"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="{% url 'profile' user_id=user.id %}">
+                    <i class="fa fa-user"></i>
+                    <h3>Profile</h3>
+                </a>
+                <a href="{% url 'my_payments' user_id=user.id %}">
+                    <i class="fa fa-money"></i>
+                    <h3>Payments</h3>
+                </a>
+                <a href="{% url 'my_debtors' user_id=user.id %}">
+                    <i class="fa fa-cc-mastercard"></i>
+                    <h3>Debtors</h3>
+                </a>
+                <a href="{% url 'my_analytics' user_id=user.id %}">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="#">
+                    <i class="fa fa-envelope-o"></i>
+                    <h3>Notifications</h3>
+                    <!-- <span class="message-count">20</span> -->
+                </a>
+                <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="{% url 'logout' %}">
+                    <i class="fa fa-sign-out"></i>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="top-bar">
+            <div class="hamburger">
+                <i class="fa fa-bars"></i>
+            </div>
+
+            <div class="top-right">
+
+                <div class="theme-toggler">
+                    <i class="fa fa-sun-o active"></i>
+                    <i class="fa fa-moon-o"></i>
+                </div>
+                <!-- This section keeps reverting to the extreme left on deployment -->
+                <div class="profile">
+                    <div class="info">
+                        <small class="text-muted"> {{user.username}}</small>
+                    </div>
+                    <div class="profile-photo">
+                        <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                        {% if user.userprofile.profile_pic %}
+                        <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        {% else %}
+                        <!-- A default image to be shown if the user did not upload a profile pic -->
+                        <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- End of Top right section -->
+        </div>
+
+        <div class="panel cover">
+            <main>
+                <h1 class="panel-label">Payment Analytics</h1>
+
+                <div class="panel-body">
+                    <div class="recent-orders my_analytics">
+
+                        <div class="graphbox">
+
+                            <div class="box">
+                                <canvas id="pieChart"></canvas> 
+                                <script>
+                                    const ctx = document.getElementById('pieChart').getContext('2d');
+    
+                                    new Chart(ctx, {
+                                        type: 'pie',
+                                        data: {
+                                            labels: [{% for payment in payments %} '{{ payment.date_payed }}', {% endfor %}],
+                                            datasets: [{
+                                                label: 'Clients Acquired',
+                                                // Datasets must be an integer value
+                                                data: [{% for payment in payments %} '{{ payment.amount_payed }}', {% endfor %}],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                        }
+                                    });
+                                </script>
+                            </div>
+                            <div class="box">
+                                <canvas id="cashChart"></canvas>
+                                <script>
+                                    const ctl = document.getElementById('cashChart');
+    
+                                    new Chart(ctl, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: [{% for payment in payments %} '{{ payment.date_payed }}', {% endfor %}],
+                                            datasets: [{
+                                                label: 'Amount Received',
+                                                data: [{% for payment in payments %} '{{ payment.amount_payed }}', {% endfor %}],
+                                                borderWidth: 1,
+                                                backgroundColor:[
+                                                    // The bgcolors should match the number of labels. you should use as many
+                                                    // bgcolors as possible so they wont have to repeat in the cases where the 
+                                                    // data fetched from the db are much 
+                                                'rgba(255, 99, 132, 1)',
+                                                'rgba(64, 162, 235, 1)',
+                                                'rgba(255, 206, 86, 1)',
+                                                'rgba(75, 192, 192, 1)',
+                                                'rgba(153, 102, 255, 1)',
+                                                'rgba(255, 159, 64, 1)',
+                                            ]
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!---------------- END OF RECENT ORDERS SECTION ---------------->
+            </main>
+
+            <!------------------- END OF MAIN SECTION ------------------->
+
+
+            <!---------------------- RIGHT SECTION ---------------------->
+
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

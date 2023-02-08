@@ -4,8 +4,6 @@
 
 {% block content %}
 
-{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-
 {% load static %}
 
 <div class="wrapper">
@@ -30,23 +28,15 @@
                     <i class="fa fa-user"></i>
                     <h3>Profile</h3>
                 </a>
-                <a href="{% url 'admins' %}" class="active">
-                    <i class="fa fa-users"></i>
-                    <h3>Admins</h3>
-                </a>
-                <a href="{% url 'payments' %}">
+                <a href="{% url 'my_payments' user_id=user.id %}">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
-                <a href="{% url 'all_clients' %}">
-                    <i class="fa fa-users"></i>
-                    <h3>Clients</h3>
-                </a>
-                <a href="{% url 'debtors' %}">
+                <a href="{% url 'my_debtors' user_id=user.id %}">
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
-                <a href="{% url 'analytics' %}">
+                <a href="{% url 'my_analytics' user_id=user.id %}">
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
@@ -58,10 +48,6 @@
                 <a href="#">
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
-                </a>
-                <a href="{% url 'create_admin' %}">
-                    <i class="fa fa-plus"></i>
-                    <h3>Add Client</h3>
                 </a>
                 <a href="{% url 'logout' %}">
                     <i class="fa fa-sign-out"></i>
@@ -104,10 +90,7 @@
         <div class="content">
             <main>
                 <h1 class="panel-label">Dashboard</h1>
-                <!-- <div class="date">
-                        <input type="date">
-                    </div> -->
-
+                <!-- Payment visualizations for this particular client -->
                 <div class="insights">
                     <!------------------- SALES SECTION ------------------->
                     <div class="sales">
@@ -135,7 +118,7 @@
                         <i class="fa fa-arrow-up"></i>
                         <div class="middle">
                             <div class="left">
-                                <h3>Total Cash Received</h3>
+                                <h3>Total Cash Recovered</h3>
                                 <h2>#178,325</h2>
                             </div>
                             <div class="progress">
@@ -176,7 +159,10 @@
 
 
                 <!------------------- RECENT ORDERS SECTION ---------------------->
+                
+
                 <div class="recent-orders">
+                    <!-- Debtors related to this particular client shows here -->
                     <h2>Recent transactions</h2>
                     <table>
                         <thead>
@@ -224,13 +210,7 @@
                                 <td class="warning">Pending</td>
                                 <td class="success"><a href="#">Details</a></td>
                             </tr>
-                            <tr>
-                                <td>Cletus Simon</td>
-                                <td>289833</td>
-                                <td>944942</td>
-                                <td class="warning">Pending</td>
-                                <td class="success"><a href="#">Details</a></td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                     <a href="#">Show all</a>
@@ -301,7 +281,7 @@
                     <h2>System Analytics</h2>
                     <div class="item online">
                         <div class="icon">
-                            <i class="fa fa-arrow-up"></i>
+                            <i class="fa fa-shopping-cart"></i>
                         </div>
                         <div class="right">
                             <div class="info">
@@ -314,7 +294,7 @@
                     </div>
                     <div class="item offline">
                         <div class="icon">
-                            <i class="fa fa-arrow-down"></i>
+                            <i class="fa fa-shopping-cart"></i>
                         </div>
                         <div class="right">
                             <div class="info">
@@ -348,10 +328,4 @@
         </div>
     </div>
 </div>
-{% elif user.is_authenticated and not user.is_superuser and user.is_staff %}
-    <!-- user.is_authenticated and user.is_superuser is also d same as d above condition -->
-    {% include 'editor_admins/index.html' %}
-{% else %}
-{% include 'clients_dashboard/index.html' %}
-{% endif %}
 {% endblock %}
