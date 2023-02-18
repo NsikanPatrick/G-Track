@@ -82,22 +82,28 @@ WSGI_APPLICATION = 'gtrack.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DATABASE_NAME'), 
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASS'),
-        'HOST': config('HOST'),
-        'PORT': config('PORT'),
-    }
-}
+# The database connection lines of code below is to be activated on development, should be
+# off on production
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': config('DATABASE_NAME'), 
+#         'USER': config('DATABASE_USER'),
+#         'PASSWORD': config('DATABASE_PASS'),
+#         'HOST': config('HOST'),
+#         'PORT': config('PORT'),
+#     }
+# }
+
 
 # DATABASES['default'] = dj_database_url.config()
 
-# DATABASES = {
-#     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-# }
+# The database connection lines of code below is to be activated on production, should be
+# off on development
+
+DATABASES = {
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
 
 
 # Password validation

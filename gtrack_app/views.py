@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.db.models import Sum
 from django.contrib import messages
 from .models import UserProfile, Debtor, Payment
 from django.core.files.storage import FileSystemStorage
@@ -10,8 +11,27 @@ from django.core.files.storage import FileSystemStorage
 # @login_required(login_url='login')
 @login_required
 def index(request):
-    # return HttpResponse('Halo')
-    return render(request, 'index.html', {})
+    current_user = request.user
+    if current_user.is_staff:
+        all_debtors = Debtor.objects.all()[:5]
+        all_payments = Payment.objects.all().order_by('date_payed').reverse()[:5]
+        debtors = Debtor.objects.all()
+        payments = Payment.objects.all()
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        debt = total - retrieved
+        return render(request, 'index.html', {'payments': all_payments, 'debtors': all_debtors, "total": total, "retrieved": retrieved, "debt": debt})
+    
+    else:
+        
+        my_payments = Payment.objects.filter(client_id=current_user.id).order_by('date_payed').reverse()[:5]
+        my_debtors = Debtor.objects.filter(client_id=current_user.id)[:5]
+        payments = Payment.objects.filter(client_id=current_user.id)
+        debtors = Debtor.objects.filter(client_id=current_user.id)
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        debt = total - retrieved
+        return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt}) 
 
 @login_required
 def admins(request):
@@ -21,7 +41,7 @@ def admins(request):
     #  (editors) excluding the currently logged in admin
     all_admins = User.objects.filter(Q(is_superuser=True) | Q(is_staff=True)).exclude(pk=current_user.pk)
     all_admins_profiles = UserProfile.objects.all
-    return render(request, 'admins.html', {'admins': all_admins, 'admin_profiles': all_admins_profiles})
+    return render(request, 'admins_dashboard/admins.html', {'admins': all_admins, 'admin_profiles': all_admins_profiles})
 
 @login_required
 def create_admin(request):
@@ -160,10 +180,10 @@ def admin_edited(request, user_id):
         details.refresh_from_db()
         
         messages.success(request, username + "'s profile details have been updated")
-        return render(request, "admins/admin_edit.html", {'details_profile': details_profile, 'details': details})
+        return render(request, "admins_dashboard/admin_edit.html", {'details_profile': details_profile, 'details': details})
         
 
-    return render(request, "admins/admin_edit.html", {})
+    return render(request, "admins_dashboard/admin_edit.html", {})
 
 
 @login_required
@@ -192,7 +212,7 @@ def batch_delete_admins(request):
 def get_clients(request):
     all_clients = User.objects.filter(is_superuser=False, is_staff=False)
     all_clients_profiles = UserProfile.objects.all
-    return render(request, 'admins/clients.html', {'clients': all_clients, 'client_profiles': all_clients_profiles})
+    return render(request, 'admins_dashboard/clients.html', {'clients': all_clients, 'client_profiles': all_clients_profiles})
 
 
 @login_required
@@ -243,7 +263,7 @@ def create_client(request):
 def edit_client(request, user_id):
     details = User.objects.get(id=user_id)
     details_profile = UserProfile.objects.get(user=user_id)
-    return render(request, "admins/client_edit.html", {'details_profile': details_profile, 'details': details})
+    return render(request, "admins_dashboard/client_edit.html", {'details_profile': details_profile, 'details': details})
 
 
 @login_required
@@ -275,11 +295,11 @@ def client_edited(request, user_id):
         details.save()
         details.refresh_from_db()
         
-        messages.success(request, username + "'s profile details have been updated")
-        return render(request, "clients/client_edit.html", {'details_profile': details_profile, 'details': details})
+        messages.success(request, username + "'s profile details has been updated")
+        return render(request, "admins_dashboard/client_edit.html", {'details_profile': details_profile, 'details': details})
         
 
-    return render(request, "clients/client_edit.html", {})
+    return render(request, "admins_dashboard/client_edit.html", {})
 
 
 @login_required
@@ -540,7 +560,7 @@ def analytics(request):
         'payments': payments,
         'all_clients': all_clients
     }
-    return render(request, 'analytics.html', context)
+    return render(request, 'admins_dashboard/analytics.html', context)
 
 
 # View functions for the client dashboard

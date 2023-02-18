@@ -115,7 +115,7 @@
                         <div class="middle">
                             <div class="left">
                                 <h3>Total Cash</h3>
-                                <h2>#204,297</h2>
+                                <h2>#{{total}}</h2>
                             </div>
                             <div class="progress">
                                 <svg>
@@ -135,8 +135,8 @@
                         <i class="fa fa-arrow-up"></i>
                         <div class="middle">
                             <div class="left">
-                                <h3>Total Cash Received</h3>
-                                <h2>#178,325</h2>
+                                <h3>Total Cash Retrieved</h3>
+                                <h2>#{{retrieved}}</h2>
                             </div>
                             <div class="progress">
                                 <svg>
@@ -157,7 +157,7 @@
                         <div class="middle">
                             <div class="left">
                                 <h3>Total Debt</h3>
-                                <h2>#92,800</h2>
+                                <h2>#{{debt}}</h2>
                             </div>
                             <div class="progress">
                                 <svg>
@@ -176,63 +176,49 @@
 
 
                 <!------------------- RECENT ORDERS SECTION ---------------------->
+                
                 <div class="recent-orders">
                     <h2>Recent transactions</h2>
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Debtor name</th>
-                                <th>Amount paid</th>
-                                <th>Balance</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Basit Ridwan</td>
-                                <td>649353</td>
-                                <td>862331</td>
-                                <td class="warning">Pending</td>
-                                <td class="success"><a href="#">Details</a></td>
-                            </tr>
-                            <tr>
-                                <td>Yussuf Mohammed</td>
-                                <td>285484</td>
-                                <td>718424</td>
-                                <td class="warning">Pending</td>
-                                <td class="success"><a href="#">Details</a></td>
-                            </tr>
-                            <tr>
-                                <td>Basit Ridwan</td>
-                                <td>649353</td>
-                                <td>862331</td>
-                                <td class="warning">Pending</td>
-                                <td class="success"><a href="#">Details</a></td>
-                            </tr>
-                            <tr>
-                                <td>Patrick Joshua</td>
-                                <td>979795</td>
-                                <td>724832</td>
-                                <td class="warning">Pending</td>
-                                <td class="success"><a href="#">Details</a></td>
-                            </tr>
-                            <tr>
-                                <td>Grace Jeremiah</td>
-                                <td>394857</td>
-                                <td>693824</td>
-                                <td class="warning">Pending</td>
-                                <td class="success"><a href="#">Details</a></td>
-                            </tr>
-                            <tr>
-                                <td>Cletus Simon</td>
-                                <td>289833</td>
-                                <td>944942</td>
-                                <td class="warning">Pending</td>
-                                <td class="success"><a href="#">Details</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+    
+                            <thead>
+                                <tr>
+                                    
+                                    <th>Amount Payed</th>
+                                    <th>Medium of Payment</th>
+                                    <th>Balance left</th>
+                                    <th>Date Payed</th>
+                                    <th>Total Amount Owed</th>
+                                    <th>Debtor's Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in payments %}
+                                <tr>
+                                    
+                                    <td>{{ payment.amount_payed }}</td>
+                                    <td>{{ payment.medium_of_payment }}</td>
+                                    <td>{{ payment.balance_left }}</td>
+                                    <td>{{ payment.date_payed }}</td>
+                                    <!-- loop through the admin_profiles list and only display the profile for the current admin -->
+                                    {% for debtor in debtors %}
+                                    {% if debtor.id == payment.debtor_id %}
+                                    <!-- display the information for each admin and their corresponding profile -->
+                                    <td>{{ debtor.amount_owed }}</td>
+                                    <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
+
+                                    <td><a class="status-btn">{{ payment.status }}</a></td>
+                                    
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                </tr>
+                                {% endfor %}
+    
+                            </tbody>
+    
+                        </table>
                     <a href="#">Show all</a>
                 </div>
                 <!---------------- END OF RECENT ORDERS SECTION ---------------->
@@ -247,53 +233,25 @@
 
                 <div class="recent-updates">
                     <h2>Recent Updates</h2>
+                    {% for payment in payments %}
                     <div class="updates">
                         <div class="update">
                             <div class="profile-photo">
-                                <img src="{% static 'img/Me2.jpg' %}" alt="mgm">
+                                <img src="{% static 'img/anonymous.jpg' %}" alt="mgm">
                             </div>
                             <div class="message">
-                                <p><b>Mike</b> Confirmed a pending payment</p>
-                                <small class="text-muted">4 mins ago</small>
+                                
+                                {% for debtor in debtors %}
+                                    {% if debtor.id == payment.debtor_id %}
+                                    <p><b>{{ debtor.firstname }}</b> Made a payment of {{ payment.amount_payed }}</p>
+                                    
+                                    {% endif %}
+                                    {% endfor %}
+                                    <small class="text-muted">10 mins ago</small>
                             </div>
                         </div>
                     </div>
-
-                    <div class="updates">
-                        <div class="update">
-                            <div class="profile-photo">
-                                <img src="{% static 'img/Me2.jpg' %}" alt="mgm">
-                            </div>
-                            <div class="message">
-                                <p><b>Shola</b> Made a payment of #840,000</p>
-                                <small class="text-muted">7 mins ago</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="updates">
-                        <div class="update">
-                            <div class="profile-photo">
-                                <img src="{% static 'img/Me2.jpg' %}" alt="mgm">
-                            </div>
-                            <div class="message">
-                                <p><b>Patrick</b> Sent a Notification to all debtors</p>
-                                <small class="text-muted">10 mins ago</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="updates">
-                        <div class="update">
-                            <div class="profile-photo">
-                                <img src="{% static 'img/Me2.jpg' %}" alt="mgm">
-                            </div>
-                            <div class="message">
-                                <p><b>Tom</b> Confirmed an order of payment</p>
-                                <small class="text-muted">17 mins ago</small>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
 
                 <!------------------- SALES ANALYTICS SECTION ------------------->
@@ -301,47 +259,47 @@
                     <h2>System Analytics</h2>
                     <div class="item online">
                         <div class="icon">
+                            <i class="fa fa-money"></i>
+                        </div>
+                        <div class="right">
+                            <div class="info">
+                                <h3>Total Cash</h3>
+                                <small class="text-muted"> Last one week</small>
+                            </div>
+                            <h5 class="success">+62%</h5>
+                            <h3>#{{total}}</h3>
+                        </div>
+                    </div>
+                    <div class="item online">
+                        <div class="icon">
                             <i class="fa fa-arrow-up"></i>
                         </div>
                         <div class="right">
                             <div class="info">
-                                <h3>Cash received</h3>
-                                <small class="text-muted"> Last 24 hours</small>
+                                <h3>Cash Retrieved</h3>
+                                <small class="text-muted"> Last one week</small>
                             </div>
-                            <h5 class="success">+62%</h5>
-                            <h3>178325</h3>
+                            <h5 class="success">-44%</h5>
+                            <h3>#{{retrieved}}</h3>
                         </div>
                     </div>
-                    <div class="item offline">
+                    <div class="item online">
                         <div class="icon">
                             <i class="fa fa-arrow-down"></i>
                         </div>
                         <div class="right">
                             <div class="info">
                                 <h3>Debts</h3>
-                                <small class="text-muted"> Last 24 hours</small>
+                                <small class="text-muted"> Last one week</small>
                             </div>
-                            <h5 class="danger">-44%</h5>
-                            <h3>92800</h3>
+                            <h5 class="danger">+25%</h5>
+                            <h3>#{{debt}}</h3>
                         </div>
                     </div>
-                    <div class="item customers">
-                        <div class="icon">
-                            <i class="fa fa-user"></i>
-                        </div>
-                        <div class="right">
-                            <div class="info">
-                                <h3>Clients added</h3>
-                                <small class="text-muted"> Last 24 hours</small>
-                            </div>
-                            <h5 class="success">+25%</h5>
-                            <h3>12</h3>
-                        </div>
-                    </div>
-                    <div class="item add-product">
+                    <a class="item add-product" href="{% url 'create_admin' %}">
                         <i class="fa fa-plus"></i>
                         <h3>Add Client</h3>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -350,7 +308,7 @@
 </div>
 {% elif user.is_authenticated and not user.is_superuser and user.is_staff %}
     <!-- user.is_authenticated and user.is_superuser is also d same as d above condition -->
-    {% include 'editor_admins/index.html' %}
+    {% include 'editor_admins_dashboard/index.html' %}
 {% else %}
 {% include 'clients_dashboard/index.html' %}
 {% endif %}
