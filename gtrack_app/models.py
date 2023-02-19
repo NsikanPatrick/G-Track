@@ -31,7 +31,7 @@ class Debtor(models.Model):
     address = models.CharField(max_length=65, null=True, blank=True)
     phone = models.CharField(max_length=65, null=True, blank=True)
     email = models.CharField(max_length=65, null=True, blank=True)
-    amount_owed = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    amount_owed = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     date_captured = models.DateTimeField(auto_now=True)
     due_date = models.DateField(null=True, blank=True)
 
@@ -42,6 +42,6 @@ class Payment(models.Model):
     medium_of_payment = models.CharField(max_length=65, null=True, blank=True)
     amount_payed = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     status = models.CharField(max_length=65, null=True, blank=True)
-    balance_left = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    balance_left = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     date_payed = models.DateTimeField(auto_now=True)
 

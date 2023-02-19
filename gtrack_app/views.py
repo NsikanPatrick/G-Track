@@ -19,6 +19,7 @@ def index(request):
         payments = Payment.objects.all()
         total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
         retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        # You will write an exeption to take place if total and retieved columns are empty
         debt = total - retrieved
         return render(request, 'index.html', {'payments': all_payments, 'debtors': all_debtors, "total": total, "retrieved": retrieved, "debt": debt})
     
@@ -30,6 +31,7 @@ def index(request):
         debtors = Debtor.objects.filter(client_id=current_user.id)
         total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
         retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        # You will write an exeption to take place if total and retieved columns are empty
         debt = total - retrieved
         return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt}) 
 
