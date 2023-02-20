@@ -17,10 +17,13 @@ def index(request):
         all_payments = Payment.objects.all().order_by('date_payed').reverse()[:5]
         debtors = Debtor.objects.all()
         payments = Payment.objects.all()
+
+        if debtors is None or payments is None:    
+            return render(request, 'error_pages/admin_index.html', {})
+
         total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
         retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
-        # debt = total - retrieved
-        debt = 250000
+        debt = total - retrieved
         return render(request, 'index.html', {'payments': all_payments, 'debtors': all_debtors, "total": total, "retrieved": retrieved, "debt": debt})
     
     else:
@@ -29,10 +32,13 @@ def index(request):
         my_debtors = Debtor.objects.filter(client_id=current_user.id)[:5]
         payments = Payment.objects.filter(client_id=current_user.id)
         debtors = Debtor.objects.filter(client_id=current_user.id)
+
+       if debtors is None or payments is None:
+            return render(request, 'error_pages/client_index.html', {})
+        
         total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
         retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
-        # debt = total - retrieved
-        debt = 200000
+        debt = total - retrieved
         return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt}) 
 
 @login_required
