@@ -12,15 +12,20 @@ from django.core.files.storage import FileSystemStorage
 @login_required
 def index(request):
     # return HttpResponse('Halo')
-    return render(request, 'index.html', {})
+    # return render(request, 'index.html', {})
     current_user = request.user
     if current_user.is_staff:
         all_debtors = Debtor.objects.all()[:5]
         all_payments = Payment.objects.all().order_by('date_payed').reverse()[:5]
         debtors = Debtor.objects.all()
         payments = Payment.objects.all()
+
         total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
         retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+
+        if total is None or retrieved is None:    
+            return render(request, 'error_pages/admin_index.html', {})
+
         debt = total - retrieved
         return render(request, 'index.html', {'payments': all_payments, 'debtors': all_debtors, "total": total, "retrieved": retrieved, "debt": debt})
 
@@ -32,6 +37,10 @@ def index(request):
         debtors = Debtor.objects.filter(client_id=current_user.id)
         total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
         retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+
+        if total is None or retrieved is None:
+            return render(request, 'error_pages/client_index.html', {})
+
         debt = total - retrieved
         return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt}) 
 
