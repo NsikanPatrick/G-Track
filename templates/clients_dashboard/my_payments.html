@@ -39,12 +39,12 @@
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'index' %}">
                     <i class="fa fa-envelope-o"></i>
                     <h3>Notifications</h3>
                     <!-- <span class="message-count">20</span> -->
                 </a>
-                <a href="#">
+                <a href="{% url 'index' %}">
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
@@ -76,10 +76,10 @@
                     <div class="profile-photo">
                         <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
                         {% if user.userprofile.profile_pic %}
-                            <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
                         {% else %}
-                            <!-- A default image to be shown if the user did not upload a profile pic -->
-                            <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        <!-- A default image to be shown if the user did not upload a profile pic -->
+                        <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
                         {% endif %}
                     </div>
                 </div>
@@ -93,64 +93,64 @@
                 <div class="panel-body">
                     <form method="post" action="{% url 'debtors_bulk_actions' %}">
                         {% csrf_token %}
-                    
-                    <div class="admin-panel">
-    
-                        <table>
-    
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Amount Payed</th>
-                                    <th>Medium of Payment</th>
-                                    <th>Balance left</th>
-                                    <th>Date Payed</th>
-                                    <th>Total Amount Owed</th>
-                                    <th>Payed by</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for payment in payments %}
-                                <tr>
-                                    <td><input type="checkbox" value="{{payment.id}}" name="selected_users"></td>
-                                    <td>{{ payment.amount_payed }}</td>
-                                    <td>{{ payment.medium_of_payment }}</td>
-                                    <td>{{ payment.balance_left }}</td>
-                                    <td>{{ payment.date_payed }}</td>
-                                    <!-- loop through the admin_profiles list and only display the profile for the current admin -->
-                                    {% for debtor in debtors %}
-                                    {% if debtor.id == payment.debtor_id %}
-                                    <!-- display the information for each admin and their corresponding profile -->
-                                    <td>{{ debtor.amount_owed }}</td>
-                                    <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
 
-                                    <td><a class="primary-btn">{{ payment.status }}</a></td>
-                                    
-                                    {% endif %}
+                        <div class="admin-panel">
+
+                            <table>
+
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Amount Payed</th>
+                                        <th>Medium of Payment</th>
+                                        <th>Balance left</th>
+                                        <th>Date Payed</th>
+                                        <th>Total Amount Owed</th>
+                                        <th>Payed by</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in payments %}
+                                    <tr>
+                                        <td><input type="checkbox" value="{{payment.id}}" name="selected_users"></td>
+                                        <td>{{ payment.amount_payed }}</td>
+                                        <td>{{ payment.medium_of_payment }}</td>
+                                        <td>{{ payment.balance_left }}</td>
+                                        <td>{{ payment.date_payed }}</td>
+                                        <!-- loop through the admin_profiles list and only display the profile for the current admin -->
+                                        {% for debtor in debtors %}
+                                        {% if debtor.id == payment.debtor_id %}
+                                        <!-- display the information for each admin and their corresponding profile -->
+                                        <td>{{ debtor.amount_owed }}</td>
+                                        <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
+
+                                        <td><a class="primary-btn">{{ payment.status }}</a></td>
+
+                                        {% endif %}
+                                        {% endfor %}
+
+                                    </tr>
                                     {% endfor %}
-                                    
-                                </tr>
-                                {% endfor %}
-    
-                            </tbody>
-    
-                        </table>
-    
-                        <a id="show-all" href="#">Show all</a>
-                    </div>
+
+                                </tbody>
+
+                            </table>
+
+                            <a id="show-all" href="#">Show all</a>
+                        </div>
                     </form>
                 </div>
                 <!---------------- END OF RECENT ORDERS SECTION ---------------->
             </main>
-    
+
             <!------------------- END OF MAIN SECTION ------------------->
-    
-    
+
+
             <!---------------------- RIGHT SECTION ---------------------->
-    
-    
-    
+
+
+
         </div>
     </div>
 </div>

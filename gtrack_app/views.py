@@ -50,7 +50,7 @@ def admins(request):
     current_user = request.user
      # Fetch all admins from the database who are either super admins or staff admins 
     #  (editors) excluding the currently logged in admin
-    all_admins = User.objects.filter(Q(is_superuser=True) | Q(is_staff=True)).exclude(pk=current_user.pk)
+    all_admins = User.objects.filter(Q(is_superuser=True) | Q(is_staff=True)).exclude(pk=current_user.pk).order_by('date_joined').reverse()
     all_admins_profiles = UserProfile.objects.all
     return render(request, 'admins_dashboard/admins.html', {'admins': all_admins, 'admin_profiles': all_admins_profiles})
 
@@ -158,7 +158,7 @@ def profile_update(request, user_id):
 def edit_admin(request, user_id):
     details = User.objects.get(id=user_id)
     details_profile = UserProfile.objects.get(user=user_id)
-    return render(request, "admins/admin_edit.html", {'details_profile': details_profile, 'details': details})
+    return render(request, "admins_dashboard/admin_edit.html", {'details_profile': details_profile, 'details': details})
     
 
 @login_required
@@ -191,7 +191,7 @@ def admin_edited(request, user_id):
         details.refresh_from_db()
         
         messages.success(request, username + "'s profile details have been updated")
-        return render(request, "admins_dashboard/admin_edit.html", {'details_profile': details_profile, 'details': details})
+        return redirect('admins')
         
 
     return render(request, "admins_dashboard/admin_edit.html", {})
@@ -221,7 +221,7 @@ def batch_delete_admins(request):
 
 @login_required
 def get_clients(request):
-    all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    all_clients = User.objects.filter(is_superuser=False, is_staff=False).order_by('date_joined').reverse()
     all_clients_profiles = UserProfile.objects.all
     return render(request, 'admins_dashboard/clients.html', {'clients': all_clients, 'client_profiles': all_clients_profiles})
 
@@ -307,7 +307,7 @@ def client_edited(request, user_id):
         details.refresh_from_db()
         
         messages.success(request, username + "'s profile details has been updated")
-        return render(request, "admins_dashboard/client_edit.html", {'details_profile': details_profile, 'details': details})
+        return redirect('all_clients')
         
 
     return render(request, "admins_dashboard/client_edit.html", {})
@@ -337,7 +337,7 @@ def batch_delete_clients(request):
 
 @login_required
 def debtors(request):
-    all_debtors = Debtor.objects.all
+    all_debtors = Debtor.objects.all().order_by('date_captured').reverse()
     all_clients = User.objects.filter(is_superuser=False, is_staff=False)
     return render(request, 'debtors/debtors.html', {'debtors': all_debtors, 'clients': all_clients})
 
@@ -459,7 +459,7 @@ def debtors_bulk_actions(request):
 
 @login_required
 def payments(request):
-    all_payments = Payment.objects.all
+    all_payments = Payment.objects.all().order_by('date_payed').reverse()
     all_debtors = Debtor.objects.all
     return render(request, 'payments/payments.html', {'payments': all_payments, 'debtors': all_debtors})
 
@@ -469,42 +469,25 @@ def create_payment(request):
         amount_payed = request.POST["amount_payed"]
         medium_of_payment = request.POST["medium_of_payment"]
         debtor_id = request.POST["debtor"]
-
-        # payment = Payment()
-        # The queries below will not create a new payment, but consider the current payment
-        # But this payments module should only consider fresh payments, updating a payment
-        # should be on the edit_payment module
-        # This implies that the person who payed already should not be allowed to make another
-        # fresh payment
-        all_debtors = Debtor.objects.all
         
-        try:
-            payment = Payment.objects.get(debtor_id=debtor_id)
-        
-            debtor = Debtor.objects.get(id=debtor_id)
-            # related_client_id = debtor.client_id
-
-            # If this particular user ahs made payment already, then look at his balance from
-            # the payments table and make necessary deductions then update the same payment
+        payment = Payment.objects.filter(debtor_id=debtor_id).last()
+        if payment:
             balance_left = payment.balance_left
-            if balance_left <= "0":
-                messages.success(request, "This person has already completed his payment")
+            if balance_left <= 0:
+                messages.success(request, "This debtor has already completed his payment")
                 return redirect('payments')
                 # What if the person made an overpaid last payment
-            payment.amount_payed = amount_payed
-            payment.medium_of_payment = medium_of_payment
-            payment.balance_left = int(balance_left) - int(amount_payed)
-            payment.debtor_id = debtor_id
+            new_payment = Payment()
+            new_payment.amount_payed = amount_payed
+            new_payment.medium_of_payment = medium_of_payment
+            new_payment.balance_left = int(balance_left) - int(amount_payed)
+            new_payment.debtor_id = debtor_id
             # payment.client_id = related_client_id
-            payment.status = "In Progress"
-            payment.save()
+            new_payment.status = "In Progress"
+            new_payment.save()
             messages.success(request, "Payment details were successfully captured")
             return redirect('payments')
-        # This is the else part: Meaning, if the debtor has not made payment before, look at
-        # the original figure he owed from the debtors table and make deductions from there
-        # and make a new payment for him
-        # You will make use of this query debtor = Debtor.objects.get(id=debtor_id)
-        except:
+        else:
             debtor = Debtor.objects.get(id=debtor_id)
             amount_owed = debtor.amount_owed
             related_client_id = debtor.client_id

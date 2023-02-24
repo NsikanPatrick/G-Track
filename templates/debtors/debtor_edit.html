@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %} G-TrackApp {% endblock %}
@@ -33,7 +32,7 @@
                     <i class="fa fa-users"></i>
                     <h3>Admins</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'payments' %}">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
@@ -45,16 +44,16 @@
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'analytics' %}">
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'index' %}">
                     <i class="fa fa-envelope-o"></i>
                     <h3>Notifications</h3>
                     <!-- <span class="message-count">20</span> -->
                 </a>
-                <a href="#">
+                <a href="{% url 'index' %}">
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
@@ -106,14 +105,14 @@
     <div class="panel">
         <main>
             <!-- <h1 class="panel-label">Your Profile</h1> -->
-            
+
             <div class="panel-body">
                 <div class="profile-details form-panel">
                     <div class="signup form-area create_admin">
                         <div class="msg caption">
                             <p><b> EDIT PROFILE INFORMATION</b></p>
                         </div>
-        
+
                         {% if messages %}
                         {% for message in messages %}
                         <div class="msg msg-box text-danger">
@@ -125,75 +124,82 @@
                         {% endfor %}
                         {% endif %}
                         <div class="contact-form">
-                            <form action="{% url 'debtor_edited' user_id=details.id %}" class="my-form p-5 bg-white" id="form" method="POST" enctype="multipart/form-data">
+                            <form action="{% url 'debtor_edited' user_id=details.id %}" class="my-form p-5 bg-white"
+                                id="form" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="text" id="firstname" class="form-control" name="firstname" value="{{ details.firstname }}">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-        
-                                <div class="form-group">
-                                    <input type="text" id="surname" class="form-control" name="surname" value="{{ details.surname }}">
+                                    <input type="text" id="firstname" class="form-control" name="firstname"
+                                        value="{{ details.firstname }}">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="email" id="email" class="form-control" name="email" value="{{details.email}}">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-        
-                                <div class="form-group">
-                                    <input type="text" id="address" class="form-control" name="address" value="{{details.address}}">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-        
-                                <div class="form-group">
-                                    <input type="phone" id="phone" class="form-control" name="phone" value="{{details.phone}}">
+                                    <input type="text" id="surname" class="form-control" name="surname"
+                                        value="{{ details.surname }}">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" id="amount_owed" class="form-control" name="amount_owed" value="{{details.amount_owed}}">
+                                    <input type="email" id="email" class="form-control" name="email"
+                                        value="{{details.email}}">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
-        
+
+                                <div class="form-group">
+                                    <input type="text" id="address" class="form-control" name="address"
+                                        value="{{details.address}}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="phone" id="phone" class="form-control" name="phone"
+                                        value="{{details.phone}}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" id="amount_owed" class="form-control" name="amount_owed"
+                                        value="{{details.amount_owed}}">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+
                                 <div class="form-group">
                                     <button type="submit" class="btn">
                                         Save
                                     </button>
                                     <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
                                 </div>
-        
+
                             </form>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-    
-    <!---------------- END OF RECENT ORDERS SECTION ---------------->
-    </main>
 
-    <!------------------- END OF MAIN SECTION ------------------->
+            <!---------------- END OF RECENT ORDERS SECTION ---------------->
+        </main>
 
-
-    <!---------------------- RIGHT SECTION ---------------------->
+        <!------------------- END OF MAIN SECTION ------------------->
 
 
+        <!---------------------- RIGHT SECTION ---------------------->
 
-</div>
-<!-- </div> -->
+
+
+    </div>
+    <!-- </div> -->
 </div>
 {% endblock %}

@@ -39,12 +39,12 @@
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
-                <a href="#">
+                <a href="{% url 'index' %}">
                     <i class="fa fa-envelope-o"></i>
                     <h3>Notifications</h3>
                     <!-- <span class="message-count">20</span> -->
                 </a>
-                <a href="#">
+                <a href="{% url 'index' %}">
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
@@ -97,24 +97,24 @@
                         <div class="graphbox">
 
                             <div class="box">
-                                <canvas id="pieChart"></canvas> 
+                                <canvas id="pieChart"></canvas>
                                 <script>
                                     const ctx = document.getElementById('pieChart').getContext('2d');
-    
+
                                     new Chart(ctx, {
                                         type: 'pie',
                                         data: {
                                             labels: [{% for payment in payments %} '{{ payment.date_payed }}', {% endfor %}],
-                                            datasets: [{
-                                                label: 'Clients Acquired',
-                                                // Datasets must be an integer value
-                                                data: [{% for payment in payments %} '{{ payment.amount_payed }}', {% endfor %}],
-                                                borderWidth: 1
+                                        datasets: [{
+                                            label: 'Clients Acquired',
+                                            // Datasets must be an integer value
+                                            data: [{% for payment in payments %} '{{ payment.amount_payed }}', {% endfor %}],
+                                        borderWidth: 1
                                             }]
                                         },
                                         options: {
-                                            responsive: true,
-                                        }
+                                        responsive: true,
+                                    }
                                     });
                                 </script>
                             </div>
@@ -122,31 +122,31 @@
                                 <canvas id="cashChart"></canvas>
                                 <script>
                                     const ctl = document.getElementById('cashChart');
-    
+
                                     new Chart(ctl, {
                                         type: 'bar',
                                         data: {
                                             labels: [{% for payment in payments %} '{{ payment.date_payed }}', {% endfor %}],
-                                            datasets: [{
-                                                label: 'Amount Received',
-                                                data: [{% for payment in payments %} '{{ payment.amount_payed }}', {% endfor %}],
-                                                borderWidth: 1,
-                                                backgroundColor:[
-                                                    // The bgcolors should match the number of labels. you should use as many
-                                                    // bgcolors as possible so they wont have to repeat in the cases where the 
-                                                    // data fetched from the db are much 
-                                                'rgba(255, 99, 132, 1)',
-                                                'rgba(64, 162, 235, 1)',
-                                                'rgba(255, 206, 86, 1)',
-                                                'rgba(75, 192, 192, 1)',
-                                                'rgba(153, 102, 255, 1)',
-                                                'rgba(255, 159, 64, 1)',
-                                            ]
+                                        datasets: [{
+                                            label: 'Amount Received',
+                                            data: [{% for payment in payments %} '{{ payment.amount_payed }}', {% endfor %}],
+                                        borderWidth: 1,
+                                        backgroundColor: [
+                                        // The bgcolors should match the number of labels. you should use as many
+                                        // bgcolors as possible so they wont have to repeat in the cases where the 
+                                        // data fetched from the db are much 
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(64, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)',
+                                    ]
                                             }]
                                         },
                                         options: {
-                                            responsive: true,
-                                        }
+                                        responsive: true,
+                                    }
                                     });
                                 </script>
                             </div>
