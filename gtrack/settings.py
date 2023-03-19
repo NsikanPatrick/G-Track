@@ -84,6 +84,14 @@ WSGI_APPLICATION = 'gtrack.wsgi.application'
 
 # The database connection lines of code below is to be activated on development, should be
 # off on production
+# SQLITE CONNECTION
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+# POSTGRESQL DATABASE CONNECTION
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -101,9 +109,10 @@ WSGI_APPLICATION = 'gtrack.wsgi.application'
 # The database connection lines of code below is to be activated on production, should be
 # off on development
 
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-}
+# CLOUD POSTGRESQL DATABASE CONNECTION
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# }
 
 
 # Password validation

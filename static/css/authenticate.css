@@ -87,7 +87,7 @@
     border-radius: 7px;
 }
   
-.contact-form input{
+.contact-form input, .contact-form textarea{
     padding: 15px;
     width: 100%;
     border-radius: 5px;

@@ -123,7 +123,7 @@
                             <div class="table-actions">
                                 <select name="action" id="action" class="dropdown-select">
                                     <option value="bulk_actions">Bulk Actions</option>
-                                    <option value="send_sms">Send SMS</option>
+                                    <option value="send_notification">Send Notification</option>
                                     <option value="delete">Delete</option>
                                     <option value="manage">Manage</option>
                                 </select>
@@ -175,8 +175,7 @@
                                         <td>{{ client.username }}</td>
                                         <td><a class="primary-btn"
                                                 href="{% url 'edit_debtor' user_id=debtor.id %}">Edit</a></td>
-                                        <td><a class="danger-btn" href="#"
-                                                onclick="return confirm('Are you sure you want to delete this record?')">Notify</a>
+                                        <td><a class="danger-btn" href="{% url 'single_recipient' user_id=debtor.id %}">Notify</a>
                                         </td>
                                         {% endif %}
                                         {% endfor %}
