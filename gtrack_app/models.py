@@ -48,8 +48,8 @@ class Payment(models.Model):
 
 class Notification(models.Model):
     user_id = models.IntegerField(blank=True, null=True)
-    email_subject = models.CharField(null=True, blank=True)
-    email_message = models.CharField(null=True, blank=True)
+    email_subject = models.CharField(max_length=200, null=True, blank=True)
+    email_message = models.CharField(max_length=500,null=True, blank=True)
     recipient = models.CharField(max_length=50, null=True, blank=True)
     time_sent = models.DateTimeField(default=timezone.now()) 
     attachment = models.FileField(null=True, blank=True, upload_to="uploads/email_attachments")
