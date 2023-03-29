@@ -29,8 +29,6 @@ import pytz
 # @login_required(login_url='login')
 @login_required
 def index(request):
-    # return HttpResponse('Halo')
-    # return render(request, 'index.html', {})
     current_user = request.user
     if current_user.is_staff:
         all_debtors = Debtor.objects.all()[:5]
@@ -334,6 +332,8 @@ def client_edited(request, user_id):
 @login_required
 def delete_client(request, user_id):
     data_to_delete = User.objects.filter(id=user_id).delete()
+    related_debtor = Debtor.objects.filter(client_id=user_id).delete()
+    related_payment = Payment.objects.filter(client_id=user_id).delete()
     messages.success(request, "The client's record was successfully deleted")
     return redirect('all_clients')
 
@@ -347,6 +347,8 @@ def batch_delete_clients(request):
 
     # Filter the records using the `id__in` lookup and delete them
     User.objects.filter(id__in=selected_records).delete()
+    Debtor.objects.filter(client_id__in=selected_records).delete()
+    Payment.objects.filter(client_id__in=selected_records).delete()
 
     # Redirect to the success page
     messages.success(request, "The selected record(s) were successfully deleted from the database")

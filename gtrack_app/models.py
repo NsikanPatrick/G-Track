@@ -45,3 +45,12 @@ class Payment(models.Model):
     balance_left = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     date_payed = models.DateTimeField(auto_now=True)
 
+
+class Notification(models.Model):
+    user_id = models.IntegerField(blank=True, null=True)
+    email_subject = models.CharField(null=True, blank=True)
+    email_message = models.CharField(null=True, blank=True)
+    recipient = models.CharField(max_length=50, null=True, blank=True)
+    time_sent = models.DateTimeField(default=timezone.now()) 
+    attachment = models.FileField(null=True, blank=True, upload_to="uploads/email_attachments")
+
