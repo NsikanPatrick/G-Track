@@ -164,7 +164,8 @@ def profile(request, user_id):
 @login_required
 def profile_update(request, user_id):
     if request.method == 'POST':
-        user_obj = User.objects.get(id=user_id)
+        user_details = User.objects.get(id=user_id)
+        # user_obj = User.objects.get(id=user_id)
         user_profile_obj = UserProfile.objects.get(user=user_id)
 
         if 'user_img' in request.FILES:
@@ -185,13 +186,50 @@ def profile_update(request, user_id):
         user_profile_obj.address = address
         user_profile_obj.save()
         
-        user_obj.username =  username
-        user_obj.email = email
-        user_obj.save()
-        user_obj.refresh_from_db()
+        user_details.username =  username
+        user_details.email = email
+        user_details.save()
+        user_details.refresh_from_db()
+
+
+        # user_obj.username =  username
+        # user_obj.email = email
+        # user_obj.save()
+        # user_obj.refresh_from_db()
+
+
+        # Added section
+        # user_profile = UserProfile.objects.get(user=user_id)
+        # user_details = User.objects.get(id=user_id)
+
+        # c_payments = Payment.objects.filter(client_id=current_user.id)
+        # c_debtors = Debtor.objects.filter(client_id=current_user.id)
+        # c_total = c_debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        # c_retrieved = c_payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        # c_debt = c_total - c_retrieved
+
+        debtors = Debtor.objects.all()
+        payments = Payment.objects.all()
+
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+
+
+        debt = total - retrieved
+        return render(request, "profile/user_profile2.html", 
+                      {'my_profile': user_profile_obj, 
+                       'user_details': user_details, 
+                       "total": total, 
+                       "retrieved": retrieved, 
+                       "debt": debt,
+                    #    "c_total": c_total,
+                    #    "c_retrieved": c_retrieved,
+                    #    "c_debt": c_debt,
+                    }
+                )
         
 
-        return render(request, "profile/user_profile.html", {'my_profile': user_profile_obj})
+        # return render(request, "profile/user_profile2.html", {'my_profile': user_profile_obj})
 
     return render(request, "profile/profile_update.html", {})
 
