@@ -88,7 +88,7 @@
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
-                <a href="{% url 'index' %}">
+                <a href="{% url 'multiple_recipients' %}">
                     <i class="fa fa-envelope-o"></i>
                     <h3>Notifications</h3>
                     <!-- <span class="message-count">20</span> -->
@@ -140,6 +140,7 @@
     </div>
     <div class="panel profile-panel">
         <main>
+            
             <h1 class="panel-label">Your Profile</h1>
 
             <div class="panel-body">
@@ -161,24 +162,28 @@
                                     {% endif %}
                                 </tr>
                                 <tr>
+                                    <th scope="row">Name:</th>
+                                    <td>{{ user_details.first_name }} {{ user_details.last_name }}</td>
+                                </tr>
+                                <tr>
                                     <th scope="row">Username:</th>
-                                    <td>{{ user.username }}</td>
+                                    <td>{{ user_details.username }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Email:</th>
-                                    <td>{{ user.email }}</td>
+                                    <td>{{ user_details.email }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Phone:</th>
-                                    <td> {{ user.userprofile.phone }}</td>
+                                    <td> {{ user_details.userprofile.phone }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Address:</th>
-                                    <td>{{ user.userprofile.address }}</td>
+                                    <td>{{ user_details.userprofile.address }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Date Joined:</th>
-                                    <td>{{ user.date_joined }}</td>
+                                    <td>{{ user_details.date_joined }}</td>
                                 </tr>
                             </tbody>
                         </table>

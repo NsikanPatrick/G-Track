@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+
+{% block title %} G-TrackApp {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="x-wrapper">
+    <!-- <div class="wrapper-inner"> -->
+    <div class="vertical-wrapper" id="sidebar">
+        <div class="backdrop"></div>
+        <div class="vertical-bar">
+
+            <div class="close-btn">
+                <i class="fa fa-times"></i>
+            </div>
+            <div class="logo">
+                G - <span>Track</span>
+            </div>
+            {% if user.is_staff %}
+            <div class="sidebar">
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-desktop"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="{% url 'profile' user_id=user.id %}">
+                    <i class="fa fa-user"></i>
+                    <h3>Profile</h3>
+                </a>
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-users"></i>
+                    <h3>Admins</h3>
+                </a>
+                <a href="{% url 'payments' %}">
+                    <i class="fa fa-money"></i>
+                    <h3>Payments</h3>
+                </a>
+                <a href="{% url 'all_clients' %}">
+                    <i class="fa fa-users"></i>
+                    <h3>Clients</h3>
+                </a>
+                <a href="{% url 'debtors' %}">
+                    <i class="fa fa-cc-mastercard"></i>
+                    <h3>Debtors</h3>
+                </a>
+                <a href="{% url 'analytics' %}">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="{% url 'multiple_recipients' %}">
+                    <i class="fa fa-envelope-o"></i>
+                    <h3>Notifications</h3>
+                    <!-- <span class="message-count">20</span> -->
+                </a>
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-cog"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="{% url 'create_client' %}">
+                    <i class="fa fa-plus"></i>
+                    <h3>Add Client</h3>
+                </a>
+                <a href="{% url 'logout' %}">
+                    <i class="fa fa-sign-out"></i>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+            {% else %}
+            <div class="sidebar">
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-desktop"></i>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="{% url 'profile' user_id=user.id %}">
+                    <i class="fa fa-user"></i>
+                    <h3>Profile</h3>
+                </a>
+                <a href="{% url 'my_payments' user_id=user.id %}">
+                    <i class="fa fa-money"></i>
+                    <h3>Payments</h3>
+                </a>
+                <a href="{% url 'my_debtors' user_id=user.id %}">
+                    <i class="fa fa-cc-mastercard"></i>
+                    <h3>Debtors</h3>
+                </a>
+                <a href="{% url 'my_analytics' user_id=user.id %}">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-envelope-o"></i>
+                    <h3>Notifications</h3>
+                    <!-- <span class="message-count">20</span> -->
+                </a>
+                <a href="{% url 'index' %}">
+                    <i class="fa fa-cog"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="{% url 'logout' %}">
+                    <i class="fa fa-sign-out"></i>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="top-bar">
+            <div class="hamburger">
+                <i class="fa fa-bars"></i>
+            </div>
+
+            <div class="top-right">
+
+                <div class="theme-toggler">
+                    <i class="fa fa-sun-o active"></i>
+                    <i class="fa fa-moon-o"></i>
+                </div>
+                <!-- This section keeps reverting to the extreme left on deployment -->
+                <div class="profile">
+                    <div class="info">
+                        <small class="text-muted">{{user.username}}</small>
+                    </div>
+                    <div class="profile-photo">
+                        <!-- <img src="{% static 'img/Me2.jpg' %}" alt="mgm"> -->
+                        {% if user.userprofile.profile_pic %}
+                        <img src="{{user.userprofile.profile_pic.url}}" width="300" height="300" />
+                        {% else %}
+                        <!-- A default image to be shown if the user did not upload a profile pic -->
+                        <img src="{% static 'img/anonymous.jpg' %}" width="300" height="300" />
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- End of Top right section -->
+        </div>
+
+    </div>
+    <div class="panel profile-panel">
+        <main>
+
+            <h1 class="panel-label">Your Profile</h1>
+
+            <div class="panel-body">
+                <div class="profile-wrapper">
+                    <div class="left box">
+                        
+                        <div class="profile-pix">
+                            <!-- <img src="{% static 'img/anonymous.jpg' %}" alt="mgm"> -->
+                            {% if user_details.userprofile.profile_pic %}
+                            <img src="{{user_details.userprofile.profile_pic.url}}" width="200" height="200" />
+                            {% else %}
+                            <!-- A default image to be shown if the user did not upload a profile pic -->
+                            <img src="{% static 'img/anonymous.jpg' %}" width="200" height="200" />
+                            {% endif %}
+                        </div>
+                        <h2 class="account-name text-center">{{ user_details.first_name }} {{ user_details.last_name }}</h2>
+                        <div class="profile-details">
+                            <div class="table-container">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <!-- Table header content here -->
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Username:</th>
+                                            <td>{{ user_details.username }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Phone:</th>
+                                            <td>{{ user_details.phone }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Email:</th>
+                                            <td>{{ user_details.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Address:</th>
+                                            <td>{{ user_details.address }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            
+                        </div>
+                        <div class="button-container">
+                            <a class="edit-profile" href="{% url 'profile_update' user_id=user.id %}">Edit Profile</a>
+                            <!-- <a class="edit-btn" href="{% url 'profile_update' user_id=user.id %}">Edit profile</a> -->
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <div class="right-top box">
+                            <h2 class="text-center">G-Track Information</h2>
+                            <div class="table-container">
+                                <table class="table table-borderless">
+                                    <thead>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Status:</th>
+                                            {% if user.is_superuser and user.is_staff %}
+                                            <td>Super Admin</td>
+                                            {% elif not user.is_superuser and user.is_staff %}
+                                            <td>Editor</td>
+                                            {% else %}
+                                            <td>Client</td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Date Joined:</th>
+                                            <td>{{ user_details.date_joined }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Last Seen:</th>
+                                            <td>{{ user_details.last_login }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="right-bottom box">
+                            <h2 class="text-center">Payment Information</h2>
+                            <div class="table-container">
+                                <table class="table table-borderless">
+                                    <thead>
+
+                                    </thead>
+                                    <tbody>
+                                        {% if user.is_superuser and user.is_staff %}
+                                        <tr>
+                                            <th scope="row">Total Amount Owed:</th>
+                                            <td>{{total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Amount Retrieved:</th>
+                                            <td>{{retrieved}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Balance left:</th>
+                                            <td>{{debt}}</td>
+                                        </tr>
+                                        {% elif not user.is_superuser and user.is_staff %}
+                                        <tr>
+                                            <th scope="row">Total Amount Owed:</th>
+                                            <td>{{total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Amount Retrieved:</th>
+                                            <td>{{retrieved}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Balance left:</th>
+                                            <td>{{debt}}</td>
+                                        </tr>
+                                        {% else %}
+                                        client
+                                        <tr>
+                                            <th scope="row">Total Amount Owed:</th>
+                                            <td>{{c_total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Amount Retrieved:</th>
+                                            <td>{{c_retrieved}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Balance left:</th>
+                                            <td>{{c_debt}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!---------------- END OF RECENT ORDERS SECTION ---------------->
+        </main>
+
+        <!------------------- END OF MAIN SECTION ------------------->
+
+
+        <!---------------------- RIGHT SECTION ---------------------->
+
+
+
+    </div>
+    <!-- </div> -->
+</div>
+{% endblock %}

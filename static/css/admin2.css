@@ -797,9 +797,9 @@ main .panel-body .admin-panel a#show-all{
 }
 
 .box{
-    background: #fff;
+    background: var(--color-white);
     width: 100%;
-    color: #fff;
+    color: var(--color-white);
     padding: 20px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
@@ -815,8 +815,13 @@ main .panel-body .admin-panel a#show-all{
 /* ================= Media queries for desktops and large screens ================== */
 @media screen and (min-width: 1301px) {
     .wrapper{
+        /* width: 95%; */
         width: 87%;
         /* background: #fff; */
+        display: flex;
+    }
+
+    .x-wrapper{
         display: flex;
     }
 
@@ -1206,6 +1211,9 @@ main .panel-body .admin-panel a#show-all{
 
 
 @media (max-width: 768px){
+    .profile-details{
+        margin-left: -630px;
+    }
     .panel{
         background: var(--color-background);
         padding: 0 10px;
@@ -1404,6 +1412,10 @@ main .panel-body .admin-panel a#show-all{
         /* margin-left: -250px !important; */
     }
 
+    .profile-details{
+        margin-left: -630px;
+    }
+
     .panel.profile-panel{
         margin-left: -570px !important;
         margin-right: 15px;
@@ -1411,6 +1423,9 @@ main .panel-body .admin-panel a#show-all{
 }
 
 @media (max-width: 600px){
+    .profile-details{
+        margin-left: -430px;
+    }
 
     .main-container .top-bar .top-right .theme-toggler{
         margin-left: -70px;
@@ -1569,5 +1584,140 @@ main .panel-body .admin-panel a#show-all{
     }
 }
 
+/* Profile section */
 
+.profile-wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 10px 20px 30px;
+}
 
+.box{
+    background: var(--color-white);
+    padding: 20px;
+    border-radius: 25px;
+}
+
+/* Left styles */
+.left{
+    margin-right: 20px;
+    max-width: 45%;
+    padding-bottom: 50px;
+}
+
+.profile-pix{
+    max-width: 100%; /* Make the container responsive */
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+}
+
+.profile-pix img {
+    border-radius: 25%;
+    margin-bottom: 15px;
+    /* You may add the code below for media queries */
+    max-width: 100%; /*# Make the image responsive */
+    height: auto; /*# Maintain aspect ratio*/
+}
+
+.text-center {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color)
+}
+
+.left .table tr td,.left .table tr th,
+.right .table tr th, .right .table tr td{
+    text-align: center;
+    border-bottom: 1px solid var(--color-info-light);
+    padding: 15px;
+}
+
+.left .button-container {
+    text-align: center; /* Center-align its children horizontally */
+}
+
+.left .button-container .edit-profile{
+    background: var(--primary-color);
+    color: var(--color-white);
+    padding: 13px;
+    margin-top: 15px;
+    border-radius: 15px;
+}
+
+.left .button-container .edit-profile:hover{
+    cursor: pointer;
+    background: var(--primary-color);
+}
+
+/* Right styles */
+.right .right-top{
+    margin-bottom: 20px;
+}
+
+.right-top.box, .right-bottom.box{
+    padding: 40px;
+}
+
+.right-top h2, .right-bottom h2{
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--color-info-light);
+}
+
+.right .table{
+    margin-top: 10px;
+}
+
+@media screen and (max-width:920px){
+
+    .profile-wrapper {
+        margin-right: 20px;
+    }
+
+    .left{
+        margin-right: 10px;
+        max-width: 55%;
+    }
+
+    .left .table{
+        margin-left: 140px;
+    }
+
+    .left .table tr td,.left .table tr th,
+    .right .table tr th, .right .table tr td{
+    padding: 0px;
+    }
+}
+
+@media screen and (max-width:768px){
+    .profile-panel .panel-label{
+        margin-left: 650px;
+    }
+
+    .profile-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 80%;
+        margin-left: 550px;
+        /* background: seagreen; */
+    }
+
+    .left{
+        margin-right: 0px;
+        max-width: 100%;
+    }
+
+    .table-container, .right h2 {
+        display: flex;
+        justify-content: center;
+    }
+
+    .left .table tr td,.left .table tr th,
+    .right .table tr th, .right .table tr td{
+    padding: 0px;
+    }
+
+    .left .table{
+        margin-left: -10px;
+    }
+}
+/* End of profile section */

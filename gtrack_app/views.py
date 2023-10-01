@@ -130,10 +130,36 @@ def create_admin(request):
 
 @login_required
 def profile(request, user_id):
+    current_user = request.user
     if user_id:
         user_profile = UserProfile.objects.get(user=user_id)
-        # return render(request, "profile/test.html", {'my_profile': user_profile})
-        return render(request, "profile/user_profile.html", {'my_profile': user_profile})
+        user_details = User.objects.get(id=user_id)
+
+        # c_payments = Payment.objects.filter(client_id=current_user.id)
+        # c_debtors = Debtor.objects.filter(client_id=current_user.id)
+        # c_total = c_debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        # c_retrieved = c_payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        # c_debt = c_total - c_retrieved
+
+        debtors = Debtor.objects.all()
+        payments = Payment.objects.all()
+
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+
+
+        debt = total - retrieved
+        return render(request, "profile/user_profile2.html", 
+                      {'my_profile': user_profile, 
+                       'user_details': user_details, 
+                       "total": total, 
+                       "retrieved": retrieved, 
+                       "debt": debt,
+                    #    "c_total": c_total,
+                    #    "c_retrieved": c_retrieved,
+                    #    "c_debt": c_debt,
+                    }
+                       )
 
 @login_required
 def profile_update(request, user_id):
@@ -489,7 +515,8 @@ def payments(request):
 @login_required
 def create_payment(request):
     if request.method == "POST":
-        amount_payed = request.POST["amount_payed"]
+        amount_payed_str = request.POST["amount_payed"]
+        amount_payed = amount_payed_str.replace('#', '')
         medium_of_payment = request.POST["medium_of_payment"]
         debtor_id = request.POST["debtor"]
         

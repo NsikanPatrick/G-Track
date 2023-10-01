@@ -48,7 +48,7 @@
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
-                <a href="{% url 'index' %}">
+                <a href="{% url 'multiple_recipients' %}">
                     <i class="fa fa-envelope-o"></i>
                     <h3>Notifications</h3>
                     <!-- <span class="message-count">20</span> -->
@@ -57,7 +57,7 @@
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a>
-                <a href="{% url 'create_admin' %}">
+                <a href="{% url 'create_client' %}">
                     <i class="fa fa-plus"></i>
                     <h3>Add Client</h3>
                 </a>
@@ -128,7 +128,7 @@
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <input type="text" id="amount_payed" class="form-control" name="amount_payed"
-                                        placeholder="Amount Payed (Please don't type in the currency sign)">
+                                        placeholder="Amount Payed">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
