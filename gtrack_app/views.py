@@ -25,7 +25,10 @@ import time
 import datetime
 import pytz
 
+# from decouple import config
 
+# email_sender_env = config('EMAIL_SENDER')
+# email_password_env = config('EMAIL_PASSWORD')
 # @login_required(login_url='login')
 @login_required
 def index(request):
@@ -714,6 +717,9 @@ def single_recipient_send_mail(request):
             return HttpResponseBadRequest('Missing required fields')
 
         # Create email message
+        # email_sender = email_sender_env
+        # email_password = email_password_env
+
         email_sender = 'nsikanadaowo90@gmail.com'
         email_password = 'jduzadsuapibwahj'
         context = ssl.create_default_context()
