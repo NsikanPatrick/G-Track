@@ -7,6 +7,62 @@ from .models import UserProfile
 from django.core.files.storage import FileSystemStorage
 
 # @login_required(login_url='login')
+
+def debtors(request):
+    all_debtors = Debtor.objects.all().order_by('date_captured').reverse()
+    all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    return render(request, 'debtors/debtors.html', {'debtors': all_debtors, 'clients': all_clients})
+
+
+@login_required
+def create_debtor(request):
+    if request.method == "POST":
+        firstname = request.POST["firstname"]
+        surname = request.POST["surname"]
+        address = request.POST["address"]
+        phone = request.POST["phone"]
+        email = request.POST["email"]
+        amount_owed = request.POST["amount_owed"]
+        due_date = request.POST["due_date"]
+        client_id = request.POST["client"]
+
+        # return render(request, "debtors/test.html", {'client': client_id}) 
+
+        if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or client_id == "":
+            messages.success(request, "Please complete all input fields")
+            all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
+            return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+
+        if phone != "" or email != "":
+            if len(phone) < 11:
+                messages.success(request, "The inputed phone number is less than 11 characters")
+                all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
+                return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+
+            # The email inputs needs to be validated as well
+            if Debtor.objects.filter(email=email).exists():
+                messages.success(request, "Email already exists")
+                all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
+                return render(request, "debtors/create_debtor.html", {'clients': all_clients})  
+
+        debtor = Debtor()
+        debtor.firstname = firstname
+        debtor.surname = surname
+        debtor.address = address
+        debtor.phone = phone
+        debtor.email = email
+        debtor.amount_owed = amount_owed
+        debtor.due_date = due_date
+        debtor.client_id = client_id
+        debtor.save()
+        messages.success(request, "Details were successfully captured")
+        return redirect('debtors')
+
+    all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
+    # all_clients = User.objects.filter(is_superuser=False, is_staff=False)
+    return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+
+
 @login_required
 def index(request):
     # return HttpResponse('Halo')

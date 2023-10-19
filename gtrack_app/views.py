@@ -437,13 +437,18 @@ def create_debtor(request):
         address = request.POST["address"]
         phone = request.POST["phone"]
         email = request.POST["email"]
+
+        guarantors_name = request.POST["guarantors_name"]
+
         amount_owed = request.POST["amount_owed"]
         due_date = request.POST["due_date"]
         client_id = request.POST["client"]
 
-        # return render(request, "debtors/test.html", {'client': client_id}) 
+        # Check if the due_date is empty, and set it to None if it is
+        if not due_date:
+            due_date = None
 
-        if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or client_id == "":
+        if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or guarantors_name == "" or client_id == "":
             messages.success(request, "Please complete all input fields")
             all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
             return render(request, "debtors/create_debtor.html", {'clients': all_clients})
@@ -454,7 +459,6 @@ def create_debtor(request):
                 all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
                 return render(request, "debtors/create_debtor.html", {'clients': all_clients})
 
-            # The email inputs needs to be validated as well
             if Debtor.objects.filter(email=email).exists():
                 messages.success(request, "Email already exists")
                 all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
@@ -468,14 +472,17 @@ def create_debtor(request):
         debtor.email = email
         debtor.amount_owed = amount_owed
         debtor.due_date = due_date
+
+        debtor.guarantors_name = guarantors_name
+
         debtor.client_id = client_id
         debtor.save()
-        messages.success(request, "Details was successfully captured")
+        messages.success(request, "Details were successfully captured")
         return redirect('debtors')
 
     all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
-    # all_clients = User.objects.filter(is_superuser=False, is_staff=False)
     return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+
 
 
 @login_required
