@@ -143,14 +143,13 @@
                         <div class="admin-panel">
 
                             <table>
-
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Amount Payed</th>
+                                        <th>Amount Paid</th>
                                         <th>Medium of Payment</th>
                                         <th>Balance left</th>
-                                        <th>Date Payed</th>
+                                        <th>Date Paid</th>
                                         <th>Total Amount Owed</th>
                                         <th>Payed by</th>
                                         <th>Status</th>
@@ -164,25 +163,16 @@
                                         <td>{{ payment.medium_of_payment }}</td>
                                         <td>{{ payment.balance_left }}</td>
                                         <td>{{ payment.date_payed }}</td>
-                                        <!-- loop through the admin_profiles list and only display the profile for the current admin -->
-                                        {% for debtor in debtors %}
-                                        {% if debtor.id == payment.debtor_id %}
-                                        <!-- display the information for each admin and their corresponding profile -->
-                                        <td>{{ debtor.amount_owed }}</td>
-                                        <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
-
+                                        <td>{{ payment.debtor_id.amount_owed }}</td>
+                                        <td>{{ payment.debtor_id.firstname }} {{ payment.debtor.surname }}</td>
                                         <td><a class="primary-btn">{{ payment.status }}</a></td>
-                                        <td><a class="danger-btn" href="{% url 'approve_payment' user_id=payment.id %}"
-                                                onclick="return confirm('Are you sure you want to approve this payment?')">Approve</a>
+                                        <td>
+                                            <a class="danger-btn" href="{% url 'approve_payment' user_id=payment.id %}"
+                                               onclick="return confirm('Are you sure you want to approve this payment?')">Approve</a>
                                         </td>
-                                        {% endif %}
-                                        {% endfor %}
-
                                     </tr>
                                     {% endfor %}
-
                                 </tbody>
-
                             </table>
 
                             <a id="show-all" href="#">Show all</a>

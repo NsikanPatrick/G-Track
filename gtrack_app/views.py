@@ -33,35 +33,37 @@ import pytz
 @login_required
 def index(request):
     current_user = request.user
+
     if current_user.is_staff:
-        all_debtors = Debtor.objects.all()[:5]
-        all_payments = Payment.objects.all().order_by('date_payed').reverse()[:5]
-        debtors = Debtor.objects.all()
-        payments = Payment.objects.all()
+        # Fetch the payments and related debtors efficiently
+        all_payments = Payment.objects.select_related('debtor_id').order_by('date_payed').reverse()[:5]
+        all_debtors = [payment.debtor_id for payment in all_payments]
 
-        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
-        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        # Calculate the total and retrieved amounts
+        total = sum(debtor.amount_owed for debtor in all_debtors)
+        retrieved = sum(payment.amount_payed for payment in all_payments)
 
-        if total is None or retrieved is None:    
+        if total is None or retrieved is None:
             return render(request, 'error_pages/admin_index.html', {})
 
         debt = total - retrieved
+
         return render(request, 'index.html', {'payments': all_payments, 'debtors': all_debtors, "total": total, "retrieved": retrieved, "debt": debt})
-
     else:
+        # Fetch the user's payments and related debtors efficiently
+        my_payments = Payment.objects.select_related('debtor_id').filter(client_id=current_user.id).order_by('date_payed').reverse()[:5]
+        my_debtors = [payment.debtor_id for payment in my_payments]
 
-        my_payments = Payment.objects.filter(client_id=current_user.id).order_by('date_payed').reverse()[:5]
-        my_debtors = Debtor.objects.filter(client_id=current_user.id)[:5]
-        payments = Payment.objects.filter(client_id=current_user.id)
-        debtors = Debtor.objects.filter(client_id=current_user.id)
-        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
-        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        # Calculate the total and retrieved amounts for the user
+        total = sum(debtor.amount_owed for debtor in my_debtors)
+        retrieved = sum(payment.amount_payed for payment in my_payments)
 
         if total is None or retrieved is None:
             return render(request, 'error_pages/client_index.html', {})
 
         debt = total - retrieved
-        return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt}) 
+
+        return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt})
 
 @login_required
 def admins(request):
@@ -314,43 +316,43 @@ def create_client(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-        firstname = request.POST["firstname"]
-        lastname = request.POST["lastname"]
+        firstname = request.POST["firstname"] # firstname also stands as the name of the organization
+        # lastname = request.POST["lastname"]
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
 
-        if username == "" or email == "" or firstname == "" or lastname == "" or password == "":
+        if username == "" or email == "" or firstname == "" or password == "":
             messages.success(request, "Please complete all input fields")
-            return render(request, "authentication/create_client.html")
+            return render(request, "admins_dashboard/create_client.html")
 
         if username != "" or email != "":
-            if len(username) < 8:
+            if len(username) < 6:
                 messages.success(request, "Username must not be less than 8 characters")
-                return render(request, "authentication/create_client.html")
+                return render(request, "admins_dashboard/create_client.html")
 
             if User.objects.filter(username=username).exists():
                 messages.success(request, "Username already exists")
-                return render(request, "authentication/create_client.html")
+                return render(request, "admins_dashboard/create_client.html")
 
             # The email inputs needs to be validated as well
             if User.objects.filter(email=email).exists():
                 messages.success(request, "Email already exists")
-                return render(request, "authentication/create_client.html")   
+                return render(request, "admins_dashboard/create_client.html")   
 
         if not password == confirm_password:
             messages.success(request, "Your passwords did not match")
-            return render(request, "authentication/create_client.html")
+            return render(request, "admins_dashboard/create_client.html")
 
         user = User.objects.create_user(username, email, password)
         user.first_name = firstname
-        user.last_name = lastname
+        # user.last_name = lastname
         user.email = email
         user.username = username
         user.save()
-        messages.success(request, "The client's account was successfully created")
+        messages.success(request, firstname + "'s account was successfully created")
         return redirect('all_clients')
 
-    return render(request, "authentication/create_client.html")
+    return render(request, "admins_dashboard/create_client.html")
 
 
 @login_required
@@ -375,21 +377,28 @@ def client_edited(request, user_id):
             fs_handle.save(img_name, user_img)
             details_profile.profile_pic = img_name
 
+        firstname = request.POST["firstname"]
         username = request.POST["username"]
         email = request.POST["email"]
         phone = request.POST["phone"]
         address = request.POST["address"]
 
+        contact_person = request.POST["contact_person"]
+        contact_person_phone = request.POST["contact_person_phone"]
+
         details_profile.phone = phone
         details_profile.address = address
+        details_profile.contact_person = contact_person
+        details_profile.contact_person_phone = contact_person_phone
         details_profile.save()
         
+        details.first_name =  firstname
         details.username =  username
         details.email = email
         details.save()
         details.refresh_from_db()
         
-        messages.success(request, username + "'s profile details has been updated")
+        messages.success(request, firstname + "'s profile details has been updated")
         return redirect('all_clients')
         
 
@@ -430,6 +439,7 @@ def debtors(request):
 
 
 @login_required
+# Just activate back due date variables if need be, they didnt give errors
 def create_debtor(request):
     if request.method == "POST":
         firstname = request.POST["firstname"]
@@ -439,16 +449,17 @@ def create_debtor(request):
         email = request.POST["email"]
 
         guarantors_name = request.POST["guarantors_name"]
+        guarantors_phone = request.POST["guarantors_phone"]
 
         amount_owed = request.POST["amount_owed"]
-        due_date = request.POST["due_date"]
+        # due_date = request.POST["due_date"]
         client_id = request.POST["client"]
 
         # Check if the due_date is empty, and set it to None if it is
-        if not due_date:
-            due_date = None
+        # if not due_date:
+        #     due_date = None
 
-        if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or guarantors_name == "" or client_id == "":
+        if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or guarantors_name == "" or guarantors_phone == "" or client_id == "":
             messages.success(request, "Please complete all input fields")
             all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
             return render(request, "debtors/create_debtor.html", {'clients': all_clients})
@@ -471,13 +482,14 @@ def create_debtor(request):
         debtor.phone = phone
         debtor.email = email
         debtor.amount_owed = amount_owed
-        debtor.due_date = due_date
+        # debtor.due_date = due_date
 
         debtor.guarantors_name = guarantors_name
+        debtor.guarantors_phone = guarantors_phone
 
         debtor.client_id = client_id
         debtor.save()
-        messages.success(request, "Details were successfully captured")
+        messages.success(request, firstname+"'s details were successfully captured")
         return redirect('debtors')
 
     all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
@@ -512,7 +524,7 @@ def debtor_edited(request, user_id):
         details.save()
         # details.refresh_from_db()
         
-        messages.success(request, "Details successfully updated")
+        messages.success(request, "Debtor's details were successfully updated")
         return redirect('debtors')
         
 
@@ -545,6 +557,9 @@ def debtors_bulk_actions(request):
             # Filter the records using the `id__in` lookup and delete them
             Debtor.objects.filter(id__in=selected_records).delete()
 
+            Payment.objects.filter(debtor_id__in=selected_records).delete()
+            # Payment.objects.filter(debtor_id__in=selected_records).delete()
+
             # Redirect to the success page
             messages.success(request, "The selected record(s) were successfully deleted from the database")
             return redirect('debtors')
@@ -555,10 +570,13 @@ def debtors_bulk_actions(request):
    
 
 @login_required
+# def payments(request):
+#     all_payments = Payment.objects.all().order_by('date_payed').reverse()
+#     all_debtors = Debtor.objects.all
+#     return render(request, 'payments/payments.html', {'payments': all_payments, 'debtors': all_debtors})
 def payments(request):
-    all_payments = Payment.objects.all().order_by('date_payed').reverse()
-    all_debtors = Debtor.objects.all
-    return render(request, 'payments/payments.html', {'payments': all_payments, 'debtors': all_debtors})
+    all_payments = Payment.objects.select_related('debtor_id').order_by('date_payed').reverse()
+    return render(request, 'payments/payments.html', {'payments': all_payments})
 
 @login_required
 def create_payment(request):
@@ -568,41 +586,44 @@ def create_payment(request):
         medium_of_payment = request.POST["medium_of_payment"]
         debtor_id = request.POST["debtor"]
         
+        debtor = Debtor.objects.get(id=debtor_id)
         payment = Payment.objects.filter(debtor_id=debtor_id).last()
+        
         if payment:
             balance_left = payment.balance_left
+            
             if balance_left <= 0:
-                messages.success(request, "This debtor has already completed his payment")
+                messages.success(request, "This debtor has already completed their payment")
                 return redirect('payments')
-                # What if the person made an overpaid last payment
+            
             new_payment = Payment()
             new_payment.amount_payed = amount_payed
             new_payment.medium_of_payment = medium_of_payment
             new_payment.balance_left = int(balance_left) - int(amount_payed)
-            new_payment.debtor_id = debtor_id
-            # payment.client_id = related_client_id
+            new_payment.debtor_id = debtor
+            new_payment.client_id = debtor.client_id  # Assign the client instance as the client_id
             new_payment.status = "In Progress"
             new_payment.save()
             messages.success(request, "Payment details were successfully captured")
             return redirect('payments')
         else:
-            debtor = Debtor.objects.get(id=debtor_id)
             amount_owed = debtor.amount_owed
-            related_client_id = debtor.client_id
+            client = User.objects.get(id=debtor.client_id)
 
             payment = Payment()
             payment.amount_payed = amount_payed
             payment.medium_of_payment = medium_of_payment
             payment.balance_left = int(amount_owed) - int(amount_payed)
-            payment.debtor_id = debtor_id
-            payment.client_id = related_client_id
+            payment.debtor_id = debtor
+            payment.client_id = client  # Assign the client instance as the client_id
             payment.status = "In Progress"
             payment.save()
             messages.success(request, "Payment details were successfully captured")
             return redirect('payments')
 
-    all_debtors = Debtor.objects.all
+    all_debtors = Debtor.objects.all()
     return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
 
 @login_required
 def approve_payment(request, user_id):

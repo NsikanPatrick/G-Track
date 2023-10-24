@@ -7,6 +7,171 @@ from .models import UserProfile
 from django.core.files.storage import FileSystemStorage
 
 # @login_required(login_url='login')
+def create_payment(request):
+    if request.method == "POST":
+        amount_payed_str = request.POST["amount_payed"]
+        amount_payed = amount_payed_str.replace('#', '')
+        medium_of_payment = request.POST["medium_of_payment"]
+        debtor_id = request.POST["debtor"]
+        
+        debtor = Debtor.objects.get(id=debtor_id)
+        payment = Payment.objects.filter(debtor_id=debtor_id).last()
+        if payment:
+            balance_left = payment.balance_left
+            if balance_left <= 0:
+                messages.success(request, "This debtor has already completed his payment")
+                return redirect('payments')
+                # What if the person made an overpaid last payment
+            new_payment = Payment()
+            new_payment.amount_payed = amount_payed
+            new_payment.medium_of_payment = medium_of_payment
+            new_payment.balance_left = int(balance_left) - int(amount_payed)
+            new_payment.debtor_id = debtor
+            new_payment.status = "In Progress"
+            new_payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+        else:
+            debtor = Debtor.objects.get(id=debtor_id)
+            amount_owed = debtor.amount_owed
+            client = User.objects.get(id=debtor.client_id)
+
+            payment = Payment()
+            payment.amount_payed = amount_payed
+            payment.medium_of_payment = medium_of_payment
+            payment.balance_left = int(amount_owed) - int(amount_payed)
+            payment.debtor_id = debtor
+            payment.client_id = client  # Corrected this line to assign the client instance
+            payment.status = "In Progress"
+            payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+
+    all_debtors = Debtor.objects.all()
+    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+
+
+def index(request):
+    current_user = request.user
+    if current_user.is_staff:
+        all_debtors = Debtor.objects.all()[:5]
+        all_payments = Payment.objects.all().order_by('date_payed').reverse()[:5]
+        debtors = Debtor.objects.all()
+        payments = Payment.objects.all()
+
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+
+        if total is None or retrieved is None:    
+            return render(request, 'error_pages/admin_index.html', {})
+
+        debt = total - retrieved
+        return render(request, 'index.html', {'payments': all_payments, 'debtors': all_debtors, "total": total, "retrieved": retrieved, "debt": debt})
+
+    else:
+
+        my_payments = Payment.objects.filter(client_id=current_user.id).order_by('date_payed').reverse()[:5]
+        my_debtors = Debtor.objects.filter(client_id=current_user.id)[:5]
+        payments = Payment.objects.filter(client_id=current_user.id)
+        debtors = Debtor.objects.filter(client_id=current_user.id)
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+
+        if total is None or retrieved is None:
+            return render(request, 'error_pages/client_index.html', {})
+
+        debt = total - retrieved
+        return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt}) 
+
+
+
+def create_payment(request):
+    if request.method == "POST":
+        amount_payed_str = request.POST["amount_payed"]
+        amount_payed = amount_payed_str.replace('#', '')
+        medium_of_payment = request.POST["medium_of_payment"]
+        debtor_id = request.POST["debtor"]
+        
+        payment = Payment.objects.filter(debtor_id=debtor_id).last()
+        if payment:
+            balance_left = payment.balance_left
+            if balance_left <= 0:
+                messages.success(request, "This debtor has already completed his payment")
+                return redirect('payments')
+                # What if the person made an overpaid last payment
+            new_payment = Payment()
+            new_payment.amount_payed = amount_payed
+            new_payment.medium_of_payment = medium_of_payment
+            new_payment.balance_left = int(balance_left) - int(amount_payed)
+            new_payment.debtor_id = debtor_id
+            # payment.client_id = related_client_id
+            new_payment.status = "In Progress"
+            new_payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+        else:
+            debtor = Debtor.objects.get(id=debtor_id)
+            amount_owed = debtor.amount_owed
+            related_client_id = debtor.client_id
+
+            payment = Payment()
+            payment.amount_payed = amount_payed
+            payment.medium_of_payment = medium_of_payment
+            payment.balance_left = int(amount_owed) - int(amount_payed)
+            payment.debtor_id = debtor_id
+            payment.client_id = related_client_id
+            payment.status = "In Progress"
+            payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+
+    all_debtors = Debtor.objects.all
+    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+
+def create_payment(request):
+    if request.method == "POST":
+        amount_payed_str = request.POST["amount_payed"]
+        amount_payed = amount_payed_str.replace('#', '')
+        medium_of_payment = request.POST["medium_of_payment"]
+        debtor_id = int(request.POST["debtor"])
+        
+        try:
+            debtor = Debtor.objects.get(id=debtor_id)  # Get the Debtor instance
+            # debtor = Debtor.objects.get(id=debtor_id)
+            # Calculate the balance_left
+            last_payment = Payment.objects.filter(debtor_id=debtor).last()
+            if last_payment:
+                balance_left = last_payment.balance_left
+                if balance_left <= 0:
+                    messages.success(request, "This debtor has already completed their payment")
+                    return redirect('payments')
+            else:
+                balance_left = debtor.amount_owed
+
+            client = User.objects.get(id=debtor.client_id)  # Get the client's instance
+            # client = User.objects.get(id=debtor.client_id)
+            # Create a new Payment instance
+            new_payment = Payment()
+            new_payment.amount_payed = amount_payed
+            new_payment.medium_of_payment = medium_of_payment
+            new_payment.balance_left = max(balance_left - int(amount_payed), 0)  # Ensure balance_left is not negative
+            new_payment.debtor_id = debtor  # Assign the Debtor instance to the ForeignKey field
+            # new_payment.debtor_id = debtor_id
+            new_payment.client_id = client  # Assign the User instance to the ForeignKey field
+            new_payment.status = "In Progress"
+            new_payment.save()
+            messages.success(request, "Payment details were successfully captured")
+        except Debtor.DoesNotExist:
+            messages.error(request, "Debtor does not exist.")
+        except User.DoesNotExist:
+            messages.error(request, "Client does not exist.")
+
+    all_debtors = Debtor.objects.all()
+    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+
+
 
 def debtors(request):
     all_debtors = Debtor.objects.all().order_by('date_captured').reverse()

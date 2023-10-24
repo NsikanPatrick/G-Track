@@ -54,3 +54,48 @@ if request.method == 'POST':
         with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
             smtp.login(email_sender, email_password)
             smtp.sendmail(email_sender, recipient, em.as_string())
+
+
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Amount Payed</th>
+                        <th>Medium of Payment</th>
+                        <th>Balance left</th>
+                        <th>Date Payed</th>
+                        <th>Total Amount Owed</th>
+                        <th>Payed by</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                    <tr>
+                        <td><input type="checkbox" value="{{payment.id}}" name="selected_users"></td>
+                        <td>{{ payment.amount_payed }}</td>
+                        <td>{{ payment.medium_of_payment }}</td>
+                        <td>{{ payment.balance_left }}</td>
+                        <td>{{ payment.date_payed }}</td>
+                        <!-- loop through the admin_profiles list and only display the profile for the current admin -->
+                        {% for debtor in debtors %}
+                        {% if debtor.id == payment.debtor_id %}
+                        <!-- display the information for each admin and their corresponding profile -->
+                        <td>{{ debtor.amount_owed }}</td>
+                        <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
+
+                        <td><a class="primary-btn">{{ payment.status }}</a></td>
+                        <td><a class="danger-btn" href="{% url 'approve_payment' user_id=payment.id %}"
+                                onclick="return confirm('Are you sure you want to approve this payment?')">Approve</a>
+                        </td>
+                        {% endif %}
+                        {% endfor %}
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>

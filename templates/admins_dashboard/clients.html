@@ -128,15 +128,14 @@
                         </div> -->
 
                             <div class="table-actions">
-                                <select name="action" id="action" class="dropdown-select">
+                                <!-- <select name="action" id="action" class="dropdown-select">
                                     <option value="bulk_actions">Bulk Actions</option>
-                                    <!-- <option value="send_sms">Send SMS</option> -->
                                     <option value="delete">Delete</option>
                                     <option value="manage">Manage</option>
-                                </select>
+                                </select> -->
                                 <button class="primary action-btn action" type="submit"
                                     onclick="return confirm('Are you sure you want to delete the selected record(s)?')">Delete
-                                    selected</button>
+                                    Selected Records</button>
                                 <a href="{% url 'create_client' %}" class="primary action-btn create">Create Client</a>
                             </div>
 
@@ -148,11 +147,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Phone Number</th>
-                                        <th>Address</th>
-                                        <th>First Seen</th>
+                                        <th>Name of Organization</th>
+                                        <th>Company Address</th>
+                                        <th>Company Phone</th>
+                                        <th>Contact paerson</th>
+                                        <th>Contact Person's Phone</th>
                                         <th>Last Seen</th>
                                     </tr>
                                 </thead>
@@ -164,11 +163,13 @@
                                         {% if client_profile.user_id == client.id %}
                                         <!-- display the information for each admin and their corresponding profile -->
                                         <td><input type="checkbox" value="{{client.id}}" name="select_delete"></td>
-                                        <td>{{ client.username }}</td>
-                                        <td>{{ client.email }}</td>
-                                        <td>{{ client_profile.phone }}</td>
+                                        <td>{{ client.first_name }}</td>
                                         <td>{{ client_profile.address }}</td>
-                                        <td>{{ client.date_joined }}</td>
+                                        <!-- <td>{{ client.email }}</td> -->
+                                        <td>{{ client_profile.phone }}</td>
+                                        <td>{{ client_profile.contact_person }}</td>
+                                        <td>{{ client_profile.contact_person_phone }}</td>
+                                        <!-- <td>{{ client.date_joined }}</td> -->
                                         <td>{{ client.last_login }}</td>
                                         <td><a class="primary-btn"
                                                 href="{% url 'edit_client' user_id=client.id %}">Edit</a></td>

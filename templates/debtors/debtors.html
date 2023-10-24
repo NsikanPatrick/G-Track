@@ -125,7 +125,7 @@
                                     <option value="bulk_actions">Bulk Actions</option>
                                     <option value="send_notification">Send Notification</option>
                                     <option value="delete">Delete</option>
-                                    <option value="manage">Manage</option>
+                                    <!-- <option value="manage">Manage</option> -->
                                 </select>
                                 <button class="primary action-btn action" type="submit"
                                     onclick="return confirm('Are you sure you want to apply the action to the selected record(s)?')">Apply
@@ -146,14 +146,13 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Firstname</th>
-                                        <th>Surname</th>
+                                        <th>Name</th>
                                         <th>Address</th>
                                         <th>Phone Number</th>
-                                        <th>Email</th>
+                                        <!-- <th>Email</th> -->
                                         <th>Amount Owed</th>
                                         <th>Guarantor's Name</th>
-                                        <th>Due Date</th>
+                                        <th>Guarantors Phone</th>
                                         <th>Related client</th>
                                     </tr>
                                 </thead>
@@ -161,14 +160,14 @@
                                     {% for debtor in debtors %}
                                     <tr>
                                         <td><input type="checkbox" value="{{debtor.id}}" name="selected_users"></td>
-                                        <td>{{ debtor.firstname }}</td>
-                                        <td>{{ debtor.surname }}</td>
+                                        <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
+                                        
                                         <td>{{ debtor.address }}</td>
                                         <td>{{ debtor.phone }}</td>
-                                        <td>{{ debtor.email }}</td>
+                                        <!-- <td>{{ debtor.email }}</td> -->
                                         <td>{{ debtor.amount_owed }}</td>
                                         <td>{{ debtor.guarantors_name }}</td>
-                                        <td>{{ debtor.due_date }}</td>
+                                        <td>{{ debtor.guarantors_phone }}</td>
                                         <!-- loop through the admin_profiles list and only display the profile for the current admin -->
                                         {% for client in clients %}
                                         {% if client.id == debtor.client_id %}

@@ -127,6 +127,14 @@
                             <form action="" class="my-form p-5 bg-white" id="form" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
+                                    <input type="text" id="lname" class="form-control" name="firstname"
+                                        placeholder="Name of Organization">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+                                
+                                <div class="form-group">
                                     <input type="text" id="uname" class="form-control" name="username"
                                         placeholder="Username">
                                     <i class="fa fa-check-circle"></i>
@@ -142,21 +150,13 @@
                                     <small>Error message</small>
                                 </div>
 
-                                <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="firstname"
-                                        placeholder="First name">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <input type="text" id="lname" class="form-control" name="lastname"
                                         placeholder="Last name">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group">
                                     <input type="password" id="password" class="form-control" name="password"

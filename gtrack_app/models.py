@@ -10,13 +10,16 @@ from django.contrib.auth.models import AbstractUser
 #  
 class UserProfile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    address = models.CharField(max_length=65, null=True, blank=True)
+    address = models.CharField(max_length=65, null=True, blank=True) #can also stand as the office address for the client
     phone = models.CharField(max_length=65, null=True, blank=True)
     privilege = models.CharField(max_length=50, null=True, blank=True)
     ip_address = models.CharField(max_length=50, null=True, blank=True)
-    date_created = models.DateTimeField(default=timezone.now()) 
-    last_seen = models.DateTimeField(default=timezone.now(), null=True, blank=True)
+    # date_created = models.DateTimeField(default=timezone.now()) 
     profile_pic = models.FileField(null=True, blank=True, upload_to="uploads/profile_pictures", validators = [FileExtensionValidator(allowed_extensions=['jpg','jpeg','png'])])
+
+    state_country = models.CharField(max_length=65, null=True, blank=True)
+    contact_person = models.CharField(max_length=65, null=True, blank=True)
+    contact_person_phone = models.CharField(max_length=65, null=True, blank=True)
 
     def __str__(self):
         return str(self.user)
@@ -40,8 +43,10 @@ class Debtor(models.Model):
 
 
 class Payment(models.Model):
-    debtor_id = models.IntegerField(blank=True, null=True)
-    client_id = models.IntegerField(blank=True, null=True)
+    # debtor_id = models.IntegerField(blank=True, null=True)
+    # client_id = models.IntegerField(blank=True, null=True)
+    debtor_id = models.ForeignKey(Debtor, on_delete=models.CASCADE, blank=True, null=True)  # Foreign key to Debtor
+    client_id = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     medium_of_payment = models.CharField(max_length=65, null=True, blank=True)
     amount_payed = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     status = models.CharField(max_length=65, null=True, blank=True)
@@ -54,6 +59,6 @@ class Notification(models.Model):
     email_subject = models.CharField(max_length=200, null=True, blank=True)
     email_message = models.CharField(max_length=500,null=True, blank=True)
     recipient = models.CharField(max_length=50, null=True, blank=True)
-    time_sent = models.DateTimeField(default=timezone.now()) 
+    time_sent = models.DateTimeField(auto_now=True) 
     attachment = models.FileField(null=True, blank=True, upload_to="uploads/email_attachments")
 
