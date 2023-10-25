@@ -27,19 +27,27 @@
                     <i class="fa fa-user"></i>
                     <h3>Profile</h3>
                 </a>
-                <a href="{% url 'my_payments' user_id=user.id %}">
+                <a href="{% url 'admins' %}" class="active">
+                    <i class="fa fa-users"></i>
+                    <h3>Admins</h3>
+                </a>
+                <a href="{% url 'payments' %}">
                     <i class="fa fa-money"></i>
                     <h3>Payments</h3>
                 </a>
-                <a href="{% url 'my_debtors' user_id=user.id %}">
+                <a href="{% url 'all_clients' %}">
+                    <i class="fa fa-users"></i>
+                    <h3>Clients</h3>
+                </a>
+                <a href="{% url 'debtors' %}">
                     <i class="fa fa-cc-mastercard"></i>
                     <h3>Debtors</h3>
                 </a>
-                <a href="{% url 'my_analytics' user_id=user.id %}">
+                <a href="{% url 'analytics' %}">
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
-                <!-- <a href="{% url 'index' %}">
+                <!-- <a href="{% url 'multiple_recipients' %}">
                     <i class="fa fa-envelope-o"></i>
                     <h3>Notifications</h3>
                 </a>
@@ -47,6 +55,10 @@
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
                 </a> -->
+                <a href="{% url 'create_client' %}">
+                    <i class="fa fa-plus"></i>
+                    <h3>Add Client</h3>
+                </a>
                 <a href="{% url 'logout' %}">
                     <i class="fa fa-sign-out"></i>
                     <h3>Logout</h3>
@@ -88,22 +100,55 @@
 
         <div class="panel cover">
             <main>
-                <h1 class="panel-label">My Payments</h1>
+                <h1 class="panel-label">All Payments</h1>
+                <!-- <div class="date">
+                        <input type="date">
+                    </div> -->
+                {% if messages %}
+                {% for message in messages %}
+                <div class="msg msg-box text-danger">
+                    {{ message }}
+                    <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                {% endfor %}
+                {% endif %}
                 <div class="panel-body">
-                    <form method="post" action="{% url 'debtors_bulk_actions' %}">
+                    <form method="post" action="{% url 'payments_bulk_actions' %}">
                         {% csrf_token %}
-
+                        <div class="top-table for-debtors">
+                            <!-- <h2>All admins</h2> -->
+                            <div class="table-actions">
+                                <select name="action" id="action" class="dropdown-select">
+                                    <option value="bulk_actions">Bulk Actions</option>
+                                    <!-- <option value="send_sms">Send SMS</option> -->
+                                    <option value="delete">Delete</option>
+                                    <option value="manage">Manage</option>
+                                </select>
+                                <button class="primary action-btn action" type="submit"
+                                    onclick="return confirm('Are you sure you want to apply the action to the selected record(s)?')">Apply
+                                    action</button>
+                                <a href="{% url 'create_payment' %}" class="primary action-btn create">Create
+                                    Payment</a>
+                            </div>
+                            <!-- <div class="table-actions">
+                            <button class="primary action-btn action">Send a message</button>
+                            <button class="primary action-btn action" type="submit" onclick="return confirm('Are you sure you want to delete the selected record(s)?')">Delete Selected</button>
+                            <button class="primary action-btn actio">Manage</button>
+                            <a href="{% url 'create_debtor' %}" class="primary action-btn create">Create Debtor</a>
+                        </div> -->
+                        </div>
                         <div class="admin-panel">
                             {% load humanize %}
                             <table>
-
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Amount Payed</th>
+                                        <th>Amount Paid</th>
                                         <th>Medium of Payment</th>
                                         <th>Balance left</th>
-                                        <th>Date Payed</th>
+                                        <th>Date Paid</th>
                                         <th>Total Amount Owed</th>
                                         <th>Payed by</th>
                                         <th>Status</th>
@@ -120,12 +165,13 @@
                                         <td>N{{ payment.debtor_id.amount_owed|floatformat:0|intcomma }}</td>
                                         <td>{{ payment.debtor_id.firstname }} {{ payment.debtor.surname }}</td>
                                         <td><a class="primary-btn">{{ payment.status }}</a></td>
-                                        
+                                        <!-- <td>
+                                            <a class="danger-btn" href="{% url 'approve_payment' user_id=payment.id %}"
+                                               onclick="return confirm('Are you sure you want to approve this payment?')">Approve</a>
+                                        </td> -->
                                     </tr>
                                     {% endfor %}
-
                                 </tbody>
-
                             </table>
 
                             <a id="show-all" href="#">Show all</a>

@@ -65,73 +65,6 @@ def index(request):
 
         return render(request, 'clients_dashboard/index.html', {'payments': my_payments, 'debtors': my_debtors, "total": total, "retrieved": retrieved, "debt": debt})
 
-@login_required
-def admins(request):
-    # Get the currently logged in user
-    current_user = request.user
-     # Fetch all admins from the database who are either super admins or staff admins 
-    #  (editors) excluding the currently logged in admin
-    all_admins = User.objects.filter(Q(is_superuser=True) | Q(is_staff=True)).exclude(pk=current_user.pk).order_by('date_joined').reverse()
-    all_admins_profiles = UserProfile.objects.all
-    return render(request, 'admins_dashboard/admins.html', {'admins': all_admins, 'admin_profiles': all_admins_profiles})
-
-@login_required
-def create_admin(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        firstname = request.POST["firstname"]
-        lastname = request.POST["lastname"]
-        password = request.POST["password"]
-        confirm_password = request.POST["confirm_password"]
-        role = request.POST["role"]
-
-        if username == "" or email == "" or firstname == "" or lastname == "" or password == "":
-            messages.success(request, "Please complete all input fields")
-            return render(request, "authentication/create_account2.html")
-
-        if username != "" or email != "":
-            if len(username) < 8:
-                messages.success(request, "Username must not be less than 8 characters")
-                return render(request, "authentication/create_account2.html")
-
-            if User.objects.filter(username=username).exists():
-                messages.success(request, "Username already exists")
-                return render(request, "authentication/create_account2.html")
-
-            # The email inputs needs to be validated as well
-            if User.objects.filter(email=email).exists():
-                messages.success(request, "Email already exists")
-                return render(request, "authentication/create_account2.html")   
-
-        if not password == confirm_password:
-            messages.success(request, "Your passwords did not match")
-            return render(request, "authentication/create_account2.html")
-
-        if role == "superadmin":
-            user = User.objects.create_user(username, email, password)
-            user.first_name = firstname
-            user.last_name = lastname
-            user.email = email
-            user.username = username
-            user.is_superuser = True
-            user.is_staff = True
-            user.save()
-            messages.success(request, "The " + role+"s account was created")
-            return redirect('admins')
-
-        elif role == "editor":
-            user = User.objects.create_user(username, email, password)
-            user.first_name = firstname
-            user.last_name = lastname
-            user.email = email
-            user.username = username
-            user.is_staff = True
-            user.save()
-            messages.success(request, "The " + role+"s account was created")
-            return redirect('admins')
-
-    return render(request, "authentication/create_account2.html")
 
 @login_required
 def profile(request, user_id):
@@ -196,23 +129,6 @@ def profile_update(request, user_id):
         user_details.save()
         user_details.refresh_from_db()
 
-
-        # user_obj.username =  username
-        # user_obj.email = email
-        # user_obj.save()
-        # user_obj.refresh_from_db()
-
-
-        # Added section
-        # user_profile = UserProfile.objects.get(user=user_id)
-        # user_details = User.objects.get(id=user_id)
-
-        # c_payments = Payment.objects.filter(client_id=current_user.id)
-        # c_debtors = Debtor.objects.filter(client_id=current_user.id)
-        # c_total = c_debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
-        # c_retrieved = c_payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
-        # c_debt = c_total - c_retrieved
-
         debtors = Debtor.objects.all()
         payments = Payment.objects.all()
 
@@ -240,10 +156,79 @@ def profile_update(request, user_id):
 
 
 @login_required
+def admins(request):
+    # Get the currently logged in user
+    current_user = request.user
+     # Fetch all admins from the database who are either super admins or staff admins 
+    #  (editors) excluding the currently logged in admin
+    all_admins = User.objects.filter(Q(is_superuser=True) | Q(is_staff=True)).exclude(pk=current_user.pk).order_by('date_joined').reverse()
+    all_admins_profiles = UserProfile.objects.all
+    return render(request, 'admins_dashboard/admins/admins.html', {'admins': all_admins, 'admin_profiles': all_admins_profiles})
+
+@login_required
+def create_admin(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        firstname = request.POST["firstname"]
+        lastname = request.POST["lastname"]
+        password = request.POST["password"]
+        confirm_password = request.POST["confirm_password"]
+        role = request.POST["role"]
+
+        if username == "" or email == "" or firstname == "" or lastname == "" or password == "":
+            messages.success(request, "Please complete all input fields")
+            return render(request, "admins_dashboard/admins/create_account2.html")
+
+        if username != "" or email != "":
+            if len(username) < 6:
+                messages.success(request, "Username must not be less than 8 characters")
+                return render(request, "admins_dashboard/admins/create_account2.html")
+
+            if User.objects.filter(username=username).exists():
+                messages.success(request, "Username already exists")
+                return render(request, "admins_dashboard/admins/create_account2.html")
+
+            # The email inputs needs to be validated as well
+            if User.objects.filter(email=email).exists():
+                messages.success(request, "Email already exists")
+                return render(request, "admins_dashboard/admins/create_account2.html")   
+
+        if not password == confirm_password:
+            messages.success(request, "Your passwords did not match")
+            return render(request, "admins_dashboard/admins/create_account2.html")
+
+        if role == "superadmin":
+            user = User.objects.create_user(username, email, password)
+            user.first_name = firstname
+            user.last_name = lastname
+            user.email = email
+            user.username = username
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
+            messages.success(request, "The " + role+"s account was created")
+            return redirect('admins')
+
+        elif role == "editor":
+            user = User.objects.create_user(username, email, password)
+            user.first_name = firstname
+            user.last_name = lastname
+            user.email = email
+            user.username = username
+            user.is_staff = True
+            user.save()
+            messages.success(request, "The " + role+"s account was created")
+            return redirect('admins')
+
+    return render(request, "admins_dashboard/admins/create_account2.html")
+
+
+@login_required
 def edit_admin(request, user_id):
     details = User.objects.get(id=user_id)
     details_profile = UserProfile.objects.get(user=user_id)
-    return render(request, "admins_dashboard/admin_edit.html", {'details_profile': details_profile, 'details': details})
+    return render(request, "admins_dashboard/admins/admin_edit.html", {'details_profile': details_profile, 'details': details})
     
 
 @login_required
@@ -279,7 +264,7 @@ def admin_edited(request, user_id):
         return redirect('admins')
         
 
-    return render(request, "admins_dashboard/admin_edit.html", {})
+    return render(request, "admins_dashboard/admins/admin_edit.html", {})
 
 
 @login_required
@@ -308,7 +293,7 @@ def batch_delete_admins(request):
 def get_clients(request):
     all_clients = User.objects.filter(is_superuser=False, is_staff=False).order_by('date_joined').reverse()
     all_clients_profiles = UserProfile.objects.all
-    return render(request, 'admins_dashboard/clients.html', {'clients': all_clients, 'client_profiles': all_clients_profiles})
+    return render(request, 'admins_dashboard/clients/clients.html', {'clients': all_clients, 'client_profiles': all_clients_profiles})
 
 
 @login_required
@@ -323,25 +308,25 @@ def create_client(request):
 
         if username == "" or email == "" or firstname == "" or password == "":
             messages.success(request, "Please complete all input fields")
-            return render(request, "admins_dashboard/create_client.html")
+            return render(request, "admins_dashboard/clients/create_client.html")
 
         if username != "" or email != "":
             if len(username) < 6:
                 messages.success(request, "Username must not be less than 8 characters")
-                return render(request, "admins_dashboard/create_client.html")
+                return render(request, "admins_dashboard/clients/create_client.html")
 
             if User.objects.filter(username=username).exists():
                 messages.success(request, "Username already exists")
-                return render(request, "admins_dashboard/create_client.html")
+                return render(request, "admins_dashboard/clients/create_client.html")
 
             # The email inputs needs to be validated as well
             if User.objects.filter(email=email).exists():
                 messages.success(request, "Email already exists")
-                return render(request, "admins_dashboard/create_client.html")   
+                return render(request, "admins_dashboard/clients/create_client.html")   
 
         if not password == confirm_password:
             messages.success(request, "Your passwords did not match")
-            return render(request, "admins_dashboard/create_client.html")
+            return render(request, "admins_dashboard/clients/create_client.html")
 
         user = User.objects.create_user(username, email, password)
         user.first_name = firstname
@@ -352,14 +337,14 @@ def create_client(request):
         messages.success(request, firstname + "'s account was successfully created")
         return redirect('all_clients')
 
-    return render(request, "admins_dashboard/create_client.html")
+    return render(request, "admins_dashboard/clients/create_client.html")
 
 
 @login_required
 def edit_client(request, user_id):
     details = User.objects.get(id=user_id)
     details_profile = UserProfile.objects.get(user=user_id)
-    return render(request, "admins_dashboard/client_edit.html", {'details_profile': details_profile, 'details': details})
+    return render(request, "admins_dashboard/clients/client_edit.html", {'details_profile': details_profile, 'details': details})
 
 
 @login_required
@@ -402,7 +387,7 @@ def client_edited(request, user_id):
         return redirect('all_clients')
         
 
-    return render(request, "admins_dashboard/client_edit.html", {})
+    return render(request, "admins_dashboard/clients/client_edit.html", {})
 
 
 @login_required
@@ -435,7 +420,7 @@ def batch_delete_clients(request):
 def debtors(request):
     all_debtors = Debtor.objects.all().order_by('date_captured').reverse()
     all_clients = User.objects.filter(is_superuser=False, is_staff=False)
-    return render(request, 'debtors/debtors.html', {'debtors': all_debtors, 'clients': all_clients})
+    return render(request, 'admins_dashboard/debtors/debtors.html', {'debtors': all_debtors, 'clients': all_clients})
 
 
 @login_required
@@ -462,18 +447,18 @@ def create_debtor(request):
         if firstname == "" or surname == "" or address == "" or phone == "" or email == "" or guarantors_name == "" or guarantors_phone == "" or client_id == "":
             messages.success(request, "Please complete all input fields")
             all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
-            return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+            return render(request, "admins_dashboard/debtors/create_debtor.html", {'clients': all_clients})
 
         if phone != "" or email != "":
             if len(phone) < 11:
                 messages.success(request, "The inputed phone number is less than 11 characters")
                 all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
-                return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+                return render(request, "admins_dashboard/debtors/create_debtor.html", {'clients': all_clients})
 
             if Debtor.objects.filter(email=email).exists():
                 messages.success(request, "Email already exists")
                 all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
-                return render(request, "debtors/create_debtor.html", {'clients': all_clients})  
+                return render(request, "admins_dashboard/debtors/create_debtor.html", {'clients': all_clients})  
 
         debtor = Debtor()
         debtor.firstname = firstname
@@ -493,7 +478,7 @@ def create_debtor(request):
         return redirect('debtors')
 
     all_clients = User.objects.filter(Q(is_superuser=False) & Q(is_staff=False))
-    return render(request, "debtors/create_debtor.html", {'clients': all_clients})
+    return render(request, "admins_dashboard/debtors/create_debtor.html", {'clients': all_clients})
 
 
 
@@ -528,7 +513,7 @@ def debtor_edited(request, user_id):
         return redirect('debtors')
         
 
-    return render(request, "debtors/debtor_edit.html", {})
+    return render(request, "admins_dashboard/debtors/debtor_edit.html", {})
 
 
 def debtors_bulk_actions(request):
@@ -575,8 +560,15 @@ def debtors_bulk_actions(request):
 #     all_debtors = Debtor.objects.all
 #     return render(request, 'payments/payments.html', {'payments': all_payments, 'debtors': all_debtors})
 def payments(request):
+    current_user = request.user
+
+    if current_user.is_staff and current_user.is_superuser:
+        all_payments = Payment.objects.select_related('debtor_id').order_by('date_payed').reverse()
+        return render(request, 'admins_dashboard/payments/payments.html', {'payments': all_payments})
+    
     all_payments = Payment.objects.select_related('debtor_id').order_by('date_payed').reverse()
-    return render(request, 'payments/payments.html', {'payments': all_payments})
+    return render(request, 'editor_admins_dashboard/payments.html', {'payments': all_payments})
+
 
 @login_required
 def create_payment(request):
@@ -622,7 +614,7 @@ def create_payment(request):
             return redirect('payments')
 
     all_debtors = Debtor.objects.all()
-    return render(request, "payments/create_payment.html", {'debtors': all_debtors})
+    return render(request, "admins_dashboard/payments/create_payment.html", {'debtors': all_debtors})
 
 
 @login_required
@@ -673,7 +665,7 @@ def analytics(request):
         'payments': payments,
         'all_clients': all_clients
     }
-    return render(request, 'admins_dashboard/analytics.html', context)
+    return render(request, 'admins_dashboard/analytics/analytics.html', context)
 
 
 # Sending email notification to debtors
@@ -681,54 +673,6 @@ def analytics(request):
 def single_recipient(request, user_id):
     debtor = Debtor.objects.get(id=user_id)
     return render(request, 'admins_dashboard/email_notifications/single_recipient.html', {'debtor': debtor})
-
-
-# @login_required
-# def single_recipient_send_mail(request):
-#     if request.method == 'POST':
-#         email = request.POST.get("email")
-#         email_subject = request.POST.get("email_subject")
-#         email_message = request.POST.get("email_message")
-#         attachment = request.FILES.get('email_file')
-#         content_type = attachment.content_type if attachment else None
-
-#         # Validate form data
-#         if not email or not email_subject or not email_message:
-#             return HttpResponseBadRequest('Missing required fields')
-
-#         # Create email message
-#         email_msg = MIMEMultipart()
-#         email_msg['Subject'] = email_subject
-#         email_msg['To'] = email
-#         email_msg.attach(MIMEText(email_message))
-
-#         # Add attachment, if provided
-#         if attachment:
-#             file_data = attachment.read()
-#             if content_type.startswith('image/'):
-#                 image = MIMEImage(file_data)
-#                 image.add_header('Content-Disposition', 'attachment', filename='image.jpg')
-#                 email_msg.attach(image)
-#             elif content_type == 'application/pdf':
-#                 attachment_msg = MIMEApplication(file_data, _subtype='pdf')
-#                 attachment_msg.add_header('Content-Disposition', 'attachment', filename='document.pdf')
-#                 email_msg.attach(attachment_msg)
-#             elif content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-#                 attachment_msg = MIMEApplication(file_data, _subtype='docx')
-#                 attachment_msg.add_header('Content-Disposition', 'attachment', filename='document.docx')
-#                 email_msg.attach(attachment_msg)
-#             else:
-#                 return HttpResponseBadRequest('Unsupported file type')
-
-#         # Send email
-#         email_sender = 'nsikanadaowo90@gmail.com'
-#         email_password = 'jduzadsuapibwahj'
-#         with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=ssl.create_default_context()) as smtp:
-#             smtp.login(email_sender, email_password)
-#             smtp.send_message(email_msg)
-
-#         messages.success(request, "Email notification was successfully sent")
-#         return redirect('debtors')
 
 
 @login_required

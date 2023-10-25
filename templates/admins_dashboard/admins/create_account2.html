@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block title %} G-TrackApp {% endblock %}
@@ -8,67 +9,66 @@
 
 <div class="wrapper">
     <!-- <div class="wrapper-inner"> -->
-    <div class="vertical-wrapper" id="sidebar">
-        <div class="backdrop"></div>
-        <div class="vertical-bar">
-
-            <div class="close-btn">
-                <i class="fa fa-times"></i>
+        <div class="vertical-wrapper" id="sidebar">
+            <div class="backdrop"></div>
+            <div class="vertical-bar">
+    
+                <div class="close-btn">
+                    <i class="fa fa-times"></i>
+                </div>
+                <div class="logo">
+                    G - <span>Track</span>
+                </div>
+    
+                <div class="sidebar">
+                    <a href="{% url 'index' %}">
+                        <i class="fa fa-desktop"></i>
+                        <h3>Dashboard</h3>
+                    </a>
+                    <a href="{% url 'profile' user_id=user.id %}">
+                        <i class="fa fa-user"></i>
+                        <h3>Profile</h3>
+                    </a>
+                    <a href="{% url 'admins' %}" class="active">
+                        <i class="fa fa-users"></i>
+                        <h3>Admins</h3>
+                    </a>
+                    <a href="{% url 'payments' %}">
+                        <i class="fa fa-money"></i>
+                        <h3>Payments</h3>
+                    </a>
+                    <a href="{% url 'all_clients' %}">
+                        <i class="fa fa-users"></i>
+                        <h3>Clients</h3>
+                    </a>
+                    <a href="{% url 'debtors' %}">
+                        <i class="fa fa-cc-mastercard"></i>
+                        <h3>Debtors</h3>
+                    </a>
+                    <a href="{% url 'analytics' %}">
+                        <i class="fa fa-pie-chart"></i>
+                        <h3>Analytics</h3>
+                    </a>
+                    <!-- <a href="{% url 'index' %}">
+                        <i class="fa fa-envelope-o"></i>
+                        <h3>Notifications</h3>
+                    </a>
+                    <a href="{% url 'index' %}">
+                        <i class="fa fa-cog"></i>
+                        <h3>Settings</h3>
+                    </a> -->
+                    <a href="{% url 'create_client' %}">
+                        <i class="fa fa-plus"></i>
+                        <h3>Add Client</h3>
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <i class="fa fa-sign-out"></i>
+                        <h3>Logout</h3>
+                    </a>
+                </div>
+    
             </div>
-            <div class="logo">
-                G - <span>Track</span>
-            </div>
-
-            <div class="sidebar">
-                <a href="{% url 'index' %}">
-                    <i class="fa fa-desktop"></i>
-                    <h3>Dashboard</h3>
-                </a>
-                <a href="{% url 'profile' user_id=user.id %}">
-                    <i class="fa fa-user"></i>
-                    <h3>Profile</h3>
-                </a>
-                <a href="{% url 'admins' %}" class="active">
-                    <i class="fa fa-users"></i>
-                    <h3>Admins</h3>
-                </a>
-                <a href="{% url 'payments' %}">
-                    <i class="fa fa-money"></i>
-                    <h3>Payments</h3>
-                </a>
-                <a href="{% url 'all_clients' %}">
-                    <i class="fa fa-users"></i>
-                    <h3>Clients</h3>
-                </a>
-                <a href="{% url 'debtors' %}">
-                    <i class="fa fa-cc-mastercard"></i>
-                    <h3>Debtors</h3>
-                </a>
-                <a href="{% url 'analytics' %}">
-                    <i class="fa fa-pie-chart"></i>
-                    <h3>Analytics</h3>
-                </a>
-                <a href="{% url 'multiple_recipients' %}">
-                    <i class="fa fa-envelope-o"></i>
-                    <h3>Notifications</h3>
-                    <!-- <span class="message-count">20</span> -->
-                </a>
-                <a href="{% url 'index' %}">
-                    <i class="fa fa-cog"></i>
-                    <h3>Settings</h3>
-                </a>
-                <a href="{% url 'create_client' %}">
-                    <i class="fa fa-plus"></i>
-                    <h3>Add Client</h3>
-                </a>
-                <a href="{% url 'logout' %}">
-                    <i class="fa fa-sign-out"></i>
-                    <h3>Logout</h3>
-                </a>
-            </div>
-
         </div>
-    </div>
 
     <div class="main-container">
         <div class="top-bar">
@@ -105,14 +105,14 @@
     <div class="panel">
         <main>
             <!-- <h1 class="panel-label">Your Profile</h1> -->
-
+            
             <div class="panel-body">
                 <div class="profile-details form-panel">
                     <div class="signup form-area create_admin">
                         <div class="msg caption">
-                            <p><b> EDIT PROFILE INFORMATION</b></p>
+                            <p><b> CREATE ADMIN'S ACCOUNT</b></p>
                         </div>
-
+        
                         {% if messages %}
                         {% for message in messages %}
                         <div class="msg msg-box text-danger">
@@ -124,97 +124,85 @@
                         {% endfor %}
                         {% endif %}
                         <div class="contact-form">
-                            <form action="{% url 'client_edited' user_id=details.id %}" class="my-form p-5 bg-white"
-                                id="form" method="POST" enctype="multipart/form-data">
+                            <form action="" class="my-form p-5 bg-white" id="form" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="text" id="uname" class="form-control" name="firstname"
-                                        value="{{ details.first_name }}">
+                                    <input type="text" id="uname" class="form-control" name="username" placeholder="Username">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
-
+        
                                 <div class="form-group">
-                                    <input type="text" id="uname" class="form-control" name="username"
-                                        value="{{ details.username }}">
+                                    <input type="text" id="email" class="form-control" name="email" placeholder="Email address">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
-
+        
                                 <div class="form-group">
-                                    <input type="text" id="email" class="form-control" name="email"
-                                        value="{{ details.email }}">
+                                    <input type="text" id="lname" class="form-control" name="firstname" placeholder="First name">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
-
+        
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="address"
-                                        placeholder="Company Address">
+                                    <input type="text" id="lname" class="form-control" name="lastname" placeholder="Last name">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
-
+        
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="phone"
-                                        placeholder="Company Phone Number">
+                                    <input type="password" id="password" class="form-control" name="password"
+                                        placeholder="Password">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
-
+        
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="contact_person"
-                                        placeholder="Name of Contact Person">
+                                    <input type="password" id="password" class="form-control" name="confirm_password"
+                                        placeholder="Confirm Password">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
-
+        
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="contact_person_phone"
-                                        placeholder="Phone Number of Contact Person">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
+                                    <label for="role"><b>Admin Role:</b></label>
+                                    <select name="role" id="role" class="dropdown-select">
+                                        <option value="superadmin">Super admin</option>
+                                        <option value="editor">Editor</option>
+                                      </select>
                                 </div>
-
-                                <div class="form-group">
-                                    <input type="file" id="image" class="form-control" name="user_img" accept="image/*">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-
+        
                                 <div class="form-group">
                                     <button type="submit" class="btn">
-                                        Save
+                                        Create Account
                                     </button>
                                     <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
                                 </div>
-
+        
                             </form>
                         </div>
                     </div>
                 </div>
-
+                
             </div>
+    
+    <!---------------- END OF RECENT ORDERS SECTION ---------------->
+    </main>
 
-            <!---------------- END OF RECENT ORDERS SECTION ---------------->
-        </main>
-
-        <!------------------- END OF MAIN SECTION ------------------->
-
-
-        <!---------------------- RIGHT SECTION ---------------------->
+    <!------------------- END OF MAIN SECTION ------------------->
 
 
+    <!---------------------- RIGHT SECTION ---------------------->
 
-    </div>
-    <!-- </div> -->
+
+
+</div>
+<!-- </div> -->
 </div>
 {% endblock %}

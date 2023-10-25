@@ -48,15 +48,14 @@
                     <i class="fa fa-pie-chart"></i>
                     <h3>Analytics</h3>
                 </a>
-                <a href="{% url 'index' %}">
+                <!-- <a href="{% url 'multiple_recipients' %}">
                     <i class="fa fa-envelope-o"></i>
                     <h3>Notifications</h3>
-                    <!-- <span class="message-count">20</span> -->
                 </a>
                 <a href="{% url 'index' %}">
                     <i class="fa fa-cog"></i>
                     <h3>Settings</h3>
-                </a>
+                </a> -->
                 <a href="{% url 'create_client' %}">
                     <i class="fa fa-plus"></i>
                     <h3>Add Client</h3>
@@ -110,7 +109,7 @@
                 <div class="profile-details form-panel">
                     <div class="signup form-area create_admin">
                         <div class="msg caption">
-                            <p><b> EDIT PROFILE INFORMATION</b></p>
+                            <p><b> CREATE CLIENT'S ACCOUNT</b></p>
                         </div>
 
                         {% if messages %}
@@ -124,12 +123,19 @@
                         {% endfor %}
                         {% endif %}
                         <div class="contact-form">
-                            <form action="{% url 'admin_edited' user_id=details.id %}" class="my-form p-5 bg-white"
-                                id="form" method="POST" enctype="multipart/form-data">
+                            <form action="" class="my-form p-5 bg-white" id="form" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
+                                    <input type="text" id="lname" class="form-control" name="firstname"
+                                        placeholder="Name of Organization">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+                                
+                                <div class="form-group">
                                     <input type="text" id="uname" class="form-control" name="username"
-                                        value="{{ details.username }}">
+                                        placeholder="Username">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
@@ -137,30 +143,31 @@
 
                                 <div class="form-group">
                                     <input type="text" id="email" class="form-control" name="email"
-                                        value="{{ details.email }}">
+                                        placeholder="Email address">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <input type="text" id="lname" class="form-control" name="lastname"
+                                        placeholder="Last name">
+                                    <i class="fa fa-check-circle"></i>
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    <small>Error message</small>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <input type="password" id="password" class="form-control" name="password"
+                                        placeholder="Password">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="phone"
-                                        placeholder="Phone">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="text" id="lname" class="form-control" name="address"
-                                        placeholder="Address">
-                                    <i class="fa fa-check-circle"></i>
-                                    <i class="fa fa-exclamation-circle"></i>
-                                    <small>Error message</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="file" id="image" class="form-control" name="user_img" accept="image/*">
+                                    <input type="password" id="password" class="form-control" name="confirm_password"
+                                        placeholder="Confirm Password">
                                     <i class="fa fa-check-circle"></i>
                                     <i class="fa fa-exclamation-circle"></i>
                                     <small>Error message</small>
@@ -168,7 +175,7 @@
 
                                 <div class="form-group">
                                     <button type="submit" class="btn">
-                                        Save
+                                        Create Account
                                     </button>
                                     <!-- <p>By clicking the button, you are agreeing to our <span>terms and services</span></p> -->
                                 </div>
