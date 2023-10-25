@@ -166,45 +166,36 @@
                 <div class="recent-orders">
                     <h2>Recent transactions</h2>
                     <table>
-
-                        <thead>
-                            <tr>
-
-                                <th>Amount Payed</th>
-                                <th>Medium of Payment</th>
-                                <th>Balance left</th>
-                                <th>Date Payed</th>
-                                <th>Total Amount Owed</th>
-                                <th>Debtor's Name</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for payment in payments %}
-                            <tr>
-
-                                <td>{{ payment.amount_payed }}</td>
-                                <td>{{ payment.medium_of_payment }}</td>
-                                <td>{{ payment.balance_left }}</td>
-                                <td>{{ payment.date_payed }}</td>
-                                <!-- loop through the admin_profiles list and only display the profile for the current admin -->
-                                {% for debtor in debtors %}
-                                {% if debtor.id == payment.debtor_id %}
-                                <!-- display the information for each admin and their corresponding profile -->
-                                <td>{{ debtor.amount_owed }}</td>
-                                <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
-
-                                <td><a class="status-btn">{{ payment.status }}</a></td>
-
-                                {% endif %}
+    
+                            <thead>
+                                <tr>
+                                    <th>Debtor's Name</th>
+                                    <th>Amount Payed</th>
+                                    <!-- <th>Medium of Payment</th> -->
+                                    <th>Balance left</th>
+                                    <th>Date Payed</th>
+                                    <th>Total Amount Owed</th>
+                                    
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in payments %}
+                                <tr>
+                                    <td>{{ payment.debtor_id.firstname }} {{ payment.debtor_id.surname }}</td> <!-- Access debtor's fields similarly -->
+                                    <td>{{ payment.amount_payed }}</td>
+                                    <!-- <td>{{ payment.medium_of_payment }}</td> -->
+                                    <td>{{ payment.balance_left }}</td>
+                                    <td>{{ payment.date_payed }}</td>
+                                    <td>{{ payment.debtor_id.amount_owed }}</td> <!-- Access the related Debtor's amount_owed directly -->
+                                    
+                                    <td><a class="status-btn">{{ payment.status }}</a></td>
+                                    
+                                </tr>
                                 {% endfor %}
-
-                            </tr>
-                            {% endfor %}
-
-                        </tbody>
-
-                    </table>
+                            </tbody>
+    
+                        </table>
                     <a href="#">Show all</a>
                 </div>
                 <!---------------- END OF RECENT ORDERS SECTION ---------------->
@@ -225,16 +216,15 @@
                             <div class="profile-photo">
                                 <img src="{% static 'img/anonymous.jpg' %}" alt="mgm">
                             </div>
+                           
+
                             <div class="message">
-
-                                {% for debtor in debtors %}
-                                {% if debtor.id == payment.debtor_id %}
-                                <p><b>{{ debtor.firstname }}</b> Made a payment of {{ payment.amount_payed }}</p>
-
-                                {% endif %}
-                                {% endfor %}
+                                
+                                    <td><p><b>{{ payment.debtor_id.firstname }} </b> Made a payment of {{ payment.amount_payed }}</p></td>
+                               
                                 <small class="text-muted">10 mins ago</small>
                             </div>
+
                         </div>
                     </div>
                     {% endfor %}
