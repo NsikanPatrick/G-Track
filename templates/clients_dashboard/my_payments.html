@@ -95,7 +95,7 @@
                         {% csrf_token %}
 
                         <div class="admin-panel">
-
+                            {% load humanize %}
                             <table>
 
                                 <thead>
@@ -114,22 +114,14 @@
                                     {% for payment in payments %}
                                     <tr>
                                         <td><input type="checkbox" value="{{payment.id}}" name="selected_users"></td>
-                                        <td>{{ payment.amount_payed }}</td>
+                                        <td>N{{ payment.amount_payed|floatformat:0|intcomma }}</td>
                                         <td>{{ payment.medium_of_payment }}</td>
-                                        <td>{{ payment.balance_left }}</td>
+                                        <td>N{{ payment.balance_left|floatformat:0|intcomma }}</td>
                                         <td>{{ payment.date_payed }}</td>
-                                        <!-- loop through the admin_profiles list and only display the profile for the current admin -->
-                                        {% for debtor in debtors %}
-                                        {% if debtor.id == payment.debtor_id %}
-                                        <!-- display the information for each admin and their corresponding profile -->
-                                        <td>{{ debtor.amount_owed }}</td>
-                                        <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
-
+                                        <td>N{{ payment.debtor_id.amount_owed|floatformat:0|intcomma }}</td>
+                                        <td>{{ payment.debtor_id.firstname }} {{ payment.debtor.surname }}</td>
                                         <td><a class="primary-btn">{{ payment.status }}</a></td>
-
-                                        {% endif %}
-                                        {% endfor %}
-
+                                        
                                     </tr>
                                     {% endfor %}
 

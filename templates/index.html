@@ -107,7 +107,7 @@
                 <!-- <div class="date">
                         <input type="date">
                     </div> -->
-
+                    {% load humanize %}
                 <div class="insights">
                     <!------------------- SALES SECTION ------------------->
                     <div class="sales">
@@ -115,7 +115,8 @@
                         <div class="middle">
                             <div class="left">
                                 <h3>Total Cash</h3>
-                                <h2>#{{total}}</h2>
+                                <!-- <h2>N{{total|intcomma}}</h2> this also adds the decimal zeros -->
+                                <h2>N{{total|floatformat:0|intcomma}}</h2>
                             </div>
                             <div class="progress">
                                 <svg>
@@ -136,7 +137,7 @@
                         <div class="middle">
                             <div class="left">
                                 <h3>Total Cash Retrieved</h3>
-                                <h2>#{{retrieved}}</h2>
+                                <h2>N{{retrieved|floatformat:0|intcomma}}</h2>
                             </div>
                             <div class="progress">
                                 <svg>
@@ -157,7 +158,7 @@
                         <div class="middle">
                             <div class="left">
                                 <h3>Total Debt</h3>
-                                <h2>#{{debt}}</h2>
+                                <h2>N{{debt|floatformat:0|intcomma}}</h2>
                             </div>
                             <div class="progress">
                                 <svg>
@@ -197,11 +198,11 @@
                                 {% for payment in payments %}
                                 <tr>
                                     <td>{{ payment.debtor_id.firstname }} {{ payment.debtor_id.surname }}</td> <!-- Access debtor's fields similarly -->
-                                    <td>{{ payment.amount_payed }}</td>
+                                    <td>N{{ payment.amount_payed|floatformat:0|intcomma }}</td>
                                     <!-- <td>{{ payment.medium_of_payment }}</td> -->
-                                    <td>{{ payment.balance_left }}</td>
+                                    <td>N{{ payment.balance_left|floatformat:0|intcomma }}</td>
                                     <td>{{ payment.date_payed }}</td>
-                                    <td>{{ payment.debtor_id.amount_owed }}</td> <!-- Access the related Debtor's amount_owed directly -->
+                                    <td>N{{ payment.debtor_id.amount_owed|floatformat:0|intcomma }}</td> <!-- Access the related Debtor's amount_owed directly -->
                                     
                                     <td><a class="status-btn">{{ payment.status }}</a></td>
                                     
@@ -234,7 +235,7 @@
 
                             <div class="message">
                                 
-                                    <td><p><b>{{ payment.debtor_id.firstname }} </b> Made a payment of {{ payment.amount_payed }}</p></td>
+                                    <td><p><b>{{ payment.debtor_id.firstname }} </b> Made a payment of N{{ payment.amount_payed|floatformat:0|intcomma }}</p></td>
                                
                                 <small class="text-muted">10 mins ago</small>
                             </div>
@@ -257,7 +258,7 @@
                                 <small class="text-muted"> Last one week</small>
                             </div>
                             <h5 class="success">+62%</h5>
-                            <h3>#{{total}}</h3>
+                            <h3>N{{total|floatformat:0|intcomma}}</h3>
                         </div>
                     </div>
                     <div class="item online">
@@ -270,7 +271,7 @@
                                 <small class="text-muted"> Last one week</small>
                             </div>
                             <h5 class="success">-44%</h5>
-                            <h3>#{{retrieved}}</h3>
+                            <h3>N{{retrieved|floatformat:0|intcomma}}</h3>
                         </div>
                     </div>
                     <div class="item online">
@@ -283,7 +284,7 @@
                                 <small class="text-muted"> Last one week</small>
                             </div>
                             <h5 class="danger">+25%</h5>
-                            <h3>#{{debt}}</h3>
+                            <h3>N{{debt|floatformat:0|intcomma}}</h3>
                         </div>
                     </div>
                     <a class="item add-product" href="{% url 'create_client' %}">

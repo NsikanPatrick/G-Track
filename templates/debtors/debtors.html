@@ -140,7 +140,7 @@
                         </div> -->
                         </div>
                         <div class="admin-panel">
-
+                            {% load humanize %}
                             <table>
 
                                 <thead>
@@ -165,7 +165,7 @@
                                         <td>{{ debtor.address }}</td>
                                         <td>{{ debtor.phone }}</td>
                                         <!-- <td>{{ debtor.email }}</td> -->
-                                        <td>{{ debtor.amount_owed }}</td>
+                                        <td>N{{ debtor.amount_owed|floatformat:0|intcomma }}</td>
                                         <td>{{ debtor.guarantors_name }}</td>
                                         <td>{{ debtor.guarantors_phone }}</td>
                                         <!-- loop through the admin_profiles list and only display the profile for the current admin -->
