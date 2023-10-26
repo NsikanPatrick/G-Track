@@ -25,7 +25,7 @@
                 </a>
                 <a href="{% url 'profile' user_id=user.id %}">
                     <i class="fa fa-user"></i>
-                    <h3>Profile</h3>
+                    <h3>My Profile</h3>
                 </a>
                 <a href="{% url 'admins' %}" class="active">
                     <i class="fa fa-users"></i>
@@ -151,10 +151,12 @@
                                         <th>Company Phone</th>
                                         <th>Contact paerson</th>
                                         <th>Contact Person's Phone</th>
+                                        <!-- <th>Debtor</th> -->
                                         <th>Last Seen</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% load custom_filters %}
                                     {% for client in clients %}
                                     <tr>
                                         <!-- loop through the admin_profiles list and only display the profile for the current admin -->
@@ -169,14 +171,22 @@
                                         <td>{{ client_profile.contact_person }}</td>
                                         <td>{{ client_profile.contact_person_phone }}</td>
                                         <!-- <td>{{ client.date_joined }}</td> -->
+                                        
                                         <td>{{ client.last_login }}</td>
                                         <td><a class="primary-btn"
                                                 href="{% url 'edit_client' user_id=client.id %}">Edit</a></td>
                                         <td><a class="danger-btn" href="{% url 'delete_client' user_id=client.id %}"
                                                 onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
                                         </td>
-                                        {% endif %}
+                                        <!--  -->
+                                        <!-- {% endif %}
                                         {% endfor %}
+                                        {% for debtor in debtors %}
+                                        {% if debtor.client_id == client.id %}
+                                        <td>{{ total_amount_owed }}</td>
+                                        {% endif %}
+                                        {% endfor %} -->
+                                        <!--  -->
                                     </tr>
                                     {% endfor %}
 

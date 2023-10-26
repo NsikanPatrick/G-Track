@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.db.models import Sum
+from decimal import Decimal
 from django.contrib import messages
 from .models import UserProfile, Debtor, Payment
 from django.core.files.storage import FileSystemStorage
@@ -73,12 +74,6 @@ def profile(request, user_id):
         user_profile = UserProfile.objects.get(user=user_id)
         user_details = User.objects.get(id=user_id)
 
-        # c_payments = Payment.objects.filter(client_id=current_user.id)
-        # c_debtors = Debtor.objects.filter(client_id=current_user.id)
-        # c_total = c_debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
-        # c_retrieved = c_payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
-        # c_debt = c_total - c_retrieved
-
         debtors = Debtor.objects.all()
         payments = Payment.objects.all()
 
@@ -93,9 +88,6 @@ def profile(request, user_id):
                        "total": total, 
                        "retrieved": retrieved, 
                        "debt": debt,
-                    #    "c_total": c_total,
-                    #    "c_retrieved": c_retrieved,
-                    #    "c_debt": c_debt,
                     }
                        )
 
@@ -292,8 +284,20 @@ def batch_delete_admins(request):
 @login_required
 def get_clients(request):
     all_clients = User.objects.filter(is_superuser=False, is_staff=False).order_by('date_joined').reverse()
-    all_clients_profiles = UserProfile.objects.all
-    return render(request, 'admins_dashboard/clients/clients.html', {'clients': all_clients, 'client_profiles': all_clients_profiles})
+    all_clients_profiles = UserProfile.objects.all()
+    all_debtors = Debtor.objects.all()
+
+    # Calculate the total sum of 'amount_owed'
+    total_amount_owed = sum(debtor.amount_owed for debtor in all_debtors)
+    # End
+
+    context = {
+        'clients': all_clients,
+        'client_profiles': all_clients_profiles,
+        'debtors': all_debtors,
+        'total_amount_owed': total_amount_owed,  # Pass the total to the template
+    }
+    return render(request, 'admins_dashboard/clients/clients.html', context)
 
 
 @login_required
@@ -753,70 +757,6 @@ def multiple_recipients(request):
     # return render(request, "admins_dashboard/email_notifications/multiple_recipient.html")
 
 
-# @login_required
-# def multiple_recipient_send_mail(request):
-#     if request.method == 'POST':
-#         email_subject = request.POST["email_subject"]
-#         email_message = request.POST["email_message"]
-#         attachment = request.FILES.get('email_file')
-#         content_type = attachment.content_type if attachment else None
-
-#         # Validate form data
-#         if not email_subject or not email_message:
-#             return HttpResponseBadRequest('Missing required fields')
-
-#         # Create email message
-#         email_sender = 'nsikanadaowo90@gmail.com'
-#         email_password = 'jduzadsuapibwahj'
-#         context = ssl.create_default_context()
-
-#         with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
-#             smtp.login(email_sender, email_password)
-
-#             # Get all debtors
-#             debtors = Debtor.objects.all()
-
-#             for debtor in debtors:
-#                 email = debtor.email
-
-#                 if email:
-#                     # Create a new email_msg object for each debtor
-#                     email_msg = MIMEMultipart()
-#                     email_msg['Subject'] = email_subject
-#                     email_msg['To'] = email
-#                     email_msg.attach(MIMEText(email_message))
-
-#                     # Add attachment, if provided
-#                     if attachment:
-#                         file_data = attachment.read()
-
-#                         if content_type.startswith('image/'):
-#                             image = MIMEImage(file_data)
-#                             image.add_header('Content-Disposition', 'attachment', filename='image.jpg')
-#                             email_msg.attach(image)
-#                         elif content_type == 'application/pdf':
-#                             attachment_msg = MIMEApplication(file_data, _subtype='pdf')
-#                             attachment_msg.add_header('Content-Disposition', 'attachment', filename='document.pdf')
-#                             email_msg.attach(attachment_msg)
-#                         elif content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-#                             attachment_msg = MIMEApplication(file_data, _subtype='docx')
-#                             attachment_msg.add_header('Content-Disposition', 'attachment', filename='document.docx')
-#                             email_msg.attach(attachment_msg)
-#                         else:
-#                             return HttpResponseBadRequest('Unsupported file type')
-
-#                     # Send email to the current debtor
-#                     smtp.send_message(email_msg)
-
-#                     # Reset attachment for the next email if it exists
-#                     if attachment:
-#                         attachment.seek(0)
-
-#         messages.success(request, "Your email was sent")
-#         return redirect('debtors')
-
-
-
 @login_required
 def multiple_recipient_send_mail(request):
     if request.method == 'POST':
@@ -888,8 +828,9 @@ def multiple_recipient_send_mail(request):
 # View functions for the client dashboard
 @login_required
 def my_debtors(request, user_id):
+    my_payments = Payment.objects.filter(client_id=user_id)
     my_debtors = Debtor.objects.filter(client_id=user_id)
-    return render(request, 'clients_dashboard/my_debtors.html', {'debtors': my_debtors})
+    return render(request, 'clients_dashboard/my_debtors.html', {'debtors': my_debtors, 'payments': my_payments})
 
 
 @login_required

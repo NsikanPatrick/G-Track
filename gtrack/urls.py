@@ -29,7 +29,9 @@ urlpatterns = [
 ]
 
 # This section allows you to serve media files dynamically on the client from the
-# backend. 
+# backend by using the url of the media file
+# Here you're saying, if settings.DEBUG is True(DEBUG mode is tuned on) then serve media
+# files, else don't serve them. But production usually requires debug to be off.
 if settings.DEBUG:
     urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

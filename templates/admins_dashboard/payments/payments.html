@@ -25,7 +25,7 @@
                 </a>
                 <a href="{% url 'profile' user_id=user.id %}">
                     <i class="fa fa-user"></i>
-                    <h3>Profile</h3>
+                    <h3>My Profile</h3>
                 </a>
                 <a href="{% url 'admins' %}" class="active">
                     <i class="fa fa-users"></i>
@@ -145,12 +145,12 @@
                                 <thead>
                                     <tr>
                                         <th></th>
+                                        <th>Payed by</th>
                                         <th>Amount Paid</th>
                                         <th>Medium of Payment</th>
-                                        <th>Balance left</th>
                                         <th>Date Paid</th>
+                                        <th>Balance left</th>
                                         <th>Total Amount Owed</th>
-                                        <th>Payed by</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -158,12 +158,12 @@
                                     {% for payment in payments %}
                                     <tr>
                                         <td><input type="checkbox" value="{{payment.id}}" name="selected_users"></td>
+                                        <td>{{ payment.debtor_id.firstname }} {{ payment.debtor_id.surname }}</td>
                                         <td>N{{ payment.amount_payed|floatformat:0|intcomma }}</td>
                                         <td>{{ payment.medium_of_payment }}</td>
-                                        <td>N{{ payment.balance_left|floatformat:0|intcomma }}</td>
                                         <td>{{ payment.date_payed }}</td>
+                                        <td>N{{ payment.balance_left|floatformat:0|intcomma }}</td>
                                         <td>N{{ payment.debtor_id.amount_owed|floatformat:0|intcomma }}</td>
-                                        <td>{{ payment.debtor_id.firstname }} {{ payment.debtor.surname }}</td>
                                         <td><a class="primary-btn">{{ payment.status }}</a></td>
                                         <td>
                                             <a class="danger-btn" href="{% url 'approve_payment' user_id=payment.id %}"

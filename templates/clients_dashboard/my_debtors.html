@@ -25,7 +25,7 @@
                 </a>
                 <a href="{% url 'profile' user_id=user.id %}">
                     <i class="fa fa-user"></i>
-                    <h3>Profile</h3>
+                    <h3>My Profile</h3>
                 </a>
                 <a href="{% url 'my_payments' user_id=user.id %}">
                     <i class="fa fa-money"></i>
@@ -106,27 +106,25 @@
                                     <th>Address</th>
                                     <th>Phone Number</th>
                                     <th>Email</th>
-                                    <th>Amount Owed</th>
-                                    <th>Date Captured</th>
+                                    <th>Total Amount Owed</th>
+                                    <th>Balance Left</th>
                                     <th>Due Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for debtor in debtors %}
-                                <tr>
-                                    <td>{{ debtor.firstname }}</td>
-                                    <td>{{ debtor.surname }}</td>
-                                    <td>{{ debtor.address }}</td>
-                                    <td>{{ debtor.phone }}</td>
-                                    <td>{{ debtor.email }}</td>
-                                    <td>N{{ debtor.amount_owed|floatformat:0|intcomma }}</td>
-                                    <td>{{ debtor.date_captured }}</td>
-                                    <td>{{ debtor.due_date }}</td>
-                                    <!-- loop through the admin_profiles list and only display the profile for the current admin -->
-                                    
-                                </tr>
-                                {% endfor %}
-    
+                                {% for payment in payments %}
+                                    <tr>
+                                        <td>{{ payment.debtor_id.firstname }}</td>
+                                        <td>{{ payment.debtor_id.surname }}</td>
+                                        <td>{{ payment.debtor_id.address }}</td>
+                                        <td>{{ payment.debtor_id.phone }}</td>
+                                        <td>{{ payment.debtor_id.email }}</td>
+                                        <td>N{{ payment.debtor_id.amount_owed|floatformat:0|intcomma }}</td>
+                                        <td>N{{ payment.balance_left|floatformat:0|intcomma }}</td>
+                                        <td>{{ payment.debtor_id.due_date }}</td>
+                                        
+                                    </tr>
+                                    {% endfor %}
                             </tbody>
     
                         </table>
