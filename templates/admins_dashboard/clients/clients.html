@@ -178,15 +178,17 @@
                                         <td><a class="danger-btn" href="{% url 'delete_client' user_id=client.id %}"
                                                 onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
                                         </td>
-                                        <!--  -->
+
                                         <!-- {% endif %}
                                         {% endfor %}
                                         {% for debtor in debtors %}
                                         {% if debtor.client_id == client.id %}
-                                        <td>{{ total_amount_owed }}</td>
+                                        
+                                        <td>{{ debtor.amount_owed|sum_values:debtors }}</td>
+
                                         {% endif %}
                                         {% endfor %} -->
-                                        <!--  -->
+
                                     </tr>
                                     {% endfor %}
 

@@ -37,12 +37,19 @@ def index(request):
 
     if current_user.is_staff:
         # Fetch the payments and related debtors efficiently
-        all_payments = Payment.objects.select_related('debtor_id').order_by('date_payed').reverse()[:5]
-        all_debtors = [payment.debtor_id for payment in all_payments]
+        # all_payments = Payment.objects.select_related('debtor_id').order_by('date_payed').reverse()[:5]
+        # all_debtors = [payment.debtor_id for payment in all_payments]
+        all_payments = Payment.objects.all().order_by('date_payed').reverse()[:5]
+        all_debtors = Debtor.objects.all()[:5]
+
+        debtors = Debtor.objects.all()
+        payments = Payment.objects.all()
 
         # Calculate the total and retrieved amounts
-        total = sum(debtor.amount_owed for debtor in all_debtors)
-        retrieved = sum(payment.amount_payed for payment in all_payments)
+        # total = sum(debtor.amount_owed for debtor in all_debtors)
+        # retrieved = sum(payment.amount_payed for payment in all_payments)
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
 
         if total is None or retrieved is None:
             return render(request, 'error_pages/admin_index.html', {})
@@ -55,9 +62,14 @@ def index(request):
         my_payments = Payment.objects.select_related('debtor_id').filter(client_id=current_user.id).order_by('date_payed').reverse()[:5]
         my_debtors = [payment.debtor_id for payment in my_payments]
 
+        payments = Payment.objects.filter(client_id=current_user.id)
+        debtors = Debtor.objects.filter(client_id=current_user.id)
+
         # Calculate the total and retrieved amounts for the user
-        total = sum(debtor.amount_owed for debtor in my_debtors)
-        retrieved = sum(payment.amount_payed for payment in my_payments)
+        # total = sum(debtor.amount_owed for debtor in my_debtors)
+        # retrieved = sum(payment.amount_payed for payment in my_payments)
+        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
 
         if total is None or retrieved is None:
             return render(request, 'error_pages/client_index.html', {})
@@ -489,7 +501,7 @@ def create_debtor(request):
 @login_required
 def edit_debtor(request, user_id):
     details = Debtor.objects.get(id=user_id)
-    return render(request, "debtors/debtor_edit.html", {'details': details})
+    return render(request, "admins_dashboard/debtors/debtor_edit.html", {'details': details})
 
 
 @login_required
@@ -503,6 +515,9 @@ def debtor_edited(request, user_id):
         address = request.POST["address"]
         phone = request.POST["phone"]
         amount_owed = request.POST["amount_owed"]
+
+        guarantors_name = request.POST["guarantors_name"]
+        guarantors_phone = request.POST["guarantors_phone"]
         
         details.firstname =  firstname
         details.surname =  surname
@@ -510,6 +525,10 @@ def debtor_edited(request, user_id):
         details.address =  address
         details.phone =  phone
         details.amount_owed =  amount_owed
+
+        details.guarantors_name = guarantors_name
+        details.guarantors_phone = guarantors_phone
+
         details.save()
         # details.refresh_from_db()
         
