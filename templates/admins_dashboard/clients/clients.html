@@ -173,6 +173,8 @@
                                         <!-- <td>{{ client.date_joined }}</td> -->
                                         
                                         <td>{{ client.last_login }}</td>
+                                        <td><a class="portfolio-btn"
+                                            href="{% url 'client_portfolio' user_id=client.id %}">Portfolio</a></td>
                                         <td><a class="primary-btn"
                                                 href="{% url 'edit_client' user_id=client.id %}">Edit</a></td>
                                         <td><a class="danger-btn" href="{% url 'delete_client' user_id=client.id %}"

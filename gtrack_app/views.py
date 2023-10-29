@@ -433,6 +433,29 @@ def batch_delete_clients(request):
 
 
 @login_required
+def view_portfolio(request, user_id):
+    client_details = User.objects.get(id=user_id)
+    client_profile_details = UserProfile.objects.get(user=user_id)
+    debtors = Debtor.objects.filter(client_id=user_id)
+    payments = Payment.objects.filter(client_id=user_id)
+
+    total_debtors = debtors.count()
+    total_debt = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+    retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+    balance_left = payments.aggregate(Sum('balance_left'))['balance_left__sum']
+
+    context = {
+        'client_details': client_details,
+        'client_profile_details': client_profile_details,
+        'total_debtors': total_debtors,
+        'total_debt': total_debt,
+        'retrieved': retrieved,
+        'balance_left': balance_left,
+    }
+    return render(request, "admins_dashboard/clients/client_portfolio.html", context)
+
+
+@login_required
 def debtors(request):
     all_debtors = Debtor.objects.all().order_by('date_captured').reverse()
     all_clients = User.objects.filter(is_superuser=False, is_staff=False)

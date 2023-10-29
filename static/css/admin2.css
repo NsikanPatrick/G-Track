@@ -5,7 +5,7 @@
     /* --primary-color: #7380ec; */
     --primary-color: rgba(175,134,37,0.62);
     --color-danger: #ff7782;
-    --color-success: seagreen;
+    --color-success: #556B2F;
     --color-warning: #ffbb55;
     --color-white: #fff;
     --color-info-dark: #7d8da1;
@@ -144,6 +144,12 @@ b{
     padding: 10px;  
 }
 
+.portfolio-btn{
+    background: var(--color-success);
+    color: var(--color-white);
+    padding: 10px;  
+}
+
 .status-btn{
     background: var(--primary-color);
     color: #fff !important;
@@ -151,7 +157,7 @@ b{
     border-radius: 10px;
 }
 
-.primary-btn:hover{
+.portfolio-btn:hover,.primary-btn:hover{
     cursor: pointer;
     padding: 11px;
 }
@@ -1654,6 +1660,10 @@ main .panel-body .admin-panel a#show-all{
 /* Right styles */
 .right .right-top{
     margin-bottom: 20px;
+}
+
+.right .right-top.portfolio{
+    height: 700px !important;
 }
 
 .right-top.box, .right-bottom.box{
