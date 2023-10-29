@@ -16,6 +16,53 @@ def create_payment(request):
         
         debtor = Debtor.objects.get(id=debtor_id)
         payment = Payment.objects.filter(debtor_id=debtor_id).last()
+        
+        if payment:
+            balance_left = payment.balance_left
+            
+            if balance_left <= 0:
+                messages.success(request, "This debtor has already completed their payment")
+                return redirect('payments')
+            
+            new_payment = Payment()
+            new_payment.amount_payed = amount_payed
+            new_payment.medium_of_payment = medium_of_payment
+            new_payment.balance_left = int(balance_left) - int(amount_payed)
+            new_payment.debtor_id = debtor
+            new_payment.client_id = debtor.client_id  # Assign the client instance as the client_id
+            new_payment.status = "In Progress"
+            new_payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+        else:
+            amount_owed = debtor.amount_owed
+            client = User.objects.get(id=debtor.client_id)
+
+            payment = Payment()
+            payment.amount_payed = amount_payed
+            payment.medium_of_payment = medium_of_payment
+            payment.balance_left = int(amount_owed) - int(amount_payed)
+            payment.debtor_id = debtor
+            payment.client_id = client  # Assign the client instance as the client_id
+            payment.status = "In Progress"
+            payment.save()
+            messages.success(request, "Payment details were successfully captured")
+            return redirect('payments')
+
+    all_debtors = Debtor.objects.all()
+    return render(request, "admins_dashboard/payments/create_payment.html", {'debtors': all_debtors})
+
+
+
+def create_payment(request):
+    if request.method == "POST":
+        amount_payed_str = request.POST["amount_payed"]
+        amount_payed = amount_payed_str.replace('#', '')
+        medium_of_payment = request.POST["medium_of_payment"]
+        debtor_id = request.POST["debtor"]
+        
+        debtor = Debtor.objects.get(id=debtor_id)
+        payment = Payment.objects.filter(debtor_id=debtor_id).last()
         if payment:
             balance_left = payment.balance_left
             if balance_left <= 0:
