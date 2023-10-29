@@ -196,6 +196,7 @@
                     </div>
 
                     <div class="right">
+                        {% load humanize %}
                         <div class="right-top box portfolio">
                             <h2 class="text-center">Portfolio</h2>
                             <div class="table-container">
@@ -206,15 +207,15 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">Total Portfolio Debt:</th>
-                                            <td>{{total_debt}}</td>
+                                            <td>N{{total_debt|floatformat:0|intcomma}}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Total Amount Retrieved:</th>
-                                            <td>{{retrieved}}</td>
+                                            <td>N{{retrieved|floatformat:0|intcomma}}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Total Balance Left:</th>
-                                            <td>{{balance_left}}</td>
+                                            <td>N{{balance_left|floatformat:0|intcomma}}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Total Related Debtors:</th>
