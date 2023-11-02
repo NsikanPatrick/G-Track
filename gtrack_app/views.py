@@ -86,20 +86,20 @@ def profile(request, user_id):
         user_profile = UserProfile.objects.get(user=user_id)
         user_details = User.objects.get(id=user_id)
 
-        debtors = Debtor.objects.all()
-        payments = Payment.objects.all()
+        # debtors = Debtor.objects.all()
+        # payments = Payment.objects.all()
 
-        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
-        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
+        # total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
+        # retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
 
 
-        debt = total - retrieved
+        # debt = total - retrieved
         return render(request, "profile/user_profile2.html", 
                       {'my_profile': user_profile, 
                        'user_details': user_details, 
-                       "total": total, 
-                       "retrieved": retrieved, 
-                       "debt": debt,
+                    #    "total": total, 
+                    #    "retrieved": retrieved, 
+                    #    "debt": debt,
                     }
                        )
 
