@@ -147,8 +147,8 @@
                                     <tr>
                                         <th></th>
                                         <th>Name of Organization</th>
-                                        <th>Company Address</th>
-                                        <!-- <th>Company Phone</th> -->
+                                        <!-- <th>Company Address</th> -->
+                                        <th>Company Phone</th>
                                         <th>Contact Person</th>
                                         <th>Contact Person's Phone</th>
                                         <!-- <th>Debtor</th> -->
@@ -165,16 +165,16 @@
                                         <!-- display the information for each admin and their corresponding profile -->
                                         <td><input type="checkbox" value="{{client.id}}" name="select_delete"></td>
                                         <td>{{ client.first_name }}</td>
-                                        <td>{{ client_profile.address }}</td>
+                                        <!-- <td>{{ client_profile.address }}</td> -->
                                         <!-- <td>{{ client.email }}</td> -->
-                                        <!-- <td>{{ client_profile.phone }}</td> -->
+                                        <td>{{ client_profile.phone }}</td>
                                         <td>{{ client_profile.contact_person }}</td>
                                         <td>{{ client_profile.contact_person_phone }}</td>
                                         <!-- <td>{{ client.date_joined }}</td> -->
                                         
                                         <!-- <td>{{ client.last_login }}</td> -->
                                         <td><a class="portfolio-btn"
-                                            href="{% url 'client_portfolio' user_id=client.id %}">Portfolio</a></td>
+                                            href="{% url 'client_portfolio' user_id=client.id %}">View Portfolio</a></td>
                                         <td><a class="primary-btn"
                                                 href="{% url 'edit_client' user_id=client.id %}">Edit</a></td>
                                         <td><a class="danger-btn" href="{% url 'delete_client' user_id=client.id %}"

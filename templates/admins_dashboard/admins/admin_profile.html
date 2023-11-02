@@ -148,13 +148,13 @@
                         <div class="profile-pix">
                             <!-- <img src="{% static 'img/anonymous.jpg' %}" alt="mgm"> -->
                             {% if client_details.userprofile.profile_pic %}
-                            <img src="{{user_details.userprofile.profile_pic.url}}" width="200" height="200" />
+                            <img src="{{admin_details.userprofile.profile_pic.url}}" width="200" height="200" />
                             {% else %}
                             <!-- A default image to be shown if the user did not upload a profile pic -->
                             <img src="{% static 'img/anonymous.jpg' %}" width="200" height="200" />
                             {% endif %}
                         </div>
-                        <h2 class="account-name text-center">{{ client_details.first_name }} {{ client_details.last_name }}</h2>
+                        <h2 class="account-name text-center">{{ admin_details.first_name }} {{ admin_details.last_name }}</h2>
                         <div class="profile-details">
                             <div class="table-container">
                                 <table class="table table-bordered">
@@ -164,19 +164,19 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">Username:</th>
-                                            <td>{{ client_details.username }}</td>
+                                            <td>{{ admin_details.username }}</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Company Phone:</th>
-                                            <td>{{ client_profile_details.phone }}</td>
+                                            <th scope="row">Phone Number:</th>
+                                            <td>{{ admin_profile_details.phone }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Email:</th>
-                                            <td>{{ client_details.email }}</td>
+                                            <td>{{ admin_details.email }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Address:</th>
-                                            <td>{{ client_profile_details.address }}</td>
+                                            <td>{{ admin_profile_details.address }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -209,11 +209,11 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Date Joined:</th>
-                                            <td>{{ client_details.date_joined }}</td>
+                                            <td>{{ admin_details.date_joined }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Last Seen:</th>
-                                            <td>{{ client_details.last_login }}</td>
+                                            <td>{{ admin_details.last_login }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

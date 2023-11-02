@@ -234,8 +234,8 @@ def view_admin_details(request, user_id):
     admin_profile_details = UserProfile.objects.get(user=user_id)
 
     context = {
-        'client_details': admin_details,
-        'client_profile_details': admin_profile_details,
+        'admin_details': admin_details,
+        'admin_profile_details': admin_profile_details,
     }
     return render(request, "admins_dashboard/admins/admin_profile.html", context)
 

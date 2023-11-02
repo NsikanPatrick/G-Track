@@ -147,7 +147,7 @@
                                         <th></th>
                                         <th>Payed by</th>
                                         <th>Amount Paid</th>
-                                        <th>Medium</th>
+                                        <!-- <th>Medium</th> -->
                                         <th>Date Paid</th>
                                         <th>Balance left</th>
                                         <th>Total Amount Owed</th>
@@ -160,7 +160,7 @@
                                         <td><input type="checkbox" value="{{payment.id}}" name="selected_users"></td>
                                         <td>{{ payment.debtor_id.firstname }} {{ payment.debtor_id.surname }}</td>
                                         <td>N{{ payment.amount_payed|floatformat:0|intcomma }}</td>
-                                        <td>{{ payment.medium_of_payment }}</td>
+                                        <!-- <td>{{ payment.medium_of_payment }}</td> -->
                                         <td>{{ payment.date_payed }}</td>
                                         <td>N{{ payment.balance_left|floatformat:0|intcomma }}</td>
                                         <td>N{{ payment.debtor_id.amount_owed|floatformat:0|intcomma }}</td>
