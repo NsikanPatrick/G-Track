@@ -545,9 +545,16 @@ main .recent-orders a{
 }
 
 /* ===================== ADMIN PANEL SECTION ====================== */
+.main .panel-body .admin-panel {
+    width: 100%; /* Adjust the width as needed */
+    overflow-x: auto; /* Add a horizontal scroll bar when content overflows */
+    white-space: nowrap; /* Prevent line breaks within table cells */ 
+}
+
 main .panel-body .admin-panel table{
     background: var(--color-white);
     width: 100%;
+    min-width: 100%;
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
     text-align: center;
@@ -893,6 +900,7 @@ main .panel-body .admin-panel a#show-all{
 }
 
 @media screen and (min-width: 1101px) and (max-width: 1300px) {
+
     .main-container .content{
         display: flex;
         flex-direction: row;

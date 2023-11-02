@@ -11,6 +11,7 @@ urlpatterns = [
     path("admins/create_admin", views.create_admin, name="create_admin"),
     path("profile/<int:user_id>", views.profile, name="profile"),
     path("profile/edit/<int:user_id>", views.profile_update, name="profile_update"),
+    path("admins/view_admin_details/<int:user_id>", views.view_admin_details, name="view_details"),
     path("admins/edit_admin/<int:user_id>", views.edit_admin, name="edit_admin"),
     path("admins/admin_edited/<int:user_id>", views.admin_edited, name="admin_edited"),
     path("admins/delete_admin/<int:user_id>", views.delete_admin, name="delete_admin"),

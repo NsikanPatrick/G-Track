@@ -118,7 +118,7 @@
                                         <td>N{{ payment.balance_left|floatformat:0|intcomma }}</td>
                                         <td>{{ payment.date_payed }}</td>
                                         <td>N{{ payment.debtor_id.amount_owed|floatformat:0|intcomma }}</td>
-                                        <td>{{ payment.debtor_id.firstname }} {{ payment.debtor.surname }}</td>
+                                        <td>{{ payment.debtor_id.firstname }} {{ payment.debtor_id.surname }}</td>
                                         <td><a class="primary-btn">{{ payment.status }}</a></td>
                                         
                                     </tr>

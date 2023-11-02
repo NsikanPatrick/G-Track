@@ -229,6 +229,18 @@ def create_admin(request):
 
 
 @login_required
+def view_admin_details(request, user_id):
+    admin_details = User.objects.get(id=user_id)
+    admin_profile_details = UserProfile.objects.get(user=user_id)
+
+    context = {
+        'client_details': admin_details,
+        'client_profile_details': admin_profile_details,
+    }
+    return render(request, "admins_dashboard/admins/admin_profile.html", context)
+
+
+@login_required
 def edit_admin(request, user_id):
     details = User.objects.get(id=user_id)
     details_profile = UserProfile.objects.get(user=user_id)

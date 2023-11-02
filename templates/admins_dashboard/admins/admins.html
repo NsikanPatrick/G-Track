@@ -147,12 +147,12 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Username</th>
-                                        <th>Email</th>
+                                        <th>Name</th>
+                                        <!-- <th>Email</th> -->
                                         <th>Privilege</th>
                                         <th>Phone Number</th>
                                         <th>Address</th>
-                                        <th>First Seen</th>
+                                        <!-- <th>First Seen</th> -->
                                         <th>Last Seen</th>
                                     </tr>
                                 </thead>
@@ -164,8 +164,8 @@
                                         {% if admin_profile.user_id == admin.id %}
                                         <!-- display the information for each admin and their corresponding profile -->
                                         <td><input type="checkbox" value="{{admin.id}}" name="select_delete"></td>
-                                        <td>{{ admin.username }}</td>
-                                        <td>{{ admin.email }}</td>
+                                        <td>{{ admin.first_name }}  {{ admin.last_name }}</td>
+                                        <!-- <td>{{ admin.email }}</td> -->
                                         {% if admin.is_superuser and admin.is_staff %}
                                         <td>Super Admin</td>
                                         {% else %}
@@ -173,8 +173,10 @@
                                         {% endif %}
                                         <td>{{ admin_profile.phone }}</td>
                                         <td>{{ admin_profile.address }}</td>
-                                        <td>{{ admin.date_joined }}</td>
+                                        <!-- <td>{{ admin.date_joined }}</td> -->
                                         <td>{{ admin.last_login }}</td>
+                                        <td><a class="portfolio-btn"
+                                            href="{% url 'view_details' user_id=admin.id %}">View Profile</a></td>
                                         <td><a class="primary-btn"
                                                 href="{% url 'edit_admin' user_id=admin.id %}">Edit</a></td>
                                         <td><a class="danger-btn" href="{% url 'delete_admin' user_id=admin.id %}"

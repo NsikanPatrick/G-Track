@@ -139,7 +139,7 @@
     <div class="panel profile-panel">
         <main>
 
-            <h1 class="panel-label">{{ client_details.first_name }}</h1>
+            <h1 class="panel-label">Admin Details</h1>
 
             <div class="panel-body">
                 <div class="profile-wrapper">
@@ -178,18 +178,6 @@
                                             <th scope="row">Address:</th>
                                             <td>{{ client_profile_details.address }}</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">Contact Person:</th>
-                                            <td>{{ client_profile_details.contact_person }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Contact Person's Phone:</th>
-                                            <td>{{ client_profile_details.contact_person_phone }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Last Seen</th>
-                                            <td>{{ client_details.last_login }}</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -202,7 +190,7 @@
                     <div class="right">
                         {% load humanize %}
                         <div class="right-top box portfolio">
-                            <h2 class="text-center">Portfolio</h2>
+                            <h2 class="text-center">G-Track Information</h2>
                             <div class="table-container">
                                 <table class="table table-borderless">
                                     <thead>
@@ -210,20 +198,22 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">Total Portfolio Debt:</th>
-                                            <td>N{{total_debt|floatformat:0|intcomma}}</td>
+                                            <th scope="row">Status:</th>
+                                            {% if user.is_superuser and user.is_staff %}
+                                            <td>Super Admin</td>
+                                            {% elif not user.is_superuser and user.is_staff %}
+                                            <td>Editor</td>
+                                            {% else %}
+                                            <td>Client</td>
+                                            {% endif %}
                                         </tr>
                                         <tr>
-                                            <th scope="row">Total Amount Retrieved:</th>
-                                            <td>N{{retrieved|floatformat:0|intcomma}}</td>
+                                            <th scope="row">Date Joined:</th>
+                                            <td>{{ client_details.date_joined }}</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Total Balance Left:</th>
-                                            <td>N{{balance_left|floatformat:0|intcomma}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Total Related Debtors:</th>
-                                            <td>{{total_debtors}}</td>
+                                            <th scope="row">Last Seen:</th>
+                                            <td>{{ client_details.last_login }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

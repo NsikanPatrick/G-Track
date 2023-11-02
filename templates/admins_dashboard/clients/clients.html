@@ -140,7 +140,7 @@
 
                         </div>
                         <div class="admin-panel">
-
+                            <!-- <div class="table-container"> -->
                             <table>
 
                                 <thead>
@@ -148,11 +148,11 @@
                                         <th></th>
                                         <th>Name of Organization</th>
                                         <th>Company Address</th>
-                                        <th>Company Phone</th>
-                                        <th>Contact paerson</th>
+                                        <!-- <th>Company Phone</th> -->
+                                        <th>Contact Person</th>
                                         <th>Contact Person's Phone</th>
                                         <!-- <th>Debtor</th> -->
-                                        <th>Last Seen</th>
+                                        <!-- <th>Last Seen</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -167,12 +167,12 @@
                                         <td>{{ client.first_name }}</td>
                                         <td>{{ client_profile.address }}</td>
                                         <!-- <td>{{ client.email }}</td> -->
-                                        <td>{{ client_profile.phone }}</td>
+                                        <!-- <td>{{ client_profile.phone }}</td> -->
                                         <td>{{ client_profile.contact_person }}</td>
                                         <td>{{ client_profile.contact_person_phone }}</td>
                                         <!-- <td>{{ client.date_joined }}</td> -->
                                         
-                                        <td>{{ client.last_login }}</td>
+                                        <!-- <td>{{ client.last_login }}</td> -->
                                         <td><a class="portfolio-btn"
                                             href="{% url 'client_portfolio' user_id=client.id %}">Portfolio</a></td>
                                         <td><a class="primary-btn"
@@ -197,7 +197,7 @@
                                 </tbody>
 
                             </table>
-
+                            <!-- </div> -->
                             <a id="show-all" href="#">Show all</a>
                         </div>
                     </form>
