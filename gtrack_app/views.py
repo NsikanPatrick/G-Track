@@ -133,23 +133,10 @@ def profile_update(request, user_id):
         user_details.save()
         user_details.refresh_from_db()
 
-        debtors = Debtor.objects.all()
-        payments = Payment.objects.all()
-
-        total = debtors.aggregate(Sum('amount_owed'))['amount_owed__sum']
-        retrieved = payments.aggregate(Sum('amount_payed'))['amount_payed__sum']
-
-
-        debt = total - retrieved
+        
         return render(request, "profile/user_profile2.html", 
                       {'my_profile': user_profile_obj, 
                        'user_details': user_details, 
-                       "total": total, 
-                       "retrieved": retrieved, 
-                       "debt": debt,
-                    #    "c_total": c_total,
-                    #    "c_retrieved": c_retrieved,
-                    #    "c_debt": c_debt,
                     }
                 )
         
