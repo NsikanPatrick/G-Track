@@ -42,6 +42,23 @@
     --box-shadow: 0 2rem 3rem var(--color-light);
 }
 
+/* APPLYING PERSISTENT DARK-MODE THEME THROUGH LOCALSTAORAGE */
+/* Apply dark theme styles when the 'dark-theme-variables' class is present on the body element */
+body.dark-theme-variables {
+    /* Dark theme variables */
+    .dark-theme-variables{
+        --color-background: #181a1e;
+        --color-background-sidebar: #202528;
+        --color-white: #202528;
+        --color-dark: #edeffd;
+        --color-dark-variant: #a3bdcc;
+        --color-light: rgba(0, 0, 0, 0.4);
+        --box-shadow: 0 2rem 3rem var(--color-light);
+    }
+}
+
+
+
 *{
     list-style-type: none;
     text-decoration: none;
