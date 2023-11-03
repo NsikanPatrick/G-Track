@@ -2,7 +2,7 @@
 
 /* =====================  ROOT VARIABLES ==================== */
 :root{
-    /* --primary-color: #7380ec; */
+    /* --primary-color: #7380ec */
     --primary-color: rgba(175,134,37,0.62);
     --color-danger: #ff7782;
     --color-success: #556B2F;
