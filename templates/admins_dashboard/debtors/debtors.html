@@ -146,12 +146,12 @@
                                     <tr>
                                         <th></th>
                                         <th>Name</th>
-                                        <th>Address</th>
+                                        <!-- <th>Address</th> -->
                                         <th>Phone Number</th>
                                         <!-- <th>Email</th> -->
-                                        <th>Amount Owed</th>
+                                        <!-- <th>Amount Owed</th> -->
                                         <th>Guarantor's Name</th>
-                                        <th>Guarantors Phone</th>
+                                        <th>Guarantor's Phone</th>
                                         <th>Related client</th>
                                     </tr>
                                 </thead>
@@ -161,10 +161,10 @@
                                         <td><input type="checkbox" value="{{debtor.id}}" name="selected_users"></td>
                                         <td>{{ debtor.firstname }} {{ debtor.surname }}</td>
                                         
-                                        <td>{{ debtor.address }}</td>
+                                        <!-- <td>{{ debtor.address }}</td> -->
                                         <td>{{ debtor.phone }}</td>
                                         <!-- <td>{{ debtor.email }}</td> -->
-                                        <td>N{{ debtor.amount_owed|floatformat:0|intcomma }}</td>
+                                        <!-- <td>N{{ debtor.amount_owed|floatformat:0|intcomma }}</td> -->
                                         <td>{{ debtor.guarantors_name }}</td>
                                         <td>{{ debtor.guarantors_phone }}</td>
                                         <!-- loop through the admin_profiles list and only display the profile for the current admin -->
