@@ -1,3 +1,17 @@
+/* .admin-pane{
+    background: rgb(224, 216, 216);
+    max-width: 90%;
+    overflow-x: scroll;
+} */
+
+/* .admin-pane table{
+    width: 100%;
+} */
+
+.table-responsive-lg{display:block;width:85%;overflow-x:auto;-webkit-overflow-scrolling:touch;-ms-overflow-style:-ms-autohiding-scrollbar}
+
+.table-responsive-md{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;-ms-overflow-style:-ms-autohiding-scrollbar}
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 /* =====================  ROOT VARIABLES ==================== */
@@ -917,12 +931,7 @@ main .panel-body .admin-panel a#show-all{
 }
 
 @media screen and (min-width: 1101px) and (max-width: 1300px) {
-    .panel-body .admin-panel{
-        overflow-x: auto;
-        width: 100%;
-        margin-top: 100px;
-        -webkit-overflow-scrolling: touch;
-    }
+
     .main-container .content{
         display: flex;
         flex-direction: row;
@@ -989,15 +998,6 @@ main .panel-body .admin-panel a#show-all{
     #sidebar{
         z-index: 3;
     } 
-}
-
-@media screen and (max-width: 1280px) {
-    .panel-body .admin-panel{
-        overflow-x: auto;
-        width: 85%;
-        margin-top: 100px;
-        -webkit-overflow-scrolling: touch;
-    }
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1100px) {

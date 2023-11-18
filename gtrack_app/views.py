@@ -459,6 +459,7 @@ def debtors(request):
     all_debtors = Debtor.objects.all().order_by('date_captured').reverse()
     all_clients = User.objects.filter(is_superuser=False, is_staff=False)
     return render(request, 'admins_dashboard/debtors/debtors.html', {'debtors': all_debtors, 'clients': all_clients})
+    # return render(request, 'admins_dashboard/debtors/debtors-test.html', {'debtors': all_debtors, 'clients': all_clients})
 
 
 @login_required
