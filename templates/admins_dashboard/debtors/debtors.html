@@ -115,20 +115,21 @@
                 {% endfor %}
                 {% endif %}
                 <div class="panel-body">
-                    <form method="post" action="{% url 'debtors_bulk_actions' %}">
+                    
+                    <form method="post" action="{% url 'batch_delete_debtors' %}">
                         {% csrf_token %}
                         <div class="top-table for-debtors">
                             <!-- <h2>All admins</h2> -->
                             <div class="table-actions">
-                                <select name="action" id="action" class="dropdown-select">
+                                <!-- <select name="action" id="action" class="dropdown-select">
                                     <option value="bulk_actions">Bulk Actions</option>
                                     <option value="send_notification">Send Notification</option>
                                     <option value="delete">Delete</option>
-                                    <!-- <option value="manage">Manage</option> -->
-                                </select>
+                                    <option value="manage">Manage</option>
+                                </select> -->
                                 <button class="primary action-btn action" type="submit"
-                                    onclick="return confirm('Are you sure you want to apply the action to the selected record(s)?')">Apply
-                                    action</button>
+                                    onclick="return confirm('Are you sure you want to apply the action to the selected record(s)?')">Delete
+                                    Selected Records</button>
                                 <a href="{% url 'create_debtor' %}" class="primary action-btn create">Create Debtor</a>
                             </div>
                             <!-- <div class="table-actions">

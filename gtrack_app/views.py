@@ -562,6 +562,25 @@ def debtor_edited(request, user_id):
     return render(request, "admins_dashboard/debtors/debtor_edit.html", {})
 
 
+def batch_delete_debtors(request):
+   # Get the list of selected records
+    selected_records = request.POST.getlist('selected_users')
+
+    # Convert the list of strings to a list of integers
+    selected_records = [int(i) for i in selected_records]
+
+    # Filter the records using the `id__in` lookup and delete them
+    Debtor.objects.filter(id__in=selected_records).delete()
+
+    Payment.objects.filter(debtor_id__in=selected_records).delete()
+    # Payment.objects.filter(debtor_id__in=selected_records).delete()
+
+    # Redirect to the success page
+    messages.success(request, "The selected record(s) were successfully deleted from the database")
+    return redirect('debtors')
+
+
+# This function is no longer in use, it might be needed later
 def debtors_bulk_actions(request):
     if request.method == 'POST':
         action = request.POST["action"]
