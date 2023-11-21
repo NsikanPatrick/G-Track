@@ -115,7 +115,7 @@
                 {% endfor %}
                 {% endif %}
                 <div class="panel-body">
-                    
+                    <!-- A new call back url -->
                     <form method="post" action="{% url 'batch_delete_debtors' %}">
                         {% csrf_token %}
                         <div class="top-table for-debtors">
