@@ -1562,10 +1562,6 @@ main .panel-body .admin-panel a#show-all{
         justify-content: flex-end;
     }
 
-    /* .panel .top-table .table-actions .action{
-       display: none;
-    } */
-
     .panel .top-table h2{
         display: none;
     }

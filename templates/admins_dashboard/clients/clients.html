@@ -132,7 +132,7 @@
                                     <option value="delete">Delete</option>
                                     <option value="manage">Manage</option>
                                 </select> -->
-                                <button class="primary action-btn action" type="submit"
+                                <button class="primary action-btn" type="submit"
                                     onclick="return confirm('Are you sure you want to delete the selected record(s)?')">Delete Selected Records</button>
                                 <a href="{% url 'create_client' %}" class="primary action-btn create">Create Client</a>
                             </div>
@@ -173,7 +173,7 @@
                                         
                                         <!-- <td>{{ client.last_login }}</td> -->
                                         <td><a class="portfolio-btn"
-                                            href="{% url 'client_portfolio' user_id=client.id %}">View Portfolio</a></td>
+                                            href="{% url 'client_portfolio' user_id=client.id %}">Portfolio</a></td>
                                         <td><a class="primary-btn"
                                                 href="{% url 'edit_client' user_id=client.id %}">Edit</a></td>
                                         <td><a class="danger-btn" href="{% url 'delete_client' user_id=client.id %}"
