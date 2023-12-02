@@ -81,6 +81,7 @@ def index(request):
 
 @login_required
 def profile(request, user_id):
+    
     current_user = request.user
     if user_id:
         user_profile = UserProfile.objects.get(user=user_id)
@@ -94,7 +95,7 @@ def profile(request, user_id):
 
 
         # debt = total - retrieved
-        return render(request, "profile/user_profile2.html", 
+        return render(request, "profile/user_profile3.html", 
                       {'my_profile': user_profile, 
                        'user_details': user_details, 
                     #    "total": total, 

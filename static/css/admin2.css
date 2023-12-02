@@ -1459,12 +1459,6 @@ main .panel-body .admin-panel a#show-all{
         padding: 20px 20px 20px 12px;
     }
 
-    .panel .panel-body .profile-details{
-        /* display: flex; */
-        /* flex-direction: column-reverse; */
-        /* margin-left: -250px !important; */
-    }
-
     .profile-details{
         margin-left: -630px;
     }
@@ -1477,7 +1471,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media (max-width: 600px){
     .profile-details{
-        margin-left: -430px;
+        margin-left: -730px;
     }
 
     .main-container .top-bar .top-right .theme-toggler{
@@ -1683,19 +1677,19 @@ main .panel-body .admin-panel a#show-all{
 
 .left .button-container {
     text-align: center; /* Center-align its children horizontally */
+    margin-top: 30px;
 }
 
 .left .button-container .edit-profile{
     background: var(--primary-color);
     color: var(--color-white);
     padding: 13px;
-    margin-top: 15px;
     border-radius: 15px;
 }
 
 .left .button-container .edit-profile:hover{
     cursor: pointer;
-    background: var(--primary-color);
+    background: var(--color-success);
 }
 
 /* Right styles */
@@ -1741,7 +1735,19 @@ main .panel-body .admin-panel a#show-all{
     }
 }
 
+@media screen and (max-width:800px){
+    .profile-panel{
+        margin-left: 700px;
+    }
+
+    .left .table{
+        margin-left: 10px;
+        font-weight: bolder;
+    }
+}
+
 @media screen and (max-width:768px){
+
     .profile-panel .panel-label{
         margin-left: 650px;
     }
@@ -1752,6 +1758,10 @@ main .panel-body .admin-panel a#show-all{
         max-width: 80%;
         margin-left: 550px;
         /* background: seagreen; */
+    }
+
+    .profile-wrapper .right{
+        display: none;
     }
 
     .left{
@@ -1770,7 +1780,11 @@ main .panel-body .admin-panel a#show-all{
     }
 
     .left .table{
-        margin-left: -10px;
+        margin-left: 20px;
     }
+}
+
+@media screen and (max-width:412px){
+
 }
 /* End of profile section */

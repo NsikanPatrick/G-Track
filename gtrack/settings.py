@@ -96,6 +96,7 @@ WSGI_APPLICATION = 'gtrack.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
 # POSTGRESQL DATABASE CONNECTION
 # DATABASES = {
 #     'default': {
@@ -107,12 +108,6 @@ WSGI_APPLICATION = 'gtrack.wsgi.application'
 #         'PORT': config('PORT'),
 #     }
 # }
-
-
-# DATABASES['default'] = dj_database_url.config()
-
-# The database connection lines of code below is to be activated on production, should be
-# off on development
 
 # CLOUD POSTGRESQL DATABASE CONNECTION
 DATABASES = {
