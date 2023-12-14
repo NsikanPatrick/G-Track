@@ -2,10 +2,10 @@
 
 /* =====================  ROOT VARIABLES ==================== */
 :root{
-    /* --primary-color: #7380ec; */
+    /* --primary-color: #7380ec */
     --primary-color: rgba(175,134,37,0.62);
     --color-danger: #ff7782;
-    --color-success: seagreen;
+    --color-success: #556B2F;
     --color-warning: #ffbb55;
     --color-white: #fff;
     --color-info-dark: #7d8da1;
@@ -16,9 +16,6 @@
     --color-dark-variant: #677483;
     --color-background-sidebar: #2b2a2e;
     --color-background: #d2cedf;
-    /* --color-background: #dad8e8; */
-    /* --color-background: #e8e7eb; */
-    /* --color-background: #f6f6f9; */
 
     --card-border-radius: 2rem;
     --border-radius-1: 0.4rem;
@@ -45,6 +42,23 @@
     --box-shadow: 0 2rem 3rem var(--color-light);
 }
 
+/* APPLYING PERSISTENT DARK-MODE THEME THROUGH LOCALSTAORAGE */
+/* Apply dark theme styles when the 'dark-theme-variables' class is present on the body element */
+body.dark-theme-variables {
+    /* Dark theme variables */
+    .dark-theme-variables{
+        --color-background: #181a1e;
+        --color-background-sidebar: #202528;
+        --color-white: #202528;
+        --color-dark: #edeffd;
+        --color-dark-variant: #a3bdcc;
+        --color-light: rgba(0, 0, 0, 0.4);
+        --box-shadow: 0 2rem 3rem var(--color-light);
+    }
+}
+
+
+
 *{
     list-style-type: none;
     text-decoration: none;
@@ -57,9 +71,8 @@
 }
 
 body{
-    /* background: linear-gradient(to right, #eff2f1, #bfd4d3); */
     width: 100vw;
-    height: 100vh;
+    /* height: 100vh; */
     font-family: 'Poppins', sans-serif;
     font-size: 0.88rem;
     background: var(--color-background);
@@ -137,6 +150,10 @@ b{
     color: var(--color-warning);
 }
 
+.dropdown-select{
+    padding: 13px;
+}
+
 /* =============== Site buttons ================= */
 .primary-btn{
     background: var(--primary-color);
@@ -144,7 +161,20 @@ b{
     padding: 10px;  
 }
 
-.primary-btn:hover{
+.portfolio-btn{
+    background: var(--color-success);
+    color: var(--color-white);
+    padding: 10px;  
+}
+
+.status-btn{
+    background: var(--primary-color);
+    color: #fff !important;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.portfolio-btn:hover,.primary-btn:hover{
     cursor: pointer;
     padding: 11px;
 }
@@ -163,18 +193,13 @@ b{
 
 .wrapper{
     width: 100%;
-    background: #fff;
+    /* background: #fff; */
     display: flex;
 }
 
 /* ===========Testing sidebar======== */
 .sidebar{
-    /* overflow-y: scroll; */
     margin-top: 100px;
-}
-
-#sidebar{
-    z-index: 3;
 } 
 
 .sidebar a{
@@ -183,8 +208,10 @@ b{
     margin-left: 2rem;
     gap: 1rem;
     align-items: center;
+    padding-bottom: 25px;
+    /* border-bottom: 1px dashed var(--primary-color); */
     position: relative;
-    height: 3rem;
+    height: 3.5rem;
     transition: all 300ms ease;
 }
 
@@ -193,7 +220,7 @@ b{
     transition: all 300ms ease;
 }
 
-.sidebar a:hover{
+.sidebar a:hover, .sidebar a:active {
     color: var(--primary-color);
 }
 
@@ -214,13 +241,13 @@ b{
     width: 210px;
     background: var(--color-background-sidebar);
     height: 100vh;
-    z-index: 1;
+    z-index: 10;
     position: fixed;
+    top: 0px;
 }
 
 .vertical-bar .profile-info{
     text-align: center;
-    /* margin-top: 10px; */
     padding: 50px 25px;
 }
 
@@ -256,21 +283,6 @@ b{
     background: #fff;
 }
 
-.main-container{
-    /* width: calc(100% - 250px); */
-
-    /* position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 80px;
-    background: var(--color-info-dark);
-    padding: 15px 25px;
-    display: flex;
-    flex-direction: row;
-    align-items: center; */
-}
-
 .main-container .top-bar{
     position: fixed;
     left: 0;
@@ -282,7 +294,7 @@ b{
     background: var(--color-white);
     width: 100%;
     margin: 0;
-    z-index: 2;
+    z-index: 1;
     box-shadow: 0 1rem 1rem var(--color-light);
 }
 
@@ -375,63 +387,6 @@ b{
     color: #fff;
 }
 
-
-/* You may have to display the main content items with flex or grid */
-.main-container .content{
-    /* display: flex;
-    flex-direction: row;
-    position: absolute;
-    margin-top: 70px;
-    margin-left: 200px;
-    z-index: -1;
-    padding: 25px; */
-    /* height: calc(100% - 60px); */
-    /* background: #7380ec; */
-}
-
-/* ================= STYLES FOR ADMINS CONTENT AREA ================== */
-
-/* .main-container .admins-content{
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    margin-top: 70px;
-    margin-left: 200px;
-    z-index: -1;
-    padding: 25px;
-    width: 100%;
-    height: calc(100% - 60px); 
-    background: #7380ec; 
-}
-
-.main-container .admins-content main{
-    width: 85%;
-}
-
-.main-container .admins-content .top-table{
-    display: flex;
-    flex-direction: row;
-    background: #7380ec;
-}
-
-.main-container .admins-content .top-table .table-actions{
-    
-    margin-left: 700px;
-    margin-bottom: 10px;
-}
-
-.admins-content .top-table .table-actions .action-btn{
-    background: var(--primary-color);
-    color: var(--color-white);
-    margin-right: 10px;
-    padding: 10px;
-}
-
-.admins-content .top-table .table-actions .action-btn:hover{
-    color: var(--primary-color);
-    background: var(--color-white);
-} */
-
 /* =============== END OF STYLES FOR ADMINS CONTENT AREA ================ */
 
 .main-container .content .item{
@@ -444,37 +399,18 @@ b{
 /* ===================== MAIN SECTION ======================= */
 main{
     margin-top: 1.4rem;
-    /* width: 100px; */
-    /* background: #111e88; */
 }
- 
-/* main .date{
-    display: inline-block;
-    background: var(--color-light);
-    border-radius: var(--border-radius-1);
-    margin-top: 1rem;
-    padding: 0.5rem 1.6rem;
-}
-
-main .date input[type='date']{
-    background: transparent;
-    color: var(--color-dark);
-} */
 
 main .insights{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.2rem;
-    /* gap: 1.6rem; */
-    /* background: red; */
 }
 
 main .insights > div{
     background: var(--color-white);
     padding: 0.8rem;
-    /* padding: var(--card-padding); */
     border-radius: var(--card-border-radius);
-    /* margin: 1rem; */
     margin: 5px;
     box-shadow: var(--box-shadow);
     transition: all 300ms ease;
@@ -574,6 +510,22 @@ main .recent-orders h2{
     margin-bottom: 0.8rem;
 }
 
+main .recent-orders .analytics{
+    width: 100%;
+    /* position: relative; */
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 20px;
+
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    text-align: center;
+    box-shadow: var(--box-shadow);
+
+    transition: all 300ms ease;
+}
+
 main .recent-orders table{
     background: var(--color-white);
     width: 100%;
@@ -606,9 +558,16 @@ main .recent-orders a{
 }
 
 /* ===================== ADMIN PANEL SECTION ====================== */
+.main .panel-body .admin-panel {
+    width: 100%; /* Adjust the width as needed */
+    overflow-x: auto; /* Add a horizontal scroll bar when content overflows */
+    white-space: nowrap; /* Prevent line breaks within table cells */ 
+}
+
 main .panel-body .admin-panel table{
     background: var(--color-white);
     width: 100%;
+    min-width: 100%;
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
     text-align: center;
@@ -629,44 +588,7 @@ main .panel-body .admin-panel a#show-all{
 /* ================== END OF ADMIN PANEL ======================= */
 
 /* ===================== ADMINS MAIN SECTION ======================= */
-/* main .admins{
-    margin-top: 2rem;
-}
 
-main .admins h2{
-    margin-bottom: 0.8rem;
-}
-
-main .admins table{
-    background: var(--color-white);
-    width: 100%;
-    border-radius: var(--card-border-radius);
-    padding: var(--card-padding);
-    text-align: center;
-    box-shadow: var(--box-shadow);
-    transition: all 300ms ease;
-}
-
-main .admins table:hover{
-    box-shadow: none;
-}
-
-main table tbody td{
-    height: 2.8rem;
-    border-bottom: 1px solid var(--color-light);
-    color: var(--color-dark-variant);
-}
-
-main table tbody tr:last-child td{
-    border: none;
-}
-
-main .admins a{
-    text-align: center;
-    display: block;
-    margin: 1rem auto;
-    color: var(--primary-color);
-} */
 
 
 /* ===================== END OF ADMINS MAIN SECTION ==================== */
@@ -682,7 +604,6 @@ main .admins a{
     display: flex;
     justify-content: end;
     gap: 2rem;
-    /* background: var(--primary-color); */
 }
 
 .right .top button{
@@ -828,11 +749,15 @@ main .admins a{
 .profile-details{
     display: flex;
     flex-direction: row;
+    background: var(--color-white);
+    margin-left: 30px;
+    padding: 30px;
 }
 
 .profile-details .details-section{
-    width: 70%;
-    background: var(--color-white);
+    margin: 30px 0px 20px 40px;
+    width: 80%;
+    /* background: var(--color-white); */
 }
 
 .profile-details .details-section tr td{
@@ -840,20 +765,76 @@ main .admins a{
 }
 
 .profile-details .photo-section{
-    width: 28%;
+    /* width: 50%; */
+    margin: 35px 30px 0px 0px;
+}
+
+.profile-details .photo-section img{
+   border-radius: 50% !important;
+}
+
+.profile-details .details-section table{
+    margin-bottom: 70px;
+}
+
+.panel.profile-panel th{
+    color: var(--primary-color);
+    font-size: 17px;
+}
+
+.panel.profile-panel td{
+    font-size: 15px;
 }
 
 .edit-btn{
     background: var(--primary-color);
     color: var(--color-white);
     padding: 10px;
+    font-size: 19px;
+    margin-left: 80px;
 }
 
 .edit-btn:hover{
-    background: var(--color-dark);
-    color: var(--primary-color);
+    color: var(--color-dark);
     padding: 10px;
 }
+
+/* =============================== ANALYTICS =============================== */
+
+.graphbox{
+    width: 98.5%;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 30px;
+}
+
+.my_analytics{
+    width: 90% !important;
+}
+
+.graphbox .box{
+    position: relative;
+    background: var(--color-white);
+    width: 100%;
+    color: var(--color-white);
+    padding: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    /* color: red; */
+}
+
+.box{
+    background: var(--color-white);
+    width: 100%;
+    color: var(--color-white);
+    padding: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    /* color: red; */
+}
+
+/* ============================ END OF ANALYTICS ============================= */
 
 /* =================== END OF PROFILE PAGE STYLES ========================= */
 
@@ -861,6 +842,16 @@ main .admins a{
 
 /* ================= Media queries for desktops and large screens ================== */
 @media screen and (min-width: 1301px) {
+    .wrapper{
+        /* width: 95%; */
+        width: 87%;
+        /* background: #fff; */
+        display: flex;
+    }
+
+    .x-wrapper{
+        display: flex;
+    }
 
     .main-container .content{
         display: flex;
@@ -873,20 +864,11 @@ main .admins a{
     }
 
     .panel{
-        /* display: flex; */
-        /* flex-direction: row; */
-        /* position: absolute; */
         margin-top: 70px;
         margin-left: 200px;
-        /* z-index: -1; */
         padding: 25px;
 
-        width: 97%; 
-        /* background: var(--color-background); */
-        /* margin-left: 210px; */
-        /* padding: 0 10px; */
-        /* height: 100%; */
-        /* margin-top: 75px;  */
+        width: 97%;
     }
 
     .panel-label{
@@ -896,11 +878,8 @@ main .admins a{
     .panel .top-table .table-actions{
         display: flex;
         flex-direction: row;
-        /* padding-left: 20px; */
-        /* margin-top: 20px; */
         margin-bottom: 15px;
         justify-content: flex-end;
-        /* margin-bottom: -70px; */
     }
 
     .panel .top-table .table-actions{
@@ -934,6 +913,12 @@ main .admins a{
 }
 
 @media screen and (min-width: 1101px) and (max-width: 1300px) {
+    /* .panel-body .admin-panel{
+        overflow-x: auto;
+        width: 100%;
+        margin-top: 100px;
+        -webkit-overflow-scrolling: touch;
+    } */
     .main-container .content{
         display: flex;
         flex-direction: row;
@@ -998,9 +983,26 @@ main .admins a{
     } 
     
     #sidebar{
-        /* position: fixed; */
         z-index: 3;
     } 
+}
+
+/* This screen gave a lot of issues */
+@media screen and (min-width: 1280px) and (max-width: 1300px) {
+    
+    .panel .top-table.for-debtors{
+        padding-left: 20px;
+        margin-top: 20px;
+        margin-bottom: -70px;
+        margin-right: 190px;
+    }
+    .panel-body .admin-panel{
+        overflow-x: auto;
+        width: 83%;
+        margin-top: 100px;
+        -webkit-overflow-scrolling: touch;
+    }
+
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1100px) {
@@ -1012,7 +1014,6 @@ main .admins a{
         margin-left: 200px;
         z-index: -1;
         padding: 25px;
-        /* height: calc(100% - 60px); */
     }
 
     .main-container .content{
@@ -1039,13 +1040,18 @@ main .admins a{
     }
 
     .sidebar a i{
-        /* width: 5.8rem; */
         font-size: x-large;
     }
+
+    
 }
 
 /* ============== End of Media queries for desktops and large screens ================ */
-
+@media screen and (min-width: 1020px) and (max-width: 1024px) {
+    .main-container .panel{
+        margin-left: 130px !important;
+    }
+}
 
 /* ================= Media queries for small screens and laptops ===================== */
 @media screen and (min-width: 820px) and (max-width: 1024px) {
@@ -1055,18 +1061,7 @@ main .admins a{
 
     .panel{
         width: 97%; 
-        /* background: var(--color-background); */
-        /* margin-left: 210px; */
         margin-top: 70px;
-        /* padding: 0 10px; */
-        /* height: 100%; */
-        /* display: flex;
-        flex-direction: row;
-        position: absolute;
-        margin-top: 70px;
-        margin-left: 230px;
-        z-index: -1;
-        padding: 25px; */
     }
 
     .panel-body .admin-panel{
@@ -1085,11 +1080,12 @@ main .admins a{
         flex-direction: row;
         margin-bottom: 15px;
         justify-content: flex-end;
-    }
-
-    .panel .top-table .table-actions{
         margin-left: 20%;
     }
+
+    /* .panel .top-table .table-actions{
+        margin-left: 20%;
+    } */
 
     .panel .top-table .table-actions .action-btn{
         margin-left: 5px;
@@ -1117,8 +1113,94 @@ main .admins a{
     
 }
 
+@media screen and (min-width: 820px) and (max-width: 912px) {
+
+    .cover{
+        width: 86% !important;
+    }
+}
+
+@media (max-width: 834px){
+
+    .panel.profile-panel{
+        margin-right: 20px;
+    }
+
+    .graphbox{
+        grid-template-columns: 1fr;
+        
+        height:auto;
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 834px) {
+    .graphbox{
+        grid-template-columns: 1fr;
+        
+        height:auto;
+    }
+
+    .graphbox .box{
+        width: 113%;
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 810px){
+    .main-container .content{
+        margin-left: 110px !important;
+    }
+
+    .main-container .panel{
+        margin-top: 110px !important;
+    }
+
+    .panel .top-table{
+        display: flex;
+        flex-direction: row;
+        padding-left: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .panel .top-table .table-actions{
+        margin-left: 20%;
+    }
+
+    .panel .top-table .table-actions .action-btn {
+        margin-left: 5px;
+        padding: 13px;
+        background: var(--color-white);
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    
+    }
+
+    .panel .top-table .table-actions .action-btn:hover{
+        background: var(--primary-color);
+        color: var(--color-white);
+        border: 1px solid var(--primary-color);
+    }
+
+    .panel .top-table .table-actions .action-btn.create{
+        background: var(--primary-color);
+        color: var(--color-white);
+    }
+
+    .panel .top-table .table-actions .action-btn.create:hover{
+        background: var(--color-white);
+        color: var(--primary-color);
+    }
+
+    .panel.profile-panel{
+        margin-top: 85px !important; 
+    }
+
+    .panel.profile-panel .panel-label{
+        margin-bottom: 20px; 
+    }
+}
+
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-/* The margin-left for the different media */
     .main-container .content{
         display: flex;
         flex-direction: row; 
@@ -1130,11 +1212,18 @@ main .admins a{
     }
 
     .panel{
-        width: 97%;
+        width: 85%;
         background: var(--color-background);
-        margin-left: 110px;
+        margin-left: 120px;
         padding: 0 10px;
         height: 100%;
+    }
+
+    .panel-body .admin-panel{
+        overflow-x: auto;
+        /* width: 100%; */
+        /* margin-top: 100px; */
+        -webkit-overflow-scrolling: touch;
     }
 
     .content main{
@@ -1157,19 +1246,37 @@ main .admins a{
     }
 
     .sidebar a i{
-        /* width: 5.8rem; */
         font-size: x-large;
     }
 }
 
 /* ================================ */
+@media screen and (min-width: 688px) and (max-width: 768px) {
+    .table-actions{
+        margin-bottom: 100px;
+        margin-right: 0px;
+    }
+
+    .top-table.for-debtors{
+        margin-left: 190px !important;;
+    }   
+}
+
 
 @media (max-width: 768px){
+    .profile-details{
+        margin-left: -630px;
+    }
     .panel{
         background: var(--color-background);
         padding: 0 10px;
         height: 100%;
         margin-top: 75px;
+    }
+
+    .panel.profile-panel{
+        margin-left: -710px;
+        margin-right: 10px;
     }
 
     .panel-label{
@@ -1186,7 +1293,6 @@ main .admins a{
 
     .panel .top-table .table-actions{
         margin-left: 20%;
-        /* margin-top: 10px; */
     }
 
     .panel .top-table .table-actions .action-btn{
@@ -1215,19 +1321,16 @@ main .admins a{
 
     .panel-body .admin-panel{
         overflow-x: auto;
-        width: 100%;
-        margin-top: 100px;
+        /* width: 100%; */
+        /* margin-top: 100px; */
         -webkit-overflow-scrolling: touch;
     }
 
     .main-container .top-bar .top-right .profile{
-        /* margin-top: -53px;
-        padding: 0px 0; */
         display: none;
     }
 
     .main-container .top-bar .top-right .theme-toggler{
-        /* margin-bottom: 53px; */
         margin-bottom: 40px;
     }
 
@@ -1272,19 +1375,20 @@ main .admins a{
         margin-left: 0;
     }
 
+    .container.active .vertical-wrapper{
+        visibility: visible;
+    }
+
+    .container.active .vertical-bar{
+        left: 0;  
+    }
+
     .wrapper.active .vertical-wrapper{
         visibility: visible;
     }
 
     .wrapper.active .vertical-bar{
-        left: 0;
-        
-    }
-
-    .main-container .content{
-        /* display: grid;
-        width: 100%;
-        grid-template-columns: 1fr; */
+        left: 0;  
     }
 
     main .insights{
@@ -1333,6 +1437,11 @@ main .admins a{
         margin-right: 10px;
         margin-left: 8px;
     }
+
+    .form-panel{
+        margin-left: -750px;
+        padding: 20px 20px 20px 12px;
+    }
     
 }
 
@@ -1344,7 +1453,26 @@ main .admins a{
     }
 }
 
+@media (max-width: 688px) {
+    .form-panel{
+        margin-left: -670px;
+        padding: 20px 20px 20px 12px;
+    }
+
+    .profile-details{
+        margin-left: -630px;
+    }
+
+    .panel.profile-panel{
+        margin-left: -570px !important;
+        margin-right: 15px;
+    }
+}
+
 @media (max-width: 600px){
+    .profile-details{
+        margin-left: -730px;
+    }
 
     .main-container .top-bar .top-right .theme-toggler{
         margin-left: -70px;
@@ -1356,40 +1484,11 @@ main .admins a{
 
     .panel .top-table .table-actions{
         margin-left: 0;
-        /* margin-top: -20px; */
     }
 
     .panel .top-table .table-actions .action-btn{
         margin-bottom: 10px;
     }
-
-    /* .main-container .admins-content{
-        margin-left: auto;
-    }
-
-    .main-container .admins-content .admins{
-        overflow-x: auto;
-        width: 100%;
-    }
-
-    .main-container .admins-content .admins table{
-        width: 100%;
-    }
-
-    .main-container .admins-content main{
-        width: 100%;
-    }
-
-    .main-container .admins-content .top-table .table-actions{
-        display: flex;
-        flex-direction: row;
-        margin-left: 400px;
-        margin-bottom: 15px;
-    }
-
-    .admins-content .top-table .table-actions .action-btn{
-        padding: -20px;
-    } */
 
     #sidebar{
         position: fixed;
@@ -1429,7 +1528,6 @@ main .admins a{
         width: 100%;
         margin-top: 100px;
         -webkit-overflow-scrolling: touch;
-        /* background: red; */
     }
 
 }
@@ -1439,17 +1537,87 @@ main .admins a{
         margin-top: 73px;
     }
 
-    .panel .top-table{
-        /* margin-left: 10%; */
-        justify-content: flex-end;
+    .panel.profile-panel{
+        margin-left: -380px !important;
+        margin-right: 20px;  
     }
 
-    .panel .top-table .table-actions .action{
-       display: none;
+    .panel .panel-body .profile-details{
+        display: flex;
+        flex-direction: column-reverse;
+        /* margin-left: -250px !important; */
+    }
+
+    .profile-details .photo-section{
+        margin: auto !important;
+    }
+
+    .panel .top-table{
+        justify-content: flex-end;
     }
 
     .panel .top-table h2{
         display: none;
+    }
+
+    .edit-btn{
+        margin-left: 60px;
+    }
+}
+
+@media screen and (min-width: 400px) and (max-width: 414px) {
+    .form-panel{
+    margin-left: -402px;
+    padding: 20px 20px 20px 12px;
+    }
+}
+
+@media screen and (min-width: 385px) and (max-width: 399px) {
+    .form-panel{
+    margin-left: -382px;
+    padding: 20px 20px 20px 12px;
+    }
+
+    .panel.profile-panel{
+        margin-left: -20px !important; 
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 384px) {
+    .form-panel{
+    margin-left: -370px;
+    padding: 20px 20px 20px 12px;
+    }
+
+    .panel.profile-panel{
+        margin-left: -30px !important;
+        margin-right: 20px;  
+    }
+
+    .edit-btn{
+        margin-left: 50px;
+    }
+}
+
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    .form-panel{
+    margin-left: -350px;
+    padding: 20px 20px 20px 12px;
+    }
+
+    .panel.profile-panel{
+        margin-left: -30px !important; 
+    }
+}
+
+@media screen and (min-width: 300px) and (max-width: 320px) {
+    .form-panel{
+    margin-left: -310px;
+    padding: 20px 20px 20px 12px;
+    }
+
+    .panel.profile-panel{
+        margin-left: -40px !important; 
     }
 }
 
@@ -1457,59 +1625,7 @@ main .admins a{
     .main-container .top-bar .top-right .theme-toggler{
         margin-left: -110px;
     }
-
-    /* .main-container .content{
-        margin-top: 75px;
-        padding-top: 20px;
-        padding-bottom: 50px;
-    }
-
-    .main-container .content .panel-label{
-        margin-left: 17px;
-        margin-bottom: 15px;
-    }
-
-    .main-container .top-bar{
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        padding: 0 0.8rem;
-        height: 4.6rem;
-        width: 100%;
-        box-shadow: 0 1rem 1rem var(--color-light);
-    }
-
-    .main-container .top-bar .top-right .theme-toggler{
-        margin-left: -110px;
-    }
-
-    .recent-orders{
-        overflow-x: auto;
-        width: 100%;
-        margin-top: 100px;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .recent-orders h2, .sales-analytics h2{
-        margin-left: 15px;
-    }
-
-    .main-container .content{
-        background: var(--color-background);
-    }
-
-    .main-container .right{
-        margin-right: 10px;
-        margin-left: 8px;
-    }
-
-    #sidebar{
-        position: fixed;
-        z-index: 3;
-    } */
 }
-
 
 /* Profile section */
 
@@ -1668,26 +1784,7 @@ main .admins a{
     }
 }
 
-@media screen and (max-width:414px){
+@media screen and (max-width:412px){
 
-    .profile-wrapper {
-        display: flex;
-        flex-direction: column;
-        max-width: 80%;
-        margin-left: 550px;
-        /* background: seagreen; */
-    }
-
-    .left{
-        display: block;
-        max-width: 500px;
-    }
-
-    .profile-wrapper .right{
-        display: block;
-        /* max-width: 500% */
-    }
 }
 /* End of profile section */
-
-

@@ -26,6 +26,8 @@ urlpatterns = [
     path('', include('gtrack_app.urls')),
     path('users', include('django.contrib.auth.urls')),
     path('users/', include('users.urls')),
+
+    path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 # This section allows you to serve media files dynamically on the client from the

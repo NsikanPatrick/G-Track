@@ -164,7 +164,7 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">Username:</th>
-                                            <td class="text-red-300">{{ user_details.username }}</td>
+                                            <td>{{ user_details.username }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Phone:</th>
@@ -221,7 +221,60 @@
                                 </table>
                             </div>
                         </div>
-                        
+                        <!-- <div class="right-bottom box">
+                            <h2 class="text-center">Payment Information</h2>
+                            <div class="table-container">
+                                <table class="table table-borderless">
+                                    <thead>
+
+                                    </thead>
+                                    <tbody>
+                                        {% if user.is_superuser and user.is_staff %}
+                                        <tr>
+                                            <th scope="row">Total Amount Owed:</th>
+                                            <td>{{total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Amount Retrieved:</th>
+                                            <td>{{retrieved}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Balance left:</th>
+                                            <td>{{debt}}</td>
+                                        </tr>
+                                        {% elif not user.is_superuser and user.is_staff %}
+                                        <tr>
+                                            <th scope="row">Total Amount Owed:</th>
+                                            <td>{{total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Amount Retrieved:</th>
+                                            <td>{{retrieved}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Balance left:</th>
+                                            <td>{{debt}}</td>
+                                        </tr>
+                                        {% else %}
+                                        client
+                                        <tr>
+                                            <th scope="row">Total Amount Owed:</th>
+                                            <td>{{c_total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Amount Retrieved:</th>
+                                            <td>{{c_retrieved}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Balance left:</th>
+                                            <td>{{c_debt}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
 

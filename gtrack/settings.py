@@ -49,9 +49,27 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+
+    'tailwind',
+    'theme',
+    'django_browser_reload',
+
     'gtrack_app',
     'users',
 ]
+
+# Register tailwind App name
+TAILWIND_APP_NAME = 'theme'
+
+# Register Internal_IP for tailwind
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+# Adding npm to path for tailwind
+# Paste the actual file path, change the slashes to back slashes
+# But what will this be on production?
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,6 +79,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = 'gtrack.urls'

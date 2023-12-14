@@ -1628,6 +1628,136 @@ main .panel-body .admin-panel a#show-all{
 }
 
 /* Profile section */
+.profile-page-wrapper{
+    display: flex;
+    flex-direction: row;
+    margin-left: 27px;
+}
+
+.profile-page-wrapper th{
+    color: var(--primary-color);
+    font-size: 17px;
+}
+
+.profile-content{
+    background: var(--color-white);
+    width: 100%;
+    /* color: var(--color-white); */
+    padding: 40px 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    /* color: red; */
+}
+
+.profile-left{
+    padding-bottom: 60px;
+}
+
+.profile-right{
+    height: 600px;
+}
+
+.profile-right h2{
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--color-info-light);
+}
+
+.profile-left .table tr td,.profile-left .table tr th,
+.profile-right .table tr th, .profile-right .table tr td{
+    text-align: center;
+    border-bottom: 1px solid var(--color-info-light);
+    padding: 15px;
+}
+
+.button-container {
+    text-align: center; /* Center-align its children horizontally */
+    margin-top: 30px;
+}
+
+.button-container .edit-profile{
+    background: var(--primary-color);
+    color: var(--color-white);
+    padding: 14px 30px;
+    border-radius: 15px;
+}
+
+.button-container .edit-profile:hover{
+    cursor: pointer;
+    background: var(--color-success);
+}
+
+/* Right styles */
+@media screen and (min-width: 1280px) {
+    .profile-page-wrapper{
+        display: flex;
+        flex-direction: row;
+        /* justify-content: space-around; */
+        font-size: 17px;
+    }
+
+    .profile-left{
+        max-width: 50%;
+        margin-right: 35px;
+    }
+    
+    .profile-right{
+        max-width: 40%;
+    }
+}
+
+
+/* Media queries for tablets tablets */
+/* Note: I offed the right card here */
+@media screen and (max-width:1024px){
+    .profile-page-wrapper{
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 15px;
+        margin-left: 0px;
+        font-size: 18px;
+    }
+
+    .profile-left, .profile-right{
+        margin-bottom: 20px;
+    }
+
+    .profile-right{
+        display: none;
+    }
+}
+
+/* Media query for smaller tablets */
+@media screen and (min-width:640px) and (max-width:768px){
+    .profile-page-wrapper{
+        font-size: 18px;
+    }
+
+    .profile-left, .profile-right{
+        margin-bottom: 20px;
+    }
+}
+
+/* I have specified here that mobile phones should display as column */
+/* You can set display:none for .profile-right */
+@media screen and (max-width:414px){
+    .profile-page-wrapper{
+        display: flex;
+        flex-direction: column;
+        font-size: 18px;
+    }
+
+    .profile-left, .profile-right{
+        margin-bottom: 20px;
+    }
+}
+
+/* End of profile section */
+
+
+
+
+/* The styles below applies to the user_profile3 template alone, you can activate that file on views.py file */
+/* Profile section */
 
 .profile-wrapper {
     display: flex;
@@ -1784,7 +1914,31 @@ main .panel-body .admin-panel a#show-all{
     }
 }
 
-@media screen and (max-width:412px){
+@media screen and (max-width:414px){
 
+    .profile-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 80%;
+        margin-left: 550px;
+        /* background: seagreen; */
+    }
+
+    .left{
+        display: block;
+        max-width: 500px;
+    }
+
+    .profile-wrapper .right{
+        display: block;
+        /* max-width: 500% */
+    }
 }
 /* End of profile section */
+
+
+
+
+/* End of profile section */
+
+

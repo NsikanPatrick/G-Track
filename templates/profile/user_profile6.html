@@ -136,15 +136,16 @@
         </div>
 
     </div>
-    <div class="panel profile-panel">
+    <div class="panel profile-pane">
         <main>
 
             <h1 class="panel-label">Your Profile</h1>
 
             <div class="panel-body">
-                <div class="profile-wrapper">
-                    <div class="left box">
-                        
+                <div class="profile-page-wrapper">
+                    <!-- Left container -->
+                    <div class="profile-left profile-content">
+                        <!-- <h1 class="text-red-300">Left</h1> -->
                         <div class="profile-pix">
                             <!-- <img src="{% static 'img/anonymous.jpg' %}" alt="mgm"> -->
                             {% if user_details.userprofile.profile_pic %}
@@ -154,74 +155,76 @@
                             <img src="{% static 'img/anonymous.jpg' %}" width="200" height="200" />
                             {% endif %}
                         </div>
-                        <h2 class="account-name text-center">{{ user_details.first_name }} {{ user_details.last_name }}</h2>
-                        <div class="">
+
+                        <h2 class="account-name text-center">{{ user_details.first_name }} {{ user_details.last_name }}
+                        </h2>
+                        <div class="overflow-x-auto">
                             <div class="table-container">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered min-w-full">
                                     <thead>
                                         <!-- Table header content here -->
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">Username:</th>
-                                            <td class="text-red-300">{{ user_details.username }}</td>
+                                            <th scope="row" class="p-2 md:p-4 lg:p-6">Username:</th>
+                                            <td class="p-2 md:p-4 lg:p-6 text-red-300">{{ user_details.username }}</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Phone:</th>
-                                            <td>{{ my_profile.phone }}</td>
+                                            <th scope="row" class="p-2 md:p-4 lg:p-6">Phone:</th>
+                                            <td class="p-2 md:p-4 lg:p-6">{{ my_profile.phone }}</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Email:</th>
-                                            <td>{{ user_details.email }}</td>
+                                            <th scope="row" class="p-2 md:p-4 lg:p-6">Email:</th>
+                                            <td class="p-2 md:p-4 lg:p-6">{{ user_details.email }}</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Address:</th>
-                                            <td>{{ my_profile.address }}</td>
+                                            <th scope="row" class="p-2 md:p-4 lg:p-6">Address:</th>
+                                            <td class="p-2 md:p-4 lg:p-6">{{ my_profile.address }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
-                            
-                        </div>
                         <div class="button-container">
-                            <a class="edit-profile" href="{% url 'profile_update' user_id=user.id %}">Edit Profile</a>
-                            <!-- <a class="edit-btn" href="{% url 'profile_update' user_id=user.id %}">Edit profile</a> -->
+                            <a class="edit-profile" href="{% url 'profile_update' user_id=user.id %}">Edit Profile</a><!-- <a class="edit-btn" href="{% url 'profile_update' user_id=user.id %}">Edit profile</a> -->
                         </div>
+
                     </div>
 
-                    <div class="right">
-                        <div class="right-top box portfolio">
-                            <h2 class="text-center">G-Track Information</h2>
-                            <div class="table-container">
-                                <table class="table table-borderless">
-                                    <thead>
+                    <!-- Right container -->
+                    <div class="profile-right profile-content">
+                        <!-- <h1 class="text-red-300">Right</h1> -->
+                        <!-- <div class="right-top box portfolio"> -->
+                        <h2 class="text-center">G-Track Information</h2>
+                        <div class="table-container">
+                            <table class="table table-borderless">
+                                <thead>
 
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">Status:</th>
-                                            {% if user.is_superuser and user.is_staff %}
-                                            <td>Super Admin</td>
-                                            {% elif not user.is_superuser and user.is_staff %}
-                                            <td>Editor</td>
-                                            {% else %}
-                                            <td>Client</td>
-                                            {% endif %}
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Date Joined:</th>
-                                            <td>{{ user_details.date_joined }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Last Seen:</th>
-                                            <td>{{ user_details.last_login }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Status:</th>
+                                        {% if user.is_superuser and user.is_staff %}
+                                        <td>Super Admin</td>
+                                        {% elif not user.is_superuser and user.is_staff %}
+                                        <td>Editor</td>
+                                        {% else %}
+                                        <td>Client</td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Date Joined:</th>
+                                        <td>{{ user_details.date_joined }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Last Seen:</th>
+                                        <td>{{ user_details.last_login }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        
+                        <!-- </div> -->
                     </div>
                 </div>
 
