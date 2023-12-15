@@ -50,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    # 'tailwind',
-    "tailwindcss",
+    'tailwind',
+    # "tailwindcss",
     'theme',
     'django_browser_reload',
 
@@ -70,7 +70,11 @@ INTERNAL_IPS = [
 # Adding npm to path for tailwind
 # Paste the actual file path, change the slashes to back slashes
 # But what will this be on production?
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+
+# NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+
+NPM_BIN_PATH = "npm"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
