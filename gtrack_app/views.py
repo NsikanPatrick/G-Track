@@ -135,7 +135,7 @@ def profile_update(request, user_id):
         user_details.refresh_from_db()
 
         
-        return render(request, "profile/user_profile2.html", 
+        return render(request, "profile/user_profile7.html", 
                       {'my_profile': user_profile_obj, 
                        'user_details': user_details, 
                     }

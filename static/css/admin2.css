@@ -1663,7 +1663,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media screen and (min-width: 360px) and (max-width: 374px) {
     .panel .panel-body .profile-details{
-        margin-left: -170px;
+        margin-left: -150px;
     }
 
     .form-panel{
