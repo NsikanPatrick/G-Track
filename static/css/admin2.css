@@ -1224,7 +1224,7 @@ main .panel-body .admin-panel a#show-all{
 
     .panel.profile{
         margin-top: 100px;
-        margin-left: 180px;
+        margin-left: 170px;
     }
 
     .panel.profile h1{
@@ -1277,7 +1277,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media (max-width: 768px){
     .profile-details{
-        margin-left: -630px;
+        margin-left: -670px;
     }
     .panel{
         background: var(--color-background);
@@ -1483,7 +1483,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media (max-width: 600px){
     .profile-details{
-        margin-left: -730px;
+        margin-left: -310px;
     }
 
     .main-container .top-bar .top-right .theme-toggler{

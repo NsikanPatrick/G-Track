@@ -69,10 +69,10 @@ INTERNAL_IPS = [
 # Adding npm to path for tailwind
 
 # Activate this line on development
-# NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 # Activate this line on production
-NPM_BIN_PATH = "npm"
+# NPM_BIN_PATH = "npm"
 
 
 MIDDLEWARE = [
@@ -114,12 +114,12 @@ WSGI_APPLICATION = 'gtrack.wsgi.application'
 # The database connection lines of code below is to be activated on development, should be
 # off on production
 # SQLITE CONNECTION
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # POSTGRESQL DATABASE CONNECTION
 # DATABASES = {
@@ -134,9 +134,9 @@ WSGI_APPLICATION = 'gtrack.wsgi.application'
 # }
 
 # CLOUD POSTGRESQL DATABASE CONNECTION
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-}
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# }
 
 
 # Password validation
