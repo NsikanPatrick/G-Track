@@ -95,7 +95,7 @@ def profile(request, user_id):
 
 
         # debt = total - retrieved
-        return render(request, "profile/user_profile6.html", 
+        return render(request, "profile/user_profile7.html", 
                       {'my_profile': user_profile, 
                        'user_details': user_details, 
                     #    "total": total, 

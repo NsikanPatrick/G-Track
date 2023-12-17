@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     'tailwind',
-    # "tailwindcss",
     'theme',
     'django_browser_reload',
 
@@ -68,11 +67,11 @@ INTERNAL_IPS = [
 ]
 
 # Adding npm to path for tailwind
-# Paste the actual file path, change the slashes to back slashes
-# But what will this be on production?
 
+# Activate this line on development
 # NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
+# Activate this line on production
 NPM_BIN_PATH = "npm"
 
 
