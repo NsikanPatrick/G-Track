@@ -992,6 +992,11 @@ main .panel-body .admin-panel a#show-all{
 
 /* This screen gave a lot of issues */
 @media screen and (min-width: 1280px) and (max-width: 1300px) {
+    .panel .panel-body .profile-details{
+        display: flex;
+        flex-direction: column-reverse;
+        margin: 70px;
+    }
 
     .main-container .content{
         margin-left: 220px; /*changed this from 210px */
@@ -1056,7 +1061,8 @@ main .panel-body .admin-panel a#show-all{
 /* ============== End of Media queries for desktops and large screens ================ */
 @media screen and (min-width: 1020px) and (max-width: 1024px) {
     .panel .panel-body .profile-details{
-        margin-top: 130px;
+        margin-top: 90px;
+        margin-right: 10px
     }
 
     .main-container .panel{
@@ -1274,7 +1280,14 @@ main .panel-body .admin-panel a#show-all{
     }
 }
 
-@media screen and (min-width: 769px) and (max-width: 834px) {
+@media screen and (min-width: 800px) and (max-width: 834px) {
+    .profile-details{
+        margin: 150px 20px 0 10px;
+    }
+}
+
+
+@media screen and (min-width: 769px) and (max-width: 799px) {
     .profile-details{
         margin: 150px 20px 0 10px;
     }
@@ -1295,7 +1308,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media (max-width: 768px){
     .profile-details{
-        margin: 50px 20px 0 -725px;
+        margin: 50px 10px 0 -725px;
     }
 
     .panel{
@@ -1478,7 +1491,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media screen and (min-width: 701px) and (max-width:740px){
     .profile-details{
-        margin: 80px 20px 0 -670px;
+        margin: 80px 100px 0 -690px;
     }
 }
 
@@ -1508,13 +1521,14 @@ main .panel-body .admin-panel a#show-all{
 
 @media screen and (min-width: 601px) and (max-width:640px){
     .profile-details{
-        margin-left: -590px;
+        margin-left: -610px;
+        margin-right: 30px
     }
 }
 
 @media screen and (max-width: 600px){
     .profile-details{
-        margin-left: -570px;
+        margin: 60px 40px 20px -575px
     }
 
     .main-container .top-bar .top-right .theme-toggler{
@@ -1583,7 +1597,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media screen and (min-width: 415px) and (max-width: 430px) {
     .panel .panel-body .profile-details{
-        margin-left: -240px;
+        margin-left: -300px;
     }
 }
 
@@ -1625,7 +1639,7 @@ main .panel-body .admin-panel a#show-all{
 
 @media screen and (min-width: 400px) and (max-width: 414px) {
     .panel .panel-body .profile-details{
-        margin-left: -220px;
+        margin-left: -270px;
     }
 
     .form-panel{
@@ -1646,6 +1660,10 @@ main .panel-body .admin-panel a#show-all{
 }
 
 @media screen and (min-width: 375px) and (max-width: 384px) {
+    .panel .panel-body .profile-details{
+        margin-left: 20px;
+    }
+
     .form-panel{
     margin-left: -370px;
     padding: 20px 20px 20px 12px;
@@ -1676,10 +1694,17 @@ main .panel-body .admin-panel a#show-all{
     }
 }
 
+@media screen and (min-width: 321px) and (max-width: 360px) {
+
+    .panel .panel-body .profile-details{
+        margin-left: 10px;
+    }
+}
+
 @media screen and (min-width: 300px) and (max-width: 320px) {
 
     .panel .panel-body .profile-details{
-        margin-left: -130px;
+        margin-left: -8px;
     }
 
     .form-panel{
@@ -1694,7 +1719,8 @@ main .panel-body .admin-panel a#show-all{
 
 @media (max-width: 280px){
     .panel .panel-body .profile-details{
-        margin-left: 15px;
+        margin-left: -5px;
+        margin-right: 570px;
     }
 
     .main-container .top-bar .top-right .theme-toggler{
@@ -1766,6 +1792,7 @@ main .panel-body .admin-panel a#show-all{
 }
 
 
+
 @media screen and (min-width: 1281px) {
     .profile-page-wrapper{
         display: flex;
@@ -1775,8 +1802,8 @@ main .panel-body .admin-panel a#show-all{
     }
 
     .profile-left{
-        max-width: 50%;
-        margin-right: 35px;
+        max-width: 45%;
+        /* margin-right: 0px; */
     }
     
     .profile-right{
